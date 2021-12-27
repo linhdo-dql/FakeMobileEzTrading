@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:homepage="clr-namespace:FakeEzMobileTrading.Views.HomePages"
+            x:Class="FakeEzMobileTrading.HomePage"
+            xmlns:custom="clr-namespace:FakeEzMobileTrading.CustomRenderer"
+            NavigationPage.HasNavigationBar="False"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.IsSwipePagingEnabled="False"
+            android:TabbedPage.IsSmoothScrollEnabled="False"
+            xmlns:local ="clr-namespace:FakeEzMobileTrading"
+            BarBackgroundColor="#f1f1f1"
+            
+             >
+    <TabbedPage.Children>
+        <NavigationPage Title="Thị trường" IconImageSource="ic_bm_thitruong.png">
+            <x:Arguments>
+                <homepage:OverViewPage/>
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Tài sản" IconImageSource="ic_bm_taisan.png">
+            <x:Arguments>
+                <homepage:AssetPage/>
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Đặt lệnh" IconImageSource="ic_bm_datlenh.png">
+            <x:Arguments>
+                <homepage:ActionCommandPage/>
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Hủy / Sửa" IconImageSource="ic_bm_editing.png">
+            <x:Arguments>
+                <homepage:EditPage/>
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Chuyển tiền" IconImageSource="ic_bm_chuyentien.png">
+            <x:Arguments>
+                <homepage:SendMoneyPage/>
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+
+</TabbedPage>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FakeEzMobileTrading.MainPage"
+             Title="flyoutPage"
+            NavigationPage.HasNavigationBar="False"
+            FlyoutLayoutBehavior ="Default"
+            
+             xmlns:view="clr-namespace:FakeEzMobileTrading">
+    <MasterDetailPage.Flyout>
+        <view:FlyoutMenuPage />
+    </MasterDetailPage.Flyout>
+    
+    
+    
+</MasterDetailPage>
