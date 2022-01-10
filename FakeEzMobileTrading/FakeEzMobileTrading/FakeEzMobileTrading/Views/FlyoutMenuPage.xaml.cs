@@ -21,7 +21,8 @@ namespace FakeEzMobileTrading
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            scrollView.ScrollToAsync(0, 0, false);
+            //BindingContext = new FlyoutMenuViewModel(this);
+            scrollView.ScrollToAsync(scrollLayout, ScrollToPosition.Start, false);
 
         }
     }

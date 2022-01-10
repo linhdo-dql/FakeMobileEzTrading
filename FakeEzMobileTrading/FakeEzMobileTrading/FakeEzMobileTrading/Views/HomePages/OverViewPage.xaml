@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="EzMobile Trading"
              xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             xmlns:xcp="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
              x:Class="FakeEzMobileTrading.Views.HomePages.OverViewPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup"
+             xmlns:dvc="http://schemas.devexpress.com/xamarin/2014/forms/collectionview"
              android:TabbedPage.IsSmoothScrollEnabled="False"
              android:TabbedPage.IsSwipePagingEnabled="False"
              android:TabbedPage.ToolbarPlacement="Bottom"
@@ -29,13 +32,15 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="110,*">
+        <Grid RowDefinitions="110,*" IsVisible="{Binding IsVisible}"
+              BackgroundColor="#F1F1F1">
             <Frame Grid.Row="0" Padding="0">
-                <ScrollView Orientation="Horizontal" VerticalScrollBarVisibility="Never">
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
                     <StackLayout Orientation="Horizontal" Padding="0,0,10,0">
                         <repeater:RepeaterView x:Name="listExchanges"
                                                Orientation="Horizontal"
                                                ItemsSource="{Binding StockExchanges}"
+                                               
                                                >
                             <repeater:RepeaterView.ItemTemplate>
                                 <DataTemplate>
@@ -91,7 +96,11 @@
                                     <TapGestureRecognizer Command="{Binding InitListItem}" CommandParameter="{Binding Source={x:Reference popup}}"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Image Source="ic_arr_right.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFill"/>
+                            <Image Source="ic_arr_right.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFill">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SwitchPriceBoard}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </StackLayout>
                     <Grid ColumnDefinitions="0.5*,0.55*,0.45*,*"
@@ -102,26 +111,36 @@
                           Grid.Row="1"
                           >
                         <StackLayout Orientation="Horizontal" Grid.Column="0">
-                            <Label Text="Mã" TextColor="Black" FontSize="16" VerticalOptions="CenterAndExpand" Margin="5,0,0,0">
+                            <Label Text="Mã" TextColor="Black" FontSize="16"
+                                   VerticalOptions="CenterAndExpand" Margin="5,0,0,0"
+                                   IsEnabled="{Binding IsEnableSort}">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortId}" CommandParameter="{x:Reference btnSortId}"/>
                                 </Label.GestureRecognizers>
                             </Label>
                             <Image x:Name="btnSortId"
-                                   Source="{Binding SortIdSource}" WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand" Margin="0,0,0,0" ClassId="down">
+                                   Source="{Binding SortIdSource}"
+                                   WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand"
+                                   Margin="0,0,0,0" ClassId="down"
+                                   IsEnabled="{Binding IsEnableSort}">
                                    <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding SortId}" CommandParameter="{x:Reference btnSortId}"/>
                                    </Image.GestureRecognizers>
                             </Image>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="EndAndExpand" Margin="0,0,20,0">
-                            <Label Text="Giá" TextColor="Black" FontSize="16"  VerticalOptions="CenterAndExpand">
+                            <Label Text="Giá" TextColor="Black" FontSize="16" 
+                                   VerticalOptions="CenterAndExpand"
+                                   IsEnabled="{Binding IsEnableSort}">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortPrice}" CommandParameter="{x:Reference btnSortPrice}"/>
                                 </Label.GestureRecognizers>
                             </Label>
                             <Image x:Name="btnSortPrice"
-                                   Source="{Binding SortPriceSource}" WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand" Margin="0,0,0,0" ClassId="down">
+                                   Source="{Binding SortPriceSource}" WidthRequest="15"
+                                   HeightRequest="15" VerticalOptions="CenterAndExpand" 
+                                   Margin="0,0,0,0" ClassId="down"
+                                   IsEnabled="{Binding IsEnableSort}">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortPrice}" CommandParameter="{x:Reference btnSortPrice}"/>
                                 </Image.GestureRecognizers>
@@ -131,7 +150,8 @@
                         <StackLayout Orientation="Horizontal" Grid.Column="2">
                             <AbsoluteLayout x:Name="changeFilter"
                                             HorizontalOptions="StartAndExpand" WidthRequest="80"
-                                            ClassId="True" VerticalOptions="CenterAndExpand">
+                                            ClassId="True" VerticalOptions="CenterAndExpand"
+                                            >
                                 <Image Source="ic_top_left.png" WidthRequest="10" HeightRequest="10" AbsoluteLayout.LayoutBounds="0,0,10,10" AbsoluteLayout.LayoutFlags="PositionProportional"/>
                                 <Label x:Name="lblFilter" Text="{Binding TypeFilter}" FontSize="16" TextColor="Black" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" HorizontalTextAlignment="End" VerticalOptions="CenterAndExpand"/>
                                 <AbsoluteLayout.GestureRecognizers>
@@ -139,7 +159,10 @@
                                 </AbsoluteLayout.GestureRecognizers>
                             </AbsoluteLayout>
                             <Image x:Name="btnSortPersentOrUpdown"
-                                   Source="{Binding SortPersentSource}" WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand" Margin="0,0,0,0"
+                                   Source="{Binding SortPersentSource}"
+                                   WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand"
+                                   IsEnabled="{Binding IsEnableSort}"
+                                   Margin="0,0,0,0"
                                    ClassId="down">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortPersentOrUpDown}" CommandParameter="{x:Reference btnSortPersentOrUpdown}"/>
@@ -147,13 +170,18 @@
                             </Image>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" Grid.Column="3" HorizontalOptions="EndAndExpand">
-                            <Label Text="Khối lượng" TextColor="Black" FontSize="16" VerticalOptions="CenterAndExpand">
+                            <Label Text="Khối lượng" TextColor="Black" 
+                                   FontSize="16" VerticalOptions="CenterAndExpand"
+                                   IsEnabled="{Binding IsEnableSort}">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortMass}" CommandParameter="{x:Reference btnSortMass}"/>
                                 </Label.GestureRecognizers>
                             </Label>
                             <Image x:Name="btnSortMass"
-                                   Source="{Binding SortMassSource}" WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand" Margin="0,0,0,0"
+                                   Source="{Binding SortMassSource}"
+                                   WidthRequest="15" HeightRequest="15"
+                                   VerticalOptions="CenterAndExpand" Margin="0,0,0,0"
+                                   IsEnabled="{Binding IsEnableSort}"
                                    ClassId="down">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SortMass}" CommandParameter="{x:Reference btnSortMass}"/>
@@ -163,50 +191,66 @@
                         </StackLayout>
                         <BoxView HeightRequest="1" BackgroundColor="Gray" Grid.Row="1" Grid.ColumnSpan="4"/>
                     </Grid>
-                    <CollectionView x:Name="StockItems"
-                              ItemsSource="{Binding StockItems}"
-                              Grid.Row="2"
-                              BackgroundColor="White"
-                              >
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                             
+                    <AbsoluteLayout Grid.Row="2">
+                        <Label />
+                        <dvc:DXCollectionView x:Name="StockItems"
+                                          ItemsSource="{Binding StockItems, Mode=TwoWay}"
+                                          AbsoluteLayout.LayoutBounds="1,1,1,1"
+                                          AbsoluteLayout.LayoutFlags="All"
+                                          BackgroundColor="White"
+                                          AllowDragDropItems="True"
+                                          VerticalOptions="StartAndExpand"
+                                          DragItem="StockItems_DragItem"
+                                          DropItem="StockItems_DropItem"
+                                          CompleteItemDragDrop="StockItems_CompleteItemDragDrop">
+                            <dvc:DXCollectionView.ItemTemplate>
+                                <DataTemplate>
+
                                     <custom:CustomSwipeView  x:Name="StockItem" IsOpen="{Binding ShowHideSwipeView}" Command="{Binding BindingContext.SwipeItem, Source={x:Reference StockItems}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}">
                                         <SwipeView.RightItems>
                                             <SwipeItem Text="Xóa" BackgroundColor="OrangeRed" Command="{Binding BindingContext.DeleteItem, Source={x:Reference StockItems}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}"/>
                                         </SwipeView.RightItems>
                                         <SwipeView.Content>
-                                        <StackLayout>
-                                            <Grid ColumnDefinitions="0.5*,0.55*,0.45*,*"
+                                            <StackLayout>
+                                                <Grid ColumnDefinitions="0.5*,0.55*,0.45*,*"
                                                   Padding="5,10,5,5"
                                                   ColumnSpacing="20" >
-                                                <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="0">
-                                                    <Label Text="{Binding StockId}" TextColor="{Binding PriceGoodColor}" FontSize="16" VerticalOptions="Center"/>
+                                                    <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="0">
+                                                        <Label Text="{Binding StockId}" TextColor="{Binding PriceGoodColor}" FontSize="16" VerticalOptions="Center"/>
 
-                                                </StackLayout>
-                                                <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0" Margin="0,0,20,0">
-                                                    <Label Text="{Binding PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                                                    </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0" Margin="0,0,20,0">
+                                                        <Label Text="{Binding PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
 
-                                                </StackLayout>
-                                                <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0">
-                                                    <Label Text="{Binding UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" 
+                                                    </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0">
+                                                        <Label Text="{Binding UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" 
                                                            TextColor="{Binding PresentColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}, Converter={xct:InvertedBoolConverter}}"/>
-                                                    <Label Text="{Binding Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding PresentColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}}"/>
-                                                </StackLayout>
-                                                <StackLayout Orientation="Horizontal" Grid.Column="3" Padding="0,0,10,0">
-                                                    <Label Text="{Binding TotalMass,StringFormat='{0:###,###}'}" TextColor="{Binding ColorDefault2}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
-                                                </StackLayout>
+                                                        <Label Text="{Binding Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding PresentColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}}"/>
+                                                    </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" Grid.Column="3" Padding="0,0,10,0">
+                                                        <Label Text="{Binding TotalMass,StringFormat='{0:###,###}'}" TextColor="{Binding ColorDefault2}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                                                    </StackLayout>
 
-                                            </Grid>
-                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
-                                        </StackLayout>
-                                            
+                                                </Grid>
+                                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+
+                                            </StackLayout>
                                         </SwipeView.Content>
                                     </custom:CustomSwipeView>
-                                
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+
+                                </DataTemplate>
+                            </dvc:DXCollectionView.ItemTemplate>
+                        </dvc:DXCollectionView>
+                        <Label Text="Vui lòng nhấn vào '+' để thêm mã cổ phiếu." 
+                               AbsoluteLayout.LayoutBounds="0.5,0.2,200,100" 
+                               AbsoluteLayout.LayoutFlags="PositionProportional"
+                               FontSize="16"
+                               LineHeight="1.2"
+                               IsVisible="{Binding LabelVisible}"
+                               HorizontalTextAlignment="Center"/>
+                    </AbsoluteLayout>
+                   
                 </Grid>
                 
             </Frame>
@@ -240,24 +284,24 @@
                               >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <custom:CustomSwipeView  x:Name="StockItem" IsOpen="{Binding ShowHideSwipeView}" Command="{Binding BindingContext.SwipeListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}">
+                                <custom:CustomSwipeView  x:Name="StockFollowList" IsOpen="{Binding ShowHideSwipeView}" Command="{Binding BindingContext.SwipeListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}">
                                     <SwipeView.RightItems>
-                                        <SwipeItem Text="Xóa" BackgroundColor="OrangeRed" Command="{Binding BindingContext.DeleteListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}"/>
+                                        <SwipeItem Text="Xóa" BackgroundColor="OrangeRed" Command="{Binding BindingContext.DeleteListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}"/>
                                     </SwipeView.RightItems>
                                     <SwipeView.Content>
                                         <StackLayout>
                                             <StackLayout Orientation="Horizontal"
-                                                 Padding="10,10,15,5"
-                                                 x:Name="StockFollowList">
+                                                 Padding="10,10,15,5">
                                                 <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand" TextColor="Black" FontSize="16"/>
                                                 <Image Source="ic_ticked.png" HorizontalOptions="End" IsVisible="{Binding IsShowing}" WidthRequest="16" HeightRequest="16"/>
                                             </StackLayout>
                                             <BoxView BackgroundColor="Gray" HeightRequest="0.25"/>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.SelectedCollectionList, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}"/>
-                                            </StackLayout.GestureRecognizers>
+
                                         </StackLayout>
                                     </SwipeView.Content>
+                                    <custom:CustomSwipeView.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.SelectList, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}"/>
+                                    </custom:CustomSwipeView.GestureRecognizers>
                                 </custom:CustomSwipeView>
 
                             </DataTemplate>
@@ -274,28 +318,33 @@
                                VerticalOptions="CenterAndExpand"
                                HorizontalOptions="CenterAndExpand">
                         </Label>
-                        <AbsoluteLayout Grid.Row="0"
+                        <Grid Grid.Row="0"
                                  WidthRequest="300"
                                  IsVisible="{Binding NewListLayoutVisible}"
-                                 Padding="10,0,15,0">
+                                 Padding="10,0,15,0"
+                              ColumnDefinitions="*, 30">
                             <custom:CustomEntry 
                                x:Name="EntryName"
+                               Grid.Column ="0"
                                Placeholder="Đặt tên danh mục..." PlaceholderColor="#034E95" TextColor="#034E95" FontSize="16" HorizontalTextAlignment="Start"
                                VerticalTextAlignment="Center"
                                AbsoluteLayout.LayoutBounds="0,0.5,1,1" AbsoluteLayout.LayoutFlags="All"/>
-                            <Image Source="ic_ticked.png" 
-                               AbsoluteLayout.LayoutBounds="1,0.5,16,16" AbsoluteLayout.LayoutFlags="PositionProportional">
+                            <Image Source="ic_ticked.png"
+                                   Grid.Column="1" Margin="5">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding AddList}" CommandParameter="{Binding Source={x:Reference EntryName}}"/>
                                 </Image.GestureRecognizers> 
                             </Image>
-                        </AbsoluteLayout>
+                        </Grid>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowHideLayoutAddList}"/>
                         </Grid.GestureRecognizers>
                     </Grid>
                     
                 </Grid>
+                <dve:DXPopup.Behaviors>
+                    <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding ResetCollectionView}"/>
+                </dve:DXPopup.Behaviors>
             </dve:DXPopup>
 
         </Grid>

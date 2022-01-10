@@ -1,0 +1,1425 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FakeEzMobileTrading.Views.PriceBoard"
+             NavigationPage.HasNavigationBar="True"
+             NavigationPage.HasBackButton="True"
+             
+             xmlns:repeater="clr-namespace:FakeEzMobileTrading"
+             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup"
+             xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
+             
+             xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             >
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" Padding="0,0,15,0">
+            <Label Text="Bảng giá" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"/>
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                <Image Source="ic_refresh.png" WidthRequest="22" HeightRequest="22" Margin="0,2,5,0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RefreshClick}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Source="ic_list2.png" WidthRequest="20" HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowPopup}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Source="ic_plus2.png" WidthRequest="20" HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding InitListItem}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Source="ic_setting2.png" WidthRequest="20" HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SettingBoard}" CommandParameter="{Binding Source={x:Reference popup2}}"/>
+                    </Image.GestureRecognizers>
+                    
+                </Image>
+            </StackLayout>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="FrameRadioTemplate">
+            <Image VerticalOptions="Start"
+               HeightRequest="15" WidthRequest="15" HorizontalOptions="Start">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter Property="Source" Value="ic_check.png"/>
+                            </VisualState.Setters>
+                        </VisualState>
+
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter Property="Source" Value="ic_unckeck.png"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+
+                </VisualStateManager.VisualStateGroups>
+            </Image>
+            </ControlTemplate>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+       <Grid BackgroundColor="#222222" >
+
+            <StackLayout IsVisible="{Binding IsVisible}" >
+                <ScrollView Orientation="Horizontal" VerticalScrollBarVisibility="Never">
+                    <StackLayout Orientation="Horizontal" Padding="0,0,10,0">
+                        <repeater:RepeaterView x:Name="StockExchanges"
+                                               Orientation="Horizontal"
+                                               ItemsSource="{Binding StockExchanges}"
+                                                >
+                            <repeater:RepeaterView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout x:Name="ExchangeItem"
+                                                     WidthRequest="200"
+                                                     Margin="5,0,5,0"
+                                                     Padding="5">
+                                            <StackLayout Orientation="Horizontal"
+                                                     Spacing="10">
+                                                <Label Text="{Binding ExchangeId, StringFormat='{0}:'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                                                <Label Text="{Binding ExchangePrice, StringFormat='{0:n}',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" 
+                                                           FontSize="13"
+                                                           FontAttributes="Bold"/>
+                                                <StackLayout Orientation="Horizontal"
+                                                                 Spacing="13"
+                                                                 HorizontalOptions="Center">
+                                                    <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
+                                                               />
+                                                    <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}%'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
+                                                               />
+                                                </StackLayout>
+
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                                <Label Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='GT: {0:n} tỷ'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13"/>
+                                                <Label Text="{Binding ExchangeMass,  StringFormat='KL: {0:###,###}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13"/>
+                                            </StackLayout>
+
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </repeater:RepeaterView.ItemTemplate>
+
+                        </repeater:RepeaterView>
+                        <Image Source="ic_arr_right2.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFit" HorizontalOptions="End">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SwictchOverViewMarket}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                </ScrollView>
+                <dxg:DataGridView 
+                    x:Name="dvShort"
+                    
+                    RowTapCommand="{Binding RowSelected}"
+                    ItemsSource="{Binding StockItems}"
+                                  AllowDragDropRows="True"
+                                  DragRow="DataGridView_DragRow"
+                                  DropRow="DataGridView_DropRow"
+                                  CompleteRowDragDrop="DataGridView_CompleteRowDragDrop"   
+                                  BackgroundColor="Transparent"
+                                  VerticalLineThickness="0.25"
+                                  FixedColumnSeparatorWidth="0.25"
+                                  IsVisible="{Binding FullOrShort, Converter={xct:InvertedBoolConverter}}"
+                                  >
+                    <dxg:DataGridView.CellStyle>
+                        <dxg:CellStyle HorizontalLineThickness="0.25" />
+                    </dxg:DataGridView.CellStyle>
+
+                    <dxg:DataGridView.ColumnHeaderStyle>
+                        <dxg:ColumnHeaderStyle HorizontalLineThickness="0.25"/>
+                    </dxg:DataGridView.ColumnHeaderStyle>
+
+                    <dxg:DataGridView.Columns>
+                        <dxg:TemplateColumn x:Name="ColumnId" Caption="Mã" FieldName="StockId" FixedStyle="Start" 
+                                                        HeaderBackgroundColor="#444444" 
+                                                        Width="80" 
+                                                        HeaderFontColor="White" 
+                                                        HeaderPadding="0"
+                                                        Padding="0"
+                                                        FontAttributes="Bold"
+                                                        FontSize="13" HeaderFontSize="13"
+                                                        HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="{Binding Item.UpDownColor}">
+                                        <Label Text="{Binding Item.StockId}"
+                                           VerticalOptions="Center" HorizontalOptions="Center"
+                                           FontSize="13"
+                                           TextColor="{Binding Item.TextColorInBoard}"/>
+
+
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ShowPopupDetail, Source={x:Reference dvShort}}" CommandParameter="{Binding Item.StockId}"/>
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="TC" FieldName="PriceMedium"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="#444444"
+                                  Padding="0,0,5,0">
+                                        <Label Text="{Binding Item.PriceMedium, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="Yellow" 
+                                                               HorizontalOptions="End"
+                                                               VerticalOptions="Center"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Trần
+                                    Sàn" FieldName="PriceCeiling"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="#444444" RowDefinitions="*,*"
+                                  RowSpacing="0"
+                                  Padding="0,0,5,0">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceCeiling, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="DeepPink" 
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceFloor, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="DeepSkyBlue" 
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 3" FieldName="PriceB3"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB3, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB3X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 2" FieldName="PriceB2"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB2, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB2X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 1" FieldName="PriceB1"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB1, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB1X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Khớp lệnh" FieldName="PriceGood"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#444444">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceGood, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceGoodColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceGoodX, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceGoodColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="+/-" FieldName="UpDown"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="60" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#444444">
+                                        <Label Grid.Row="0" Text="{Binding Item.UpDown, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.UpDownColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.Persent, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding Item.UpDownColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 1" FieldName="PriceS1"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS1, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS1X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 2" FieldName="PriceS2"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS2, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS2X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS2Color}" 
+                                                                   HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 3" FieldName="PriceS3"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS3, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS3X, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS3Color}" 
+                                                                   HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Tổng KL" FieldName="TotalMass"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                        <Label Text="{Binding Item.TotalMass, StringFormat='{0:###,###}'}" TextColor="White" 
+                                                               VerticalOptions="Center" HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mở cửa" FieldName="PriceOpen"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                    Padding="0,0,5,0"
+                                     BackgroundColor="#444444">
+                                        <Label Text="{Binding Item.PriceOpen, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceOpenColor}" 
+                                                               VerticalOptions="Center" HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Cao nhất
+                                        Thấp nhất" FieldName="PriceMax"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                            <Label Grid.Row="0" Text="{Binding Item.PriceMax, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceMaxColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            </Label>
+                                            <Label Grid.Row="1" Text="{Binding Item.PriceMin, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceMinColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            </Label>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="NN Mua
+                                        NN Bán" FieldName="ForeignS"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                            <Label Grid.Row="0" Text="{Binding Item.ForeignB, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="White" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                            <Label Grid.Row="1" Text="{Binding Item.ForeignS, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="White" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                    </dxg:DataGridView.Columns>
+
+
+                </dxg:DataGridView>
+                
+                
+                <dxg:DataGridView x:Name="dvFull"
+                              ItemsSource="{Binding StockItems}"
+                              BackgroundColor="Transparent"
+                              VerticalLineThickness="0.25"
+                              FixedColumnSeparatorWidth="0.25"
+                              IsVisible="{Binding FullOrShort}"
+                              AllowDragDropRows="True"
+                                  DragRow="DataGridView_DragRow"
+                                  DropRow="DataGridView_DropRow"
+                               CompleteRowDragDrop="DataGridView_CompleteRowDragDrop"   
+                              >
+                    <dxg:DataGridView.CellStyle>
+                        <dxg:CellStyle HorizontalLineThickness="0.25" />
+                    </dxg:DataGridView.CellStyle>
+
+                    <dxg:DataGridView.ColumnHeaderStyle>
+                        <dxg:ColumnHeaderStyle HorizontalLineThickness="0.25"/>
+                    </dxg:DataGridView.ColumnHeaderStyle>
+
+                    <dxg:DataGridView.Columns>
+                        <dxg:TemplateColumn Caption="Mã" FieldName="StockId" FixedStyle="Start" 
+                                                        HeaderBackgroundColor="#444444" 
+                                                        Width="80" 
+                                                        HeaderFontColor="White" 
+                                                        HeaderPadding="0"
+                                                        Padding="0"
+                                                        FontAttributes="Bold"
+                                                        FontSize="13" HeaderFontSize="13"
+                                                        HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="{Binding Item.UpDownColor}">
+                                        <Label Text="{Binding Item.StockId}"
+                                           VerticalOptions="Center" HorizontalOptions="Center"
+                                           FontSize="13"
+                                           TextColor="{Binding Item.TextColorInBoard}"/>
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ShowPopupDetail, Source={x:Reference dvFull}}" CommandParameter="{Binding Item.StockId}"/>
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="TC" FieldName="PriceMedium"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="#444444"
+                                  Padding="0,0,5,0">
+                                        <Label Text="{Binding Item.PriceMedium, StringFormat='{0:###,###}'}" TextColor="Yellow" 
+                                                               HorizontalOptions="End"
+                                                               VerticalOptions="Center"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Trần
+                                    Sàn" FieldName="PriceCeiling"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid BackgroundColor="#444444" RowDefinitions="*,*"
+                                  RowSpacing="0"
+                                  Padding="0,0,5,0">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceCeiling, StringFormat='{0:###,###}'}" TextColor="DeepPink" 
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceFloor, StringFormat='{0:###,###}'}" TextColor="DeepSkyBlue" 
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 3" FieldName="PriceB3"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB3, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB3X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 2" FieldName="PriceB2"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB2, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB2X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mua 1" FieldName="PriceB1"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceB1, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceB1X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Khớp lệnh" FieldName="PriceGood"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#444444">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceGood, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceGoodColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceGoodX, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceGoodColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="+/-" FieldName="UpDown"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="60" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                              BackgroundColor="#444444">
+                                        <Label Grid.Row="0" Text="{Binding Item.UpDown}" TextColor="{Binding Item.UpDownColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        <Label Grid.Row="1" Text="{Binding Item.Persent, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding Item.UpDownColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 1" FieldName="PriceS1"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS1, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS1X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS1Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 2" FieldName="PriceS2"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS2, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS2Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS2X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS2Color}" 
+                                                                   HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Bán 3" FieldName="PriceS3"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#222222">
+                                        <Label Grid.Row="0" Text="{Binding Item.PriceS3, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS3Color}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Row="1" Text="{Binding Item.PriceS3X, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS3Color}" 
+                                                                   HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0.00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                                <Trigger TargetType="Label" Property="Text" Value="0,00">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Tổng KL" FieldName="TotalMass"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                        <Label Text="{Binding Item.TotalMass, StringFormat='{0:###,###}'}" TextColor="White" 
+                                                               VerticalOptions="Center" HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Mở cửa" FieldName="PriceOpen"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                    Padding="0,0,5,0"
+                                     BackgroundColor="#444444">
+                                        <Label Text="{Binding Item.PriceOpen, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceOpenColor}" 
+                                                               VerticalOptions="Center" HorizontalTextAlignment="End"
+                                                               FontSize="13"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="Cao nhất
+                                        Thấp nhất" FieldName="PriceMax"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                            <Label Grid.Row="0" Text="{Binding Item.PriceMax, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceMaxColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            </Label>
+                                            <Label Grid.Row="1" Text="{Binding Item.PriceMin, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceMinColor}" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0">
+                                            </Label>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+                        <dxg:TemplateColumn Caption="NN Mua
+                                        NN Bán" FieldName="ForeignS"  
+                                                          HeaderBackgroundColor="#444444" 
+                                                          HeaderFontColor="White" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="13"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid RowDefinitions="*,*"
+                                              RowSpacing="0" 
+                                              Padding="0,0,5,0"
+                                      BackgroundColor="#444444">
+                                            <Label Grid.Row="0" Text="{Binding Item.ForeignB, StringFormat='{0:###,###}'}" TextColor="White" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                            <Label Grid.Row="1" Text="{Binding Item.ForeignS, StringFormat='{0:###,###}'}" TextColor="White" 
+                                                                    HorizontalTextAlignment="End"
+                                                                   FontSize="13"
+                                                   Padding="0"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                    </dxg:DataGridView.Columns>
+                </dxg:DataGridView>
+                <dve:DXPopup x:Name="popup"
+                         AllowScrim="True"
+                         ScrimColor="#33000000"
+                         >
+                    <Grid BackgroundColor="#EBEEF2"
+                          HeightRequest="300"
+                          WidthRequest="300"
+                          RowSpacing="0"
+                          RowDefinitions="50,*,50">
+                        <AbsoluteLayout Grid.Row="0"
+                                     BackgroundColor="#034E95"
+                                     WidthRequest="300"
+                                     Padding="10,0,15,0">
+                            <Label Text="Danh mục theo dõi" TextColor="White" FontSize="16" HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               AbsoluteLayout.LayoutBounds="0.5,0.5,1,1" AbsoluteLayout.LayoutFlags="All"/>
+                            <Image Source="ic_clear.png" 
+                               AbsoluteLayout.LayoutBounds="1,0.5,16,16" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding HidePopup}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </AbsoluteLayout>
+
+                        <CollectionView x:Name="StockFollowLists"
+                              ItemsSource="{Binding StockFollowListsk}"
+                              Grid.Row="1"
+                              WidthRequest="300"
+                              >
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <custom:CustomSwipeView  x:Name="StockFollowList" IsOpen="{Binding ShowHideSwipeView}" Command="{Binding BindingContext.SwipeListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}">
+                                        <SwipeView.RightItems>
+                                            <SwipeItem Text="Xóa" BackgroundColor="OrangeRed" Command="{Binding BindingContext.DeleteListItem, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}"/>
+                                        </SwipeView.RightItems>
+                                        <SwipeView.Content>
+                                            <StackLayout>
+                                                <StackLayout Orientation="Horizontal"
+                                                 Padding="10,10,15,5">
+                                                    <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand" TextColor="Black" FontSize="16"/>
+                                                    <Image Source="ic_ticked.png" HorizontalOptions="End" IsVisible="{Binding IsShowing}" WidthRequest="16" HeightRequest="16"/>
+                                                </StackLayout>
+                                                <BoxView BackgroundColor="DimGray" HeightRequest="0.25"/>
+
+                                            </StackLayout>
+                                        </SwipeView.Content>
+                                        <custom:CustomSwipeView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.SelectList, Source={x:Reference StockFollowLists}}" CommandParameter="{Binding Source={x:Reference StockFollowList}, Path=BindingContext}"/>
+                                        </custom:CustomSwipeView.GestureRecognizers>
+                                    </custom:CustomSwipeView>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Grid Grid.Row="2"
+                                 BackgroundColor="White">
+                            <Label Text="Tạo danh mục" 
+                               TextColor="#034E95" FontSize="16"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               WidthRequest="300"
+                               IsVisible="{Binding NewListLayoutVisible, Converter={xct:InvertedBoolConverter}}"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand">
+                            </Label>
+                            <Grid Grid.Row="0"
+                                 WidthRequest="300"
+                                 IsVisible="{Binding NewListLayoutVisible}"
+                                 Padding="10,0,15,0"
+                              ColumnDefinitions="*, 30">
+                                <custom:CustomEntry 
+                               x:Name="EntryName"
+                               Grid.Column ="0"
+                               Placeholder="Đặt tên danh mục..." PlaceholderColor="#034E95" TextColor="#034E95" FontSize="16" HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               AbsoluteLayout.LayoutBounds="0,0.5,1,1" AbsoluteLayout.LayoutFlags="All"/>
+                                <Image Source="ic_ticked.png"
+                                   Grid.Column="1" Margin="5">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddList}" CommandParameter="{Binding Source={x:Reference EntryName}}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowHideLayoutAddList}"/>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                    </Grid>
+                    <dve:DXPopup.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding ResetCollectionView}"/>  
+                    </dve:DXPopup.Behaviors>
+                </dve:DXPopup>
+                <dve:DXPopup x:Name="popup2"
+                         AllowScrim="True"
+                         ScrimColor="#33000000"
+                         >
+                    <Grid BackgroundColor="#EBEEF2"
+                      HeightRequest="300"
+                      WidthRequest="300"
+                      RowSpacing="0"
+                      RowDefinitions="125,125,50">
+                        <StackLayout Padding="10" Grid.Row="0" Spacing="20">
+                            <Label Text="Chọn kiểu hiển thị cột giá, khối lượng:" FontSize="15" TextColor="#034E95"/>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate}" IsChecked="{Binding IsDisplayChecked}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Hiển thị đầy đủ (Giá: 21,500 KL:1,230)"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnFull}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate}" IsChecked="{Binding IsDisplayChecked, Converter={xct:InvertedBoolConverter}}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Hiển thị rút gọn (Giá: 21,5 KL:1,23)"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnShort}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Padding="10" Grid.Row="1" Spacing="20">
+                            <Label Text="Chọn hiệu ứng bảng giá:" FontSize="15" TextColor="#034E95"/>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate}" IsChecked="{Binding IsScrollChecked}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Tắt hiệu ứng cuộn danh sách theo dõi"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OffScrollEffect}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate}" IsChecked="{Binding IsScrollChecked, Converter={xct:InvertedBoolConverter}}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Bật hiệu ứng cuộn danh sách theo dõi"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnScrollEffect}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </StackLayout>
+                        <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="0">
+                            <Button Text="Hủy" BackgroundColor="#999999" TextColor="White" Grid.Column="0" CornerRadius="0" Command="{Binding SaveOrExitSetting}" CommandParameter="{x:Reference popup2}"/>
+                            <Button Text="Lưu" BackgroundColor="#034E95" TextColor="White" Grid.Column="1" CornerRadius="0" Command="{Binding SaveOrExitSetting}" CommandParameter="{x:Reference popup2}"/>
+                        </Grid>
+                    </Grid>
+                    <dve:DXPopup.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding ResetCollectionView2}"/>
+                    </dve:DXPopup.Behaviors>
+                </dve:DXPopup>
+                <dve:DXPopup x:Name="popup3"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Bottom"
+                             Margin="80,20,0,31"
+                         
+                            
+                         >
+                    <Grid BackgroundColor="#EBEEF2"
+                      HeightRequest="200"
+                      WidthRequest="210"
+                      RowSpacing="0"
+
+                      RowDefinitions="*,*,*,*,*">
+                        <StackLayout Grid.Row="0" BackgroundColor="#034E95">
+                            <Label Text="{Binding SelectedStockId,StringFormat='Mã {0}'}" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1">
+                            <Label Text="Xem chi tiết" TextColor="Black"  FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                                   Padding="0,5,0,0"/>
+                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowItemDetailPage}"/>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <StackLayout Grid.Row="2">
+                            <Label Text="Xóa khỏi danh mục" TextColor="Black"  FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                                   Padding="0,5,0,0"/>
+                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DeleteStockItem}"/>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <StackLayout Grid.Row="3">
+                            <Label Text="MUA" TextColor="CornflowerBlue"  FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                                   Padding="0,5,0,0"/>
+                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="4">
+                            <Label Text="BÁN" TextColor="IndianRed"  FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                                   Padding="0,5,0,0"/>
+                            
+                        </StackLayout>
+                    </Grid>
+                    <dve:DXPopup.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding ResetCollectionView}"/>
+                    </dve:DXPopup.Behaviors>
+                </dve:DXPopup>
+            </StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="#034E95"
+                               
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/> 
+        </Grid>     
+    </ContentPage.Content>
+</ContentPage>

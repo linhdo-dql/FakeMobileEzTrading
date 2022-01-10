@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeEzMobileTrading.Android
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeEzMobileTrading.iOS", "FakeEzMobileTrading\FakeEzMobileTrading.iOS\FakeEzMobileTrading.iOS.csproj", "{0F8E1ADE-69AB-4A11-9C00-FBB4658A8C71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeEzMobileTrading", "FakeEzMobileTrading\FakeEzMobileTrading\FakeEzMobileTrading.csproj", "{DED7A401-873B-4DCD-966D-249D429DCC76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeEzMobileTrading", "FakeEzMobileTrading\FakeEzMobileTrading\FakeEzMobileTrading.csproj", "{DED7A401-873B-4DCD-966D-249D429DCC76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

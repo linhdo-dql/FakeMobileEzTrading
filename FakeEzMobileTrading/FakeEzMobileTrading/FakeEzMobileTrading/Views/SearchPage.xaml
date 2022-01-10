@@ -1,12 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FakeEzMobileTrading.Views.SearchPage">
+             x:Class="FakeEzMobileTrading.Views.SearchPage"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             NavigationPage.HasNavigationBar="False"
+             >
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Spacing="0">
+            <AbsoluteLayout
+                HeightRequest="80"
+                BackgroundColor="#034E95">
+                <Label Text="Tìm kiếm mã chứng khoán" 
+                   TextColor="White" FontSize="18"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   WidthRequest="300"
+                   FontAttributes="Bold"
+                   AbsoluteLayout.LayoutBounds="0,0.5,1,1"
+                   AbsoluteLayout.LayoutFlags="All"/>
+                <Image Source="ic_clear.png" 
+                               AbsoluteLayout.LayoutBounds="0.95,0.5,16,16" AbsoluteLayout.LayoutFlags="PositionProportional">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding HidePopup}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </AbsoluteLayout>
+            <StackLayout
+                HeightRequest="60"
+                BackgroundColor="#EBEEF2">
+                <custom:CustomEntryWithBorder 
+                    HeightRequest="40"
+                    WidthRequest="250"
+                    Placeholder="Nhập mã chứng khoán..."
+                    TextColor="#034E95"
+                    VerticalOptions="Center"
+                    FontSize="14"
+                    Text="{Binding SearchContent}"
+                    Margin="30,10,30,10">
+                    <custom:CustomEntry.Keyboard>
+                        <Keyboard x:FactoryMethod="Create">
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeCharacter</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </custom:CustomEntry.Keyboard>
+                </custom:CustomEntryWithBorder>   
+            </StackLayout>
+            <CollectionView x:Name="AllStockItems"
+                ItemsSource="{Binding AllStockItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid RowDefinitions="Auto,0.25"
+                              RowSpacing="0"
+                              x:Name="StockItem">
+                            <Grid ColumnDefinitions="Auto,Auto,Auto"
+                                  Grid.Row="0"
+                              Padding="10">
+                                <Label Text="{Binding StockId}" HorizontalOptions="Start" MaxLines="1" FontAttributes ="Bold" FontSize="15" Grid.Column="0" TextColor="#000000"/>
+                                <Label Text="{Binding FloorId, StringFormat='({0}):'}" MaxLines="1" HorizontalOptions="Start" FontSize="15"  Grid.Column="1"/>
+                                <Label Text="{Binding StockName}" HorizontalOptions="StartAndExpand" MaxLines="1" LineBreakMode="TailTruncation" Grid.Column="2"/>
+                            </Grid>
+                            <BoxView Grid.Row="1" BackgroundColor="Gray"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.AddToList, Source={x:Reference AllStockItems}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}"/>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

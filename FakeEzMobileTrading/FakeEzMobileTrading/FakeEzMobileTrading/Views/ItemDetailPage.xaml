@@ -1,0 +1,821 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FakeEzMobileTrading.Views.ItemDetailPage"
+             xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             NavigationPage.HasBackButton="True"
+             xmlns:dxn="http://schemas.devexpress.com/xamarin/2014/forms/navigation"
+             xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
+             xmlns:dxc="http://schemas.devexpress.com/xamarin/2014/forms/collectionview"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews">
+    <NavigationPage.TitleView>
+        <StackLayout Padding="0">
+            <Label Text="{Binding StockItem.StockId}" FontSize="16" TextColor="White"/>
+            <Label Text="{Binding StockItem.StockName}" FontSize="12" TextColor="White"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+       
+         <Grid>
+            <dxn:TabView SelectedItemIndicatorColor="#034e95"
+                                 ItemHeaderHeight="20"
+                                 ItemHeaderPlacementOnSelection="Center"
+                                 
+                                 HeaderPanelItemSpacing="10"
+                         HeaderPanelIndent="10"
+                                 HeaderPanelContentAlignment="Start"
+                                 ItemHeaderFontAttributes="Bold"
+                                 ItemHeaderFontSize="15"
+                         HorizontalOptions="Start"
+                         SwipeEnabled="False"
+                         HeaderPanelShadowColor="Gray"
+                         HeaderPanelShadowHeight="1"
+                          >
+
+                <dxn:TabViewItem HeaderText="Giao dịch"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="Auto">
+                    <dxn:TabViewItem.Content>
+                        <ScrollView>
+                            <Grid RowDefinitions="200,160,200,Auto">
+                                <Frame Grid.Row="0" Padding="0">
+                                    <Grid RowDefinitions="0.25*,0.2*,*"
+                          Padding="10,10,10,10">
+                                        <StackLayout Orientation="Horizontal" Grid.Row="0" Spacing="10">
+                                            <Image WidthRequest="20" HeightRequest="20" Source="{Binding StockItem.UpDownSource}" Margin="0,3,0,0" VerticalOptions="CenterAndExpand"/>
+                                            <Label Text="{Binding StockItem.PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" VerticalOptions="CenterAndExpand" 
+                                   FontSize="25" FontAttributes="Bold" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000*(-1)'}" TextColor="{Binding StockItem.UpDownColor}"
+                                   VerticalOptions="Center"
+                                   Margin="0,5,0,0"
+                                   FontSize="16"
+                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding StockItem.Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000*(-1)', StringFormat='({0:F2}%)'}" TextColor="{Binding StockItem.UpDownColor}"
+                                   VerticalOptions="Center"
+                                   Margin="0,5,0,0"
+                                   FontSize="16"
+                                   FontAttributes="Bold"/>
+                                        </StackLayout>
+                                        <Grid ColumnDefinitions="*,*" Grid.Row="1"
+                              ColumnSpacing="10">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                                <Label Text="K.Lượng:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceGoodX, StringFormat='{0:###,###}'}" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1">
+                                                <Label Text="T.Thuận" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceGoodX, StringFormat='{0:###,###}'}" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="16"/>
+                                            </StackLayout>
+                                        </Grid>
+                                        <Grid RowDefinitions="*,*,*,*"
+                              ColumnDefinitions="*,*"
+                              ColumnSpacing="15"
+                              Grid.Row="2">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
+                                                <Label Text="Trần:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceCeiling, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="DeepPink" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
+                                                <Label Text="T.Chiếu:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceMedium, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="Orange" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
+                                                <Label Text="Sàn:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceCeiling, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="DeepSkyBlue" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+                                                <Label Text="NN Mua:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.ForeignB, StringFormat='{0:###,###}'}" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                                                <Label Text="Mở cửa:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceOpen, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="{Binding StockItem.PriceOpenColor}" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                                                <Label Text="Cao nhất:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceMax, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="{Binding StockItem.PriceMaxColor}" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+                                                <Label Text="Thấp nhất:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.PriceMin, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="{Binding StockItem.PriceMinColor}" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="NN Mua:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
+                                                <Label Text="{Binding StockItem.ForeignS, StringFormat='{0:###,###}'}" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="16"/>
+                                            </StackLayout>
+
+                                        </Grid>
+
+                                    </Grid>
+
+                                </Frame>
+                                <Frame Grid.Row="1"
+                       Padding="5,0,5,0">
+                                    <Grid RowDefinitions="*,*,*,*,*"
+                          ColumnDefinitions="*,*"
+                                         
+                          ColumnSpacing="15">
+
+                                        <Label HorizontalTextAlignment="End"
+                               Grid.Column="0">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Giá " TextColor="Black" FontSize="16"/>
+                                                    <Span Text="MUA " TextColor="Green" FontAttributes="Bold"/>
+                                                    <Span Text="tốt nhất" TextColor="Black" FontSize="16"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label HorizontalTextAlignment="Start"
+                               Grid.Column="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Giá " TextColor="Black" FontSize="16"/>
+                                                    <Span Text="BÁN " TextColor="OrangeRed" FontAttributes="Bold"/>
+                                                    <Span Text="tốt nhất" TextColor="Black" FontSize="16"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="1" Grid.Column="0">
+                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
+                                   Grid.Column="0">
+                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            </Frame>
+                                            <Label Text="100" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+
+                                        </Grid>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="2" Grid.Column="0">
+                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
+                                   Grid.Column="0">
+                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            </Frame>
+                                            <Label Text="600" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+
+                                        </Grid>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="3" Grid.Column="0">
+                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
+                                   Grid.Column="0">
+                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            </Frame>
+                                            <Label Text="1000" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+
+                                        </Grid>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="1" Grid.Column="1">
+                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
+                                   Grid.Column="2">
+                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                                            </Frame>
+                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+
+                                        </Grid>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="2" Grid.Column="1">
+                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
+                                   Grid.Column="2">
+                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                                            </Frame>
+                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+
+                                        </Grid>
+                                        <Grid ColumnDefinitions="*,*,*"
+                              Grid.Row="3" Grid.Column="1">
+                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
+                                   Grid.Column="2">
+                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                                            </Frame>
+                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                        </Grid>
+                                        <Grid ColumnDefinitions="50,*,50"
+                              ColumnSpacing="15"
+                              Grid.ColumnSpan="2"
+                              Grid.Row="4">
+                                            <Label Text="11.56%" TextColor="Black" Grid.Column="0" VerticalOptions="Center"/>
+                                            <Label Text="88.44%" TextColor="Black" Grid.Column="2" HorizontalTextAlignment="End" VerticalOptions="Center"/>
+                                            <Grid Grid.Column="1"
+                                  ColumnSpacing="0"
+                                  RowDefinitions="6"
+                                  VerticalOptions="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="11.56*"/>
+                                                    <ColumnDefinition Width="88.44*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <BoxView HeightRequest="3" BackgroundColor="Green" Grid.Column="0" Margin="0,2,0,0"/>
+                                                <BoxView HeightRequest="3" BackgroundColor="Red" Grid.Column="1" Margin="0,2,0,0"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                </Frame>
+                                <Frame Grid.Row="2"
+                       Padding="5,5,5,0">
+                                    <Grid ColumnDefinitions="*,*"
+                          RowDefinitions="*,*,*,*,*,*"
+                          ColumnSpacing="10">
+                                        <StackLayout Grid.Column="0" Grid.Row="0">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="Thấp nhất 52T:" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.Row="1">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="Cao nhất 52T:" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.Row="2">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="KLbq 30 ngày:" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.Row="3">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="Tỷ lện sở hữu NN (%):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.Row="4">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="KLDNY:" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.Row="5">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="KNDLH:" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Column="1" Grid.Row="0">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="EPS (4 quý):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Grid.Row="1">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="P/E (4 quý):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Grid.Row="2">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="P/B (4 quý):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Grid.Row="3">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="Vốn hóa (tỷ VNĐ):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Grid.Row="4">
+                                            <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                                                <Label Text="GT sổ sách (tỷ VNĐ):" HorizontalOptions="Start" TextColor="Black" FontSize="15"/>
+                                                <Label Text="9,700" TextColor="Black" HorizontalOptions="EndAndExpand"
+                                       FontSize="15"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+
+
+                                    </Grid>
+                                </Frame>
+                                <Frame Grid.Row="3" Padding="0">
+                                    <StackLayout Spacing="0">
+                                        <StackLayout Orientation="Horizontal" Padding="10,5,10,8" Spacing="20">
+                                            <Label Text="Biểu đồ" FontSize="16" TextColor="Black" 
+                                   HorizontalOptions="StartAndExpand"/>
+                                            <Image Source="ic_warning.png" WidthRequest="20" HeightRequest="20"/>
+                                            <Image Source="ic_full_size.png" WidthRequest="15" HeightRequest="15"/>
+                                        </StackLayout>
+                                        <custom:CustomWebView VerticalOptions="FillAndExpand"
+                                              HorizontalOptions="FillAndExpand"
+                                              IsVisible="True"
+                                              WidthRequest="300"
+                                              HeightRequest="350">
+                                            <WebView.Source>
+                                                <HtmlWebViewSource Html="{Binding StockItem.StockItemChart}"/>
+                                            </WebView.Source>
+                                        </custom:CustomWebView>
+                                    </StackLayout>
+
+                                </Frame>
+                            </Grid>
+                        </ScrollView>
+                    </dxn:TabViewItem.Content>
+                </dxn:TabViewItem>
+
+                <dxn:TabViewItem HeaderText="Thống kê"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderFontAttributes="Bold"
+                                         HeaderFontSize="16"
+                                         HeaderPadding="0"
+                                         HeaderWidth="Auto"
+                                         >
+                    <dxn:TabViewItem.Content>
+                        <Grid RowDefinitions="320,320,320">
+                            <Frame Padding="0" Grid.Row="0">
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal" Spacing="20"
+                                                 Padding="5">
+                                        <Label Text="THỐNG KÊ GIÁ" HorizontalOptions="StartAndExpand" FontSize="18"
+                                               TextColor="Black"
+                                               VerticalOptions="CenterAndExpand"/>
+                                        <Grid VerticalOptions="Center"
+                                              HorizontalOptions="End"
+                                              ColumnDefinitions="40,40">
+                                            <Frame Grid.Column="0"
+                                                   Padding="0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                                <Image Grid.Column="0" Source="ic_prev.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Prev}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                            <Frame Grid.Column="1"
+                                                   Padding="0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                                <Image Grid.Column="0" Source="ic_next.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Next}"/>
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </Grid>
+                                        
+                                    </StackLayout>
+                                    <dxg:DataGridView 
+                                                  x:Name="grid2" ItemsSource="{Binding PriceStatistics}" 
+                                                ColumnHeaderHeight="40" RowHeight="40" 
+                                                FixedColumnSeparatorWidth="0"
+                                                  VerticalLineThickness="0"
+                                                 IsHorizontalScrollBarVisible="False"
+                                                  SelectionMode="None"
+                                         IsVerticalScrollBarVisible="False"
+                                        
+                                        
+                                        BackgroundColor="Yellow"
+                                                  >
+                                        <dxg:DataGridView.CellStyle>
+                                            <dxg:CellStyle HorizontalLineThickness="1" />
+                                        </dxg:DataGridView.CellStyle>
+
+                                        <dxg:DataGridView.ColumnHeaderStyle>
+                                            <dxg:ColumnHeaderStyle HorizontalLineThickness="1"/>
+                                        </dxg:DataGridView.ColumnHeaderStyle>
+
+                                        <dxg:DataGridView.Columns>
+                                            <dxg:TextColumn Caption="Ngày" FieldName="Date" FixedStyle="Start" 
+                                                        HeaderBackgroundColor="#EBEEF2" 
+                                                        Width="90" 
+                                                        HeaderFontColor="Black" 
+                                                        HeaderPadding="0"
+                                                        Padding="0"
+                                                        FontSize="15" HeaderFontSize="15"
+                                                        FontColor="Black"
+                                                        HorizontalContentAlignment="Center"/>
+                                            <dxg:TemplateColumn Caption="Trần" FieldName="PriceCeiling"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="60" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceCeiling, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="DeepPink" 
+                                                               VerticalOptions="Center" HorizontalOptions="Center"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Sàn" FieldName="PriceFloor"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="60" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceFloor, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="DeepSkyBlue" 
+                                                               VerticalOptions="Center" HorizontalOptions="Center"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="TC" FieldName="PriceMedium"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="60" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceMedium, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="Orange" 
+                                                               VerticalOptions="Center" HorizontalOptions="Center"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Mở cửa" FieldName="PriceOpen"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="70" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceOpen, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding Item.PriceOpenColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Đóng cửa" FieldName="PriceClose"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceClose, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding Item.PriceCloseColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Cao nhất" FieldName="PriceHigh"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceHigh, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding Item.PriceHighColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Thấp nhất" FieldName="PriceLow"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceLow, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding Item.PriceLowColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Thay đổi" FieldName="UpDownPrice"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.UpDownPrice, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.UpDownColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Thay đổi(%)" FieldName="Persent"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="90" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.Persent, Converter={xct:MathExpressionConverter},ConverterParameter='x/100', StringFormat='{0:F2}'}" TextColor="{Binding Item.UpDownColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Trung bình" FieldName="PriceAvg"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.PriceAvg, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding Item.PriceAvgColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="KL khớp lệnh" FieldName="GoodMass"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="110" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.GoodMass, StringFormat='{0:###,###}'}" TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="GT khớp lệnh" FieldName="GoodValue"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="110" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.GoodValue, Converter={xct:MathExpressionConverter},ConverterParameter='abs(x/1000)', StringFormat='{0:###,###}'}" TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="KL thỏa thuận" FieldName="AgreeMass"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="110" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.AgreeMass, Converter={xct:MathExpressionConverter},ConverterParameter='abs(x/1000)', StringFormat='{0:###,###}'}"
+                                                               TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="GT thỏa thuận" FieldName="AgreeValue"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="110" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.AgreeMass, StringFormat='{0:###,###}'}" TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Tổng khối lượng" FieldName="TotalMass"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="110" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.TotalMass, StringFormat='{0:###,###}'}" TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                            <dxg:TemplateColumn Caption="Tổng giá trị" FieldName="TotalValue"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="100" 
+                                                          HeaderPadding="0"
+                                                          Padding="0,0,5,0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="End">
+                                                <dxg:TemplateColumn.DisplayTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Label Text="{Binding Item.TotalValue, Converter={xct:MathExpressionConverter},ConverterParameter='abs(x/1000)', StringFormat='{0:###,###}'}" TextColor="Black" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TemplateColumn.DisplayTemplate>
+                                            </dxg:TemplateColumn>
+                                        </dxg:DataGridView.Columns>
+                                    </dxg:DataGridView>
+                                </StackLayout>
+                            </Frame>
+                        </Grid>
+                    </dxn:TabViewItem.Content>
+                </dxn:TabViewItem>
+
+
+                <dxn:TabViewItem HeaderText="Sở hữu nước ngoài"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="Auto">
+                    <dxn:TabViewItem.Content>
+                        <StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5,10,5,5">
+                                    <Label Text="KL được phép sở hữu" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.MassAllowOwn, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="KL đang sở hữu" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.MassOwning, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="KL còn được phép mua đầu ngày" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.MassStillAllowB, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="Tỷ lệ sở hữu nước ngoài" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.PersentForeignOwn, StringFormat='{0}%'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="NN mua ròng (YTD)" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.ForeignBYTD, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="NN mua ròng (MTD)" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.ForeignBMTD, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="Cập nhật đến ngày" TextColor="Black" FontSize="15"/>
+                                    <Label Text="{Binding StockItem.DateUpdate, StringFormat='{0:###,###}'}" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                            </StackLayout>
+                        </StackLayout>
+                        
+                    </dxn:TabViewItem.Content>
+                </dxn:TabViewItem>
+
+
+                <dxn:TabViewItem HeaderText="Tin doanh nghiệp"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="Auto">
+                    <dxn:TabViewItem.Content>
+                        <dxc:DXCollectionView ItemsSource="{Binding CompanyNews}">
+                            <dxc:DXCollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="0,5,0,5">
+                                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="5,0,5,0">
+                                            <StackLayout HorizontalOptions="StartAndExpand" Spacing="5">
+                                                <Label Text="{Binding Title}" FontSize="15" LineBreakMode="WordWrap" TextColor="Black" VerticalOptions="StartAndExpand"/>
+                                                <Label Text="{Binding Created, StringFormat='{0:dd/MM/yyyy hh:mm}'}" TextColor="#034E95" FontSize="13"/>
+                                            </StackLayout>
+                                            <Image Source="ic_next.png" HorizontalOptions="End" HeightRequest="15" WidthRequest="15" VerticalOptions="Center"/>
+                                        </StackLayout>
+                                        <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                    </StackLayout>
+                                    
+                                </DataTemplate> 
+                            </dxc:DXCollectionView.ItemTemplate>
+                        </dxc:DXCollectionView>
+                    </dxn:TabViewItem.Content>
+                </dxn:TabViewItem>
+                <dxn:TabViewItem HeaderText="FPTS nhận định"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="Auto">
+
+                </dxn:TabViewItem>
+
+            </dxn:TabView>
+        </Grid>  
+    </ContentPage.Content>
+</ContentPage>

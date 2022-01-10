@@ -6,6 +6,7 @@ using MUAHO.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Xamarin.Essentials;
@@ -13,40 +14,57 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 {
-    public class OverViewPageViewModel : BaseViewModel
+    public class OverViewPageViewModel : BaseViewModel 
     {   
-        private ObservableCollection<StockItem> _stockItems = new ObservableCollection<StockItem>()
-            {
-                /*new StockItem(){ StockId="VCB",PriceMedium=76900, PriceCeiling=82200, PriceFloor=71600, PriceB3=76300, PriceB3X=1800, PriceB2=76400,PriceB2X=1300,PriceB1=76500,PriceB1X=80700,PriceS1=76900,PriceS1X=18900,PriceS2=77000,PriceS2X=100,PriceS3=77300,PriceS3X=1300,TotalMass=1489000,PriceOpen=77500,PriceMax=78900,PriceMin=76500,ForeignB=285700,ForeignS=643900,PriceGood=76500, PriceGoodX = 80700 } ,
-                new StockItem(){ StockId="PVC",PriceMedium=14700, PriceCeiling=16100, PriceFloor=13300, PriceB3=15700, PriceB3X=12200, PriceB2=15800,PriceB2X=10200,PriceB1=15900,PriceB1X=30900,PriceS1=16000,PriceS1X=18500,PriceS2=16100,PriceS2X=163900,PriceS3=0,PriceS3X=0,TotalMass=2961800,PriceOpen=14800,PriceMax=16100,PriceMin=14200,ForeignB=800,ForeignS=3000,PriceGood=16000, PriceGoodX = 100 },
-                new StockItem(){ StockId="VCB",PriceMedium=76900, PriceCeiling=82200, PriceFloor=71600, PriceB3=76300, PriceB3X=1800, PriceB2=76400,PriceB2X=1300,PriceB1=76500,PriceB1X=80700,PriceS1=76900,PriceS1X=18900,PriceS2=77000,PriceS2X=100,PriceS3=77300,PriceS3X=1300,TotalMass=1489000,PriceOpen=77500,PriceMax=78900,PriceMin=76500,ForeignB=264900,ForeignS=320100,PriceGood=76500, PriceGoodX = 80700 },
-                new StockItem(){ StockId="AAA",PriceMedium=20000, PriceCeiling=21400, PriceFloor=18600, PriceB3=21300, PriceB3X=88100, PriceB2=21350,PriceB2X=34900,PriceB1=21400,PriceB1X=106900,PriceS1=0,PriceS1X=0,PriceS2=0,PriceS2X=0,PriceS3=0,PriceS3X=0,TotalMass=18312800,PriceOpen=18700,PriceMax=18700,PriceMin=17300,ForeignB=59300,ForeignS=487300,PriceGood=21400, PriceGoodX = 328200 }
-                */
-            };
+        private ObservableCollection<StockItem> _stockItems = new ObservableCollection<StockItem>();
         private ObservableCollection<StockItem> NewStockItems { get; set; }
-        public ObservableCollection<StockExchange> StockExchanges { get; set; }
-        public ObservableCollection<StockFollowList> StockFollowLists { get; set; }
-        public ObservableCollection<StockItem> StockItems { get { return _stockItems; } set { SetProperty(ref _stockItems, value); } }
-        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0;
-        private bool _showHidePersent = false;
-        private bool _newListLayoutVisible = false;
+        private ObservableCollection<StockExchange> _stockExchanges;
+        private int tap = App.Tap;
+        public ObservableCollection<StockExchange> StockExchanges {
+            get { return _stockExchanges; } 
+            set 
+            { 
+                SetProperty(ref _stockExchanges, value);
+            } 
+        }
+        private ObservableCollection<StockFollowList> _stockFollowLists;
+        public ObservableCollection<StockFollowList> StockFollowLists { get { return _stockFollowLists; } set { SetProperty(ref _stockFollowLists, value); } }
+        public ObservableCollection<StockItem> StockItems
+        {
+            get
+            {
+                return _stockItems;
+            }
+            set 
+            {
+                SetProperty(ref _stockItems, value);
+            }
+        }
+        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;
+        private bool _showHidePersent = false, _isSortEnable;
+        private bool _newListLayoutVisible = false, _isVisible = false, _labelVisible=false;
         private string _sortPriceSource = "ic_updown.png", _sortMassSource= "ic_updown.png", _sortIdSource= "ic_updown.png", _sortPersentSource = "ic_updown.png";
-        private string _nameList = "Đặt tên danh mục...";
         INavigation Navigation { get; set; }
         
         public OverViewPageViewModel(Page page, INavigation navigation)
         {
-            StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex=>ex.IsFavourite== true));
-            NewStockItems = new ObservableCollection<StockItem>(StockItems);
-            StockFollowLists = new ObservableCollection<StockFollowList>(App.CollectionsList);
-            if(Preferences.Get("CurrentFollowPage", "").ToString()!="")
+            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
             {
-                StockItems = StockFollowLists.Where(o => o.Name == Preferences.Get("CurrentFollowPage", "").ToString()).FirstOrDefault().StockItemList;
-                NewStockItems = new ObservableCollection<StockItem>(StockItems);
+                IsVisible = true;
+                return false;
+            });
+            StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex=>ex.IsFavourite== true));
+            StockFollowLists = new ObservableCollection<StockFollowList> (App.CollectionsList);
+            
+            if(Preferences.Get("CurrentFollowList", String.Empty)!="")
+            {
+                StockItems = new ObservableCollection<StockItem>(App.CollectionsList.Where(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).FirstOrDefault().StockItemList);
+                NewStockItems = StockItems;
+                TmpCount = StockItems.Count;
             }
-
-
+            
             Navigation = navigation;
+            
             ChangeFilter = new Command((x) =>
             {
                 var z = x as AbsoluteLayout;
@@ -194,6 +212,9 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 if(b)
                 {
                     StockItems.Remove(item);
+                    App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList.Remove(item);
+                    NewStockItems = StockItems;
+                    TmpCount = StockItems.Count;
                 }    
             });
             SwipeListItem = new Command((x) =>
@@ -216,7 +237,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                     bool b = await page.DisplayAlert("Xác nhận", "Xóa danh sách theo dõi " + item.Name + "?", "Đồng ý", "Hủy");
                     if (b)
                     {
-                        StockFollowLists.Remove(item);
+                        App.CollectionsList.Remove(item);
                     }
                 }
                 else
@@ -228,7 +249,16 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             ExchangeDetail = new Command(async (x) =>
             {
                 var exchange = x as StockExchange;
-                await navigation.PushAsync(new ExchangeDetailPage(exchange.ExchangeId));
+                tap++;
+                if(tap==1)
+                {
+                    await navigation.PushAsync(new ExchangeDetailPage(exchange.ExchangeId));
+                }
+                else
+                {
+                    tap = 2;
+                }
+               
             });
             SwictchOverViewMarket = new Command(() =>
             {
@@ -246,63 +276,50 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             });
             ShowHideLayoutAddList = new Command(() =>
             {
-                if(NewListLayoutVisible==true)
-                {
-                    NewListLayoutVisible = false;
-                }
-                else
-                {
+              
                     NewListLayoutVisible = true;
-                }
+               
             });
             AddList = new Command((x) =>
             {
                 var entry = x as Entry;
-                
-                if (StockFollowLists.Where(item => item.Name == entry.Text).FirstOrDefault()==null)
-                {
-                    StockFollowList z;
-                    if (StockFollowLists.Count == 0)
+                if(!String.IsNullOrEmpty(entry.Text))
+                {   if (App.CollectionsList.Where(item => item.Name == entry.Text).FirstOrDefault() == null)
                     {
-                        z = new StockFollowList() { Name = entry.Text, IsShowing = true, StockItemList = new ObservableCollection<StockItem>() };
-                        Preferences.Set("CurrentFollowList", entry.Text);
-                        StockFollowLists.Add(z);
-                        App.CollectionsList.Add(z);
-                        entry.Text = "";
-                        page.FindByName<DXPopup>("popup").IsOpen = false;
+                        StockFollowList z;
+                        if (StockFollowLists.Count == 0)
+                        {
+                            z = new StockFollowList() { Name = entry.Text, IsShowing = true, StockItemList = new ObservableCollection<StockItem>() };
+                            Preferences.Set("CurrentFollowList", entry.Text);
+                            App.CollectionsList.Add(z);
+                            entry.Text = "";
+                            NewListLayoutVisible = false;
+                            page.FindByName<DXPopup>("popup").IsOpen = false;
+                        }
+                        else
+                        {
+                            z = new StockFollowList() { Name = entry.Text, IsShowing = false, StockItemList = new ObservableCollection<StockItem>() };
+                            App.CollectionsList.Add(z);
+                            entry.Text = "";
+                            NewListLayoutVisible = false;
+                        }
                     }
                     else
                     {
-                        z = new StockFollowList() { Name = entry.Text, IsShowing = false, StockItemList = new ObservableCollection<StockItem>() };
-                        StockFollowLists.Add(z);
-                        App.CollectionsList.Add(z);
-                        entry.Text = "";
-                        NewListLayoutVisible = false;
+                        page.DisplayAlert("Lỗi", "Tên này đã tồn tại. Vui lòng nhập tên khác!", "Đồng ý");
                     }
                 }
                 else
                 {
-                    page.DisplayAlert("Lỗi", "Tên này đã tồn tại. Vui lòng nhập tên khác!", "Đồng ý");
+                    page.DisplayAlert("Lỗi", "Tên danh mục không được bỏ trống!", "Đồng ý");
+                    entry.Text = "";
+                    NewListLayoutVisible = false;
                 }
                 
                 
             });
-            SelectedCollectionList = new Command((x) =>
-            {
-                var z = x as StockFollowList;
-                StockFollowList tmp = StockFollowLists.Where(list => list.Name == z.Name).FirstOrDefault();
-                foreach(StockFollowList xz in StockFollowLists)
-                {
-                    if(xz.Name!=z.Name)
-                    {
-                        xz.IsShowing = false;
-                    }
-                }
-                tmp.IsShowing = true;
-                StockItems = tmp.StockItemList;
-                Preferences.Set("CurrentFollowList", tmp.Name);
-                page.FindByName<DXPopup>("popup").IsOpen = false;
-            });
+          
+
             InitListItem = new Command(async (x) =>
             {
                 if (StockFollowLists.Count == 0)
@@ -316,9 +333,56 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 }
                 else
                 {
-                    await navigation.PushModalAsync(new SearchPage());
+                    await navigation.PushAsync(new SearchPage(0));
                 }
             });
+            SwitchPriceBoard = new Command(async () =>
+            {
+                if(App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty))!=null)
+                {
+                    await (page.Parent.Parent as Page).Navigation.PushAsync(new PriceBoard(0));
+                }  
+                else
+                {
+                   await page.DisplayAlert("Lỗi", "Chưa có danh mục nào được tạo. Vui lòng tạo mới một danh sách!", "Đồng ý");
+                    
+                }
+                
+            });
+            SelectList = new Command((x) =>
+            {
+                var item = x as StockFollowList;
+                Preferences.Set("CurrentFollowList",item.Name);
+                foreach (StockFollowList s in App.CollectionsList)
+                {
+                    if (s.IsShowing == true)
+                    {
+                        s.IsShowing = false;
+                    }
+                }
+                
+                item.IsShowing = true;
+                page.FindByName<DXPopup>("popup").IsOpen = false;
+                
+            });
+            ResetCollectionView = new Command(() =>
+            {
+                if (App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)) != null)
+                {
+                    StockItems = App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList;
+                    NewStockItems = StockItems;
+                    TmpCount = StockItems.Count;
+                }
+               
+
+
+            });
+            ResetStockFollowList = new Command(() =>
+            {
+                StockFollowLists = new ObservableCollection<StockFollowList>(App.CollectionsList);
+            });
+
+
 
         }
         private string _typeFilter = "+/-";
@@ -341,7 +405,16 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             get { return _newListLayoutVisible; }
             set { SetProperty(ref _newListLayoutVisible, value); }
         }
-        
+        public bool IsEnableSort
+        {
+            get { return _isSortEnable; }
+            set 
+            { 
+                
+                SetProperty(ref _isSortEnable, value); 
+            }
+        }
+
 
         public void ResetSort(ref int tap0, ref int tap1, ref int tap2, ref int tap3)
         {
@@ -351,6 +424,20 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             }
         }
         
+        public int TmpCount
+        {
+            get
+            {
+                return _tmpCount;
+            }
+            set
+            {
+                IsEnableSort = value > 1 ? true : false;
+                LabelVisible = value == 0 ? true : false;
+                if (value <= 1) { SortMassSource = SortPersentSource = SortPriceSource = SortIdSource = "ic_updown.png"; }
+                SetProperty(ref _tmpCount, value);
+            }
+        }
         public string SortPriceSource
         {
             get { return _sortPriceSource; }
@@ -371,6 +458,18 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             get { return _sortPersentSource; }
             set { SetProperty(ref _sortPersentSource, value); }
         }
+        
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set { SetProperty(ref _isVisible, value); }
+        }
+
+        public bool LabelVisible
+        {
+            get { return _labelVisible; }
+            set { SetProperty(ref _labelVisible, value); }
+        }
         public Command ChangeFilter { get; }
         public Command SortMass { get; }
         public Command SortId { get; }
@@ -385,9 +484,12 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         public Command ShowPopup { get; }
         public Command HidePopup { get; }
         public Command AddList { get; }
-        public Command ShowHideLayoutAddList { get; }
-        public Command SelectedCollectionList { get; }
+        public Command ShowHideLayoutAddList { get; }     
         public Command InitListItem { get; }
+        public Command SwitchPriceBoard { get; }
+        public Command SelectList { get; }
+        public Command ResetCollectionView { get; }
+        public Command ResetStockFollowList { get; }
 
     }
 }

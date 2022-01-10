@@ -44,14 +44,13 @@ namespace FakeEzMobileTrading.Models
 
         private bool _isFavourite;
 
-        public ObservableCollection<StockItem> StockInExchanges
+        private ObservableCollection<StockItem> _stockItemsInExchange()
         {
-            get { return new ObservableCollection<StockItem>(App.Items.Where(i=> i.ExchangeId == ExchangeId)); }
-            
+            return new ObservableCollection<StockItem>(App.Items.Where(x => x.ExchangeId == this.ExchangeId));
         }
         public ObservableCollection<StockItem> StockItemUps
         {
-            get { return new ObservableCollection<StockItem>(StockInExchanges.Where(item => item.UpDown > 0)); }
+            get { return new ObservableCollection<StockItem>(_stockItemsInExchange().Where(item => item.UpDown > 0)); }
         }
         public int AmountStockItemUp
         {
@@ -59,7 +58,7 @@ namespace FakeEzMobileTrading.Models
         }
         public ObservableCollection<StockItem> StockItemDowns
         {
-            get { return new ObservableCollection<StockItem>(StockInExchanges.Where(item => item.UpDown < 0)); }
+            get { return new ObservableCollection<StockItem>(_stockItemsInExchange().Where(item => item.UpDown < 0)); }
         }
         public int AmountStockItemDown
         {
@@ -68,17 +67,17 @@ namespace FakeEzMobileTrading.Models
 
         public int AmountStockItemEqual
         {
-            get => StockInExchanges.Count - StockItemUps.Count - StockItemDowns.Count;
+            get => _stockItemsInExchange().Count - AmountStockItemUp - AmountStockItemDown;
         }
 
         public string ImageUpDown { get { return ExchangeUpDown > 0 ? "ic_arrow_up.png" : "ic_arrow_down.png"; } }
-        public Color UpDownColor { get { return ExchangeUpDown > 0 ? Color.FromArgb(55, 166, 71) : Color.OrangeRed; } }
+        public Color UpDownColor { get { return ExchangeUpDown > 0 ? Color.FromArgb(0, 254 ,0) : Color.OrangeRed; } }
         public string ImageUpDownP1 { get { return UpdownP1 > 0 ? "ic_arrow_up.png" : "ic_arrow_down.png"; } }
-        public Color UpDownColorP1 { get { return UpdownP1 > 0 ? Color.FromArgb(55, 166, 71) : Color.OrangeRed; } }
+        public Color UpDownColorP1 { get { return UpdownP1 > 0 ? Color.FromArgb(0, 254 ,0) : Color.OrangeRed; } }
         public string ImageUpDownP2 { get { return UpdownP2 > 0 ? "ic_arrow_up.png" : "ic_arrow_down.png"; } }
-        public Color UpDownColorP2 { get { return UpdownP2 > 0 ? Color.FromArgb(55, 166, 71) : Color.OrangeRed; } }
+        public Color UpDownColorP2 { get { return UpdownP2 > 0 ? Color.FromArgb(0, 254 ,0) : Color.OrangeRed; } }
         public string ImageUpDownP3 { get { return UpdownP3 > 0 ? "ic_arrow_up.png" : "ic_arrow_down.png"; } }
-        public Color UpDownColorP3 { get { return UpdownP3 > 0 ? Color.FromArgb(55, 166, 71) : Color.OrangeRed; } }
+        public Color UpDownColorP3 { get { return UpdownP3 > 0 ? Color.FromArgb(0, 254 ,0) : Color.OrangeRed; } }
         public string TypeExchange { get => _typeExchange; set { SetProperty(ref _typeExchange, value); } }
         public string ExchangeId { get => _exchangeId; set { SetProperty(ref _exchangeId, value); } }
         public string ExchangeName { get => _exchangeName; set { SetProperty(ref _exchangeName, value); } }

@@ -1,5 +1,6 @@
 ﻿using Android.Webkit;
 using FakeEzMobileTrading.Models;
+using FakeEzMobileTrading.Views;
 using FakeEzMobileTrading.Views.HomePages;
 using MUAHO.ViewModels;
 using System;
@@ -22,6 +23,9 @@ namespace FakeEzMobileTrading.ViewModels
         private bool _settingVisible = true;
         private bool _successVisible = false;
         private bool _listFavouriteVisible = false;
+        private bool _istapped = false;
+        private int _tapp = 0;
+
         public FlyoutMenuViewModel(Page page)
         {
             SetResource();
@@ -49,6 +53,9 @@ namespace FakeEzMobileTrading.ViewModels
                 ItemTrans = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 2));
                 ItemSales = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 3));
                 ItemSupports = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 4));
+                var scrollView = page.FindByName<ScrollView>("scrollView");
+                var scrollLayout = page.FindByName<StackLayout>("scrollLayout");
+                scrollView.ScrollToAsync(scrollLayout, ScrollToPosition.Start, false);
                 ListFavouriteVisible = false;
                 SuccessVisible = true;
                 SettingVisible = false;
@@ -70,7 +77,9 @@ namespace FakeEzMobileTrading.ViewModels
                 ItemTrans = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 2 && item.IsFavourite == false));
                 ItemSales = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 3 && item.IsFavourite == false));
                 ItemSupports = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 4 && item.IsFavourite == false));
-
+                var scrollView = page.FindByName<ScrollView>("scrollView");
+                var scrollLayout = page.FindByName<StackLayout>("scrollLayout");
+                scrollView.ScrollToAsync(scrollLayout, ScrollToPosition.Start, false);
                 SuccessVisible = false;
                 SettingVisible = true;
             });
@@ -86,14 +95,38 @@ namespace FakeEzMobileTrading.ViewModels
             });
             ChangePage = new Command((x) =>
             {
+                if(SuccessVisible) { return; }
+                _tapp++;
+                if (_istapped)
+                    return;
                 ItemMenu item = x as ItemMenu;
-                switch(item.Id)
-                {
-                    case "tongquan": (page.Parent as MasterDetailPage).Detail = new NavigationPage(new HomePage(3)); break;
-                    default: (page.Parent as MasterDetailPage).Detail = new NavigationPage(new SendMoneyPage()); break;
-                }
-                (page.Parent as MasterDetailPage).IsPresented = false;
                 
+
+                _istapped = true;
+
+                if (_tapp == 1 || _tapp!=3)
+                {
+                    switch (item.Id)
+                    {
+                        case "tongquan": (page.Parent as FlyoutPage).Detail = new NavigationPage(new HomePage(0)); break;
+                        case "banggia": (page.Parent as FlyoutPage).Navigation.PushAsync(new PriceBoard(0)); _tapp = 2; break;
+                        case "tintuc": (page.Parent as FlyoutPage).Detail = new NavigationPage(new NewPage()); break;
+                        case "fptsnhandinh": (page.Parent as FlyoutPage).Detail = new NavigationPage(new FPTSIdentityPage()); break;
+                        case "lichsukien": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ActionEventPage()); break;
+                        case "bieudo": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ChartPage()); break;
+                        default: (page.Parent as FlyoutPage).Detail = new NavigationPage(new SendMoneyPage()); break;
+                    }
+                }
+                else 
+                {
+                    _tapp = 0;
+                }
+                    
+
+               
+
+                _istapped = false;
+                (page.Parent as FlyoutPage).IsPresented = false;
             });
         }
         public ObservableCollection<ItemMenu> ItemMenus

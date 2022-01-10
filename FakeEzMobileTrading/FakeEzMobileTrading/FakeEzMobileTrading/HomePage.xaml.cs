@@ -19,5 +19,6 @@ namespace FakeEzMobileTrading
             CurrentPage = this.Children[index];
             
         }
+
     }
 }

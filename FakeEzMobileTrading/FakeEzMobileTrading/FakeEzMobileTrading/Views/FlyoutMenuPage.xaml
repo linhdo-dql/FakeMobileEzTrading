@@ -31,7 +31,7 @@
                             >
                     <Image Source="ic_setting.png" WidthRequest="20"  IsVisible="{Binding SettingVisible}" IsEnabled="{Binding SettingVisible}">
                         <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowFavouriteIcon}"/>
+                            <TapGestureRecognizer Command="{Binding ShowFavouriteIcon}" NumberOfTapsRequired="1"/>
                         </Image.GestureRecognizers>
                     </Image>
                     <Image Source="ic_power.png" WidthRequest="23" IsVisible="{Binding SettingVisible}" IsEnabled="{Binding SettingVisible}"/>
@@ -44,7 +44,7 @@
             </StackLayout>
             <ScrollView VerticalScrollBarVisibility="Never"
                         x:Name="scrollView">
-                <StackLayout Spacing="0">
+                <StackLayout Spacing="0" x:Name="scrollLayout">
                     <StackLayout Orientation="Horizontal"  BackgroundColor="#F1F1F1" IsVisible="{Binding ListFavouriteVisible}">
                         <Label x:Name="ItemFavourites"
                            Text="Yêu thích"
@@ -76,6 +76,9 @@
                                                     <TapGestureRecognizer Command="{Binding BindingContext.ControlFavourite, Source={x:Reference ItemFavourites}}" CommandParameter="{Binding Source={x:Reference MenuItem}, Path=BindingContext}"/>
                                                 </Image.GestureRecognizers>
                                             </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.ChangePage, Source={x:Reference ItemMarkets}}" CommandParameter="{Binding Source={x:Reference MenuItem}, Path=BindingContext}" NumberOfTapsRequired="1"/>
+                                            </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                         <view:RepeaterView ItemsSource="{Binding SubMenu}" IsVisible="{Binding IsVisible}">
                                             <view:RepeaterView.ItemTemplate>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FakeEzMobileTrading.Interfaces;
+using FakeEzMobileTrading.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +14,27 @@ namespace FakeEzMobileTrading.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SearchPage : ContentPage
     {
-        public SearchPage()
+        private int _type;
+        public SearchPage(int type)
         {
             InitializeComponent();
+            BindingContext = new SearchPageViewModel(this);
+            _type = type;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext = new SearchPageViewModel(this);
+            App.Tap = 0;
+            if(_type == 0)
+            {
+                DependencyService.Get<IOrientationService>().Portrait();
+            }
+            else
+            {
+                DependencyService.Get<IOrientationService>().Landscape();
+            }
         }
     }
 }

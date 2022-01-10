@@ -1,10 +1,13 @@
-﻿using System;
+﻿
+using FakeEzMobileTrading.ViewModels.HomePageViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace FakeEzMobileTrading.Views.HomePages
@@ -15,6 +18,28 @@ namespace FakeEzMobileTrading.Views.HomePages
         public ActionCommandPage()
         {
             InitializeComponent();
+            BindingContext = new ActionCommandPageViewModel(this);
+
+
         }
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext = new ActionCommandPageViewModel(this);
+            Device.StartTimer(new TimeSpan(0, 0, 5), ()=>
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await scrollView.ScrollToAsync(lblStockName, ScrollToPosition.End, true);// Move to down Element  
+                    await Task.Delay(1000);                          //1 Sec interval time  
+                    await scrollView.ScrollToAsync(lblStockName, ScrollToPosition.Start, true);// Move to down Element  
+                });
+                return true;
+            });
+           
+                                                         
+        }
+
+       
     }
 }

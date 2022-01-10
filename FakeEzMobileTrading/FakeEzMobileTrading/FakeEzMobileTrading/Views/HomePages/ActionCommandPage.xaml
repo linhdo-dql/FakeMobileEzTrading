@@ -1,13 +1,726 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Đặt lệnh"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             xmlns:xcp="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+             xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup" 
              x:Class="FakeEzMobileTrading.Views.HomePages.ActionCommandPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <NavigationPage.TitleView>
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
+            <Label Text="Đặt lệnh" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"/>
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                <Image Source="ic_action_command_c.png" WidthRequest="26" HeightRequest="26" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SwitchCommandConditionPage}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Source="ic_history_command.png" WidthRequest="20" HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowPopup4}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image  Source="ic_setting.png" WidthRequest="20" HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDialogSetting}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
         </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ControlTemplate x:Key="FrameRadioTemplate">
+                <Frame Padding="0" CornerRadius="3" VerticalOptions="Start"
+               HeightRequest="45" WidthRequest="50" HorizontalOptions="Start" BackgroundColor="#333333"
+                       HasShadow="False"
+                       >
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CheckedStates">
+                            <VisualState x:Name="Checked">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#333333"/>
+                                    <Setter Property="HasShadow" Value="True"/>
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Unchecked">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#333333"/>
+                                    <Setter Property="HasShadow" Value="False"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Grid Margin="4" WidthRequest="50">
+                        <ContentPresenter/>
+                    </Grid>
+                </Frame>
+                    
+            </ControlTemplate>
+            <ControlTemplate x:Key="FrameRadioTemplate2">
+                <Image VerticalOptions="Start"
+               HeightRequest="15" WidthRequest="15" HorizontalOptions="Start">
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CheckedStates">
+                            <VisualState x:Name="Checked">
+                                <VisualState.Setters>
+                                    <Setter Property="Source" Value="ic_check.png"/>
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Unchecked">
+                                <VisualState.Setters>
+                                    <Setter Property="Source" Value="ic_unckeck.png"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+
+                    </VisualStateManager.VisualStateGroups>
+                </Image>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Never">
+            <StackLayout x:Name="layout">
+                <Grid>
+                    <Label Padding="10" IsVisible="{Binding SellBuyVisible, Converter={xct:InvertedBoolConverter}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="S.dư tiền: " FontSize="16" TextColor="#034E95"/>
+                                <Span Text="{Binding MyMoney, StringFormat='{0:###,###} vnđ'}" FontSize="16" TextColor="#034E95" FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Padding="10" IsVisible="{Binding SellBuyVisible}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="S.dư CK: " FontSize="16" TextColor="#034E95"/>
+                                <Span Text="2339" FontSize="16" TextColor="#034E95" FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+
+                <Grid ColumnSpacing="5"
+                  Padding="5,0,5,0">
+                    <Frame BorderColor="#999999"
+                       Padding="0"
+                       HeightRequest="40"
+                       Grid.Column="0"
+                       CornerRadius="0"
+                       HasShadow="False">
+                        <Grid ColumnDefinitions="*,15" Padding="10">
+                            <custom:CustomEntry x:Name="IdStockEntry"
+                                            Grid.Column="0" Placeholder="Mã"
+                                            Text="{Binding IdStock}"
+                                            HorizontalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Center">
+                                <custom:CustomEntry.Keyboard>
+                                    <Keyboard x:FactoryMethod="Create">
+                                        <x:Arguments>
+                                            <KeyboardFlags>Suggestions,CapitalizeCharacter</KeyboardFlags>
+                                        </x:Arguments>
+                                    </Keyboard>
+                                </custom:CustomEntry.Keyboard>
+                                <custom:CustomEntry.Behaviors>
+                                    <toolkit:EventToCommandBehavior EventName="Unfocused" Command="{Binding SelectedStock}"/>
+                                    <toolkit:EventToCommandBehavior EventName="Completed" Command="{Binding SelectedStock}"/>
+                                </custom:CustomEntry.Behaviors>
+                            </custom:CustomEntry>
+                            <Image Grid.Column="1" Source="ic_clear2.png" WidthRequest="15" HeightRequest="15" HorizontalOptions="End" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ClearEntry}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Frame>
+                    <Frame BackgroundColor="#777777"
+                       Padding="0"
+                       HeightRequest="40"
+                       Grid.Column="1"
+                       CornerRadius="0"
+                       HasShadow="False">
+                        <Label Text="Số dư CK" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White"/>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowPopup3}"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </Grid>
+
+                <ScrollView x:Name="scrollView" Orientation="Horizontal" VerticalScrollBarVisibility="Never" 
+                        HorizontalScrollBarVisibility="Never" Margin="0,5,0,0"
+                        IsVisible="{Binding StockNameVisible}">
+                    <Grid ColumnDefinitions="Auto" Padding="10,0,10,0" IsVisible="True" HorizontalOptions="Center">
+                        <Label x:Name="lblStockName" HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding StockItem.StockName}" TextColor="#034E95" FontSize="17" MaxLines="1"
+                           Padding="10,0,10,10">
+
+                        </Label>
+                    </Grid>
+
+                </ScrollView>
+
+                <Grid 
+                  ColumnDefinitions="*,*,*,*,*,*"
+                  RowDefinitions="50" ColumnSpacing="5"
+                  Padding="5,0,5,0">
+                    <Grid x:Name="grT" ClassId="grT" RowDefinitions="*,*" Grid.Column="0" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="Trần" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceCeiling, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="DeepPink" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+                            <Label.Triggers>
+                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                    <Setter Property="TextColor" Value="White"/>
+                                </Trigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grT}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Grid x:Name="grTC" ClassId="grTC" RowDefinitions="*,*" Grid.Column="1" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="TC" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceMedium, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="Yellow" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+                            <Label.Triggers>
+                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                    <Setter Property="TextColor" Value="White"/>
+                                </Trigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grTC}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Grid x:Name="grS" ClassId="grS" RowDefinitions="*,*" Grid.Column="2" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="Sàn" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceFloor, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="DeepSkyBlue" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+                            <Label.Triggers>
+                                <Trigger TargetType="Label" Property="Text" Value="0">
+                                    <Setter Property="TextColor" Value="White"/>
+                                </Trigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grS}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Grid x:Name="grM1" ClassId="grM1" RowDefinitions="*,*" Grid.Column="3" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="Mua 1" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceB1, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="{Binding StockItem.PriceB1Color}" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grM1}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Grid x:Name="grK" ClassId="grK" RowDefinitions="*,*" Grid.Column="4" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="Khớp" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="{Binding StockItem.PriceGoodColor}" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grK}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Grid x:Name="grB1" ClassId="grB1" RowDefinitions="*,*" Grid.Column="5" BackgroundColor="#333333"
+                      RowSpacing="0">
+                        <Label Text="Bán 1" Grid.Row="0" TextColor="White" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,5,0,0"/>
+                        <Label Text="{Binding StockItem.PriceS1, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" Grid.Row="1" TextColor="{Binding StockItem.PriceS1Color}" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,5">
+
+                        </Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PriceFrameTap}" CommandParameter="{x:Reference grB1}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="5"
+                  Padding="5,0,5,0" HeightRequest="50">
+
+                    <StackLayout BackgroundColor="#B0B0B0" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5" Orientation="Horizontal"
+                            >
+                        <Frame Grid.Column="0"         HorizontalOptions="Start"
+                                                   Padding="10,0,0,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                            <Image Grid.Column="0" Source="ic_prev.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ChangeSellBuy}"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Label Text="MUA" HorizontalOptions="FillAndExpand"  HorizontalTextAlignment="Center" FontSize="16" FontAttributes="Bold" TextColor="#034e95"  VerticalOptions="Center"  IsVisible="{Binding SellBuyVisible, Converter={xct:InvertedBoolConverter}}"/>
+                        <Label Text="BÁN" HorizontalOptions="FillAndExpand"  HorizontalTextAlignment="Center" FontSize="16" FontAttributes="Bold" TextColor="Red"  VerticalOptions="Center" IsVisible="{Binding SellBuyVisible}"/>
+                        <Frame Grid.Column="1"         HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                            <Image Grid.Column="0" Source="ic_next.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ChangeSellBuy}"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                    <Label Text="Mua/Bán" Grid.Column="0" Grid.Row="0" FontSize="16" TextColor="Black" VerticalOptions="Center"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="5"
+                  Padding="5,0,5,0" HeightRequest="50">
+
+                    <Label Text="Loại GD" Grid.Column="0" Grid.Row="0" FontSize="16" TextColor="Black" VerticalOptions="Center"/>
+                    <StackLayout BackgroundColor="#B0B0B0" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5" Orientation="Horizontal"
+                            >
+                        <Frame Grid.Column="0"         HorizontalOptions="Start"
+                                                   Padding="10,0,0,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                            <Image Grid.Column="0" Source="ic_prev.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                            <Frame.GestureRecognizers>
+
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Label Text="Thường" HorizontalOptions="FillAndExpand"  HorizontalTextAlignment="Center" FontSize="16" TextColor="Black"  VerticalOptions="Center"  IsVisible="True"/>
+                        <Frame Grid.Column="1"         HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                            <Image Grid.Column="0" Source="ic_next.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                            <Frame.GestureRecognizers>
+
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                </Grid>
+
+                <StackLayout 
+                      x:Name="layoutPriceMass"
+                      Padding="5,0,5,0">
+                    
+                    <StackLayout x:Name="layoutPrice" Grid.Row="{Binding PositionPrice}">
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="5" Grid.Row="0" HeightRequest="50">
+                            <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Giá " FontSize="16"/>
+                                        <Span Text="x1000" FontSize="12"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Frame  Grid.Column="1" Grid.Row="0" Margin="0,5,0,5" Padding="0" BorderColor="Gray" CornerRadius="0" HasShadow="False">
+                                <StackLayout  Orientation="Horizontal">
+                                    <Frame Grid.Column="0"     HorizontalOptions="Start"
+                                                   Padding="10,0,0,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False"
+                               IsVisible="{Binding UpDownVisible}"
+                               IsEnabled="{Binding UpDownVisible}">
+                                        <Image Grid.Column="0" Source="ic_sub.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding DownPrice}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                    <Grid  HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding StockPrice, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}"  HorizontalTextAlignment="Center" FontSize="16" TextColor="Black"  VerticalOptions="Center" IsVisible="{Binding LabelPriceVisible}">
+
+                                        </Label>
+                                        <Label Text="{Binding StockPrice2}"  HorizontalTextAlignment="Center" FontSize="16" TextColor="Black"  VerticalOptions="Center" IsVisible="{Binding UpDownVisible, Converter={xct:InvertedBoolConverter}}">
+
+                                        </Label>
+                                    </Grid>
+
+                                    <Frame Grid.Column="1"     HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False"
+                               IsVisible="{Binding UpDownVisible}"
+                               IsEnabled="{Binding UpDownVisible}">
+                                        <Image Grid.Column="0" Source="ic_plus.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding UpPrice}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                </StackLayout>
+
+                            </Frame>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*,*,*"
+                              Grid.Row="1"
+                              Padding="0,5,0,5"
+                                  HeightRequest="50"
+                              IsVisible="{Binding StockNameVisible}">
+
+                            <RadioButton x:Name="rdLO"
+                                 ControlTemplate="{StaticResource FrameRadioTemplate}"
+                                 ClassId="LO"
+                                     IsChecked="True"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="Center"
+                                 Grid.Column="0"
+                                 TextColor="White">
+                                <RadioButton.Content>
+                                    <Label Text="LO" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <Trigger TargetType="RadioButton" Property="IsChecked" Value="True">
+                                        <Setter Property="TextColor" Value="Orange"/>
+                                    </Trigger>
+                                </RadioButton.Triggers>
+                                <RadioButton.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RadioChecked}" CommandParameter="{Binding Source={x:Reference rdLO}}"/>
+                                </RadioButton.GestureRecognizers>
+                            </RadioButton>
+                            <RadioButton x:Name="rdATO"
+                                     ClassId="ATO"
+                                 ControlTemplate="{StaticResource FrameRadioTemplate}"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="Center"
+                                 Grid.Column="1 "
+                                 TextColor="White">
+                                <RadioButton.Content>
+                                    <Label Text="ATO" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <Trigger TargetType="RadioButton" Property="IsChecked" Value="True">
+                                        <Setter Property="TextColor" Value="Orange"/>
+                                    </Trigger>
+                                </RadioButton.Triggers>
+                                <RadioButton.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RadioChecked}" CommandParameter="{Binding Source={x:Reference rdATO}}"/>
+                                </RadioButton.GestureRecognizers>
+                            </RadioButton>
+                            <RadioButton x:Name="rdMP"
+                                        ClassId="MP"
+                                 ControlTemplate="{StaticResource FrameRadioTemplate}"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="Center"
+                                 Grid.Column="2"
+                                 TextColor="White">
+                                <RadioButton.Content>
+                                    <Label Text="MP" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <Trigger TargetType="RadioButton" Property="IsChecked" Value="True">
+                                        <Setter Property="TextColor" Value="Orange"/>
+                                    </Trigger>
+                                </RadioButton.Triggers>
+                                <RadioButton.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RadioChecked}" CommandParameter="{Binding Source={x:Reference rdMP}}"/>
+                                </RadioButton.GestureRecognizers>
+                            </RadioButton>
+                            <RadioButton x:Name="rdATC"
+                                     ClassId="ATC"
+                                 ControlTemplate="{StaticResource FrameRadioTemplate}"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="Center"
+                                 Grid.Column="3"
+                                 TextColor="White">
+                                <RadioButton.Content>
+                                    <Label Text="ATC" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <Trigger TargetType="RadioButton" Property="IsChecked" Value="True">
+                                        <Setter Property="TextColor" Value="Orange"/>
+                                    </Trigger>
+                                </RadioButton.Triggers>
+                                <RadioButton.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RadioChecked}" CommandParameter="{Binding Source={x:Reference rdATC}}"/>
+                                </RadioButton.GestureRecognizers>
+                            </RadioButton>
+                        </Grid>
+                    </StackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="5"
+                          HeightRequest="50"
+                          x:Name="layoutMass">
+                        <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Khối lượng " FontSize="16"/>
+                                    <Span Text=" min 0 " FontSize="12" TextColor="White" BackgroundColor="Gray"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Frame  Grid.Column="1" Grid.Row="0" Margin="0,5,0,5" Padding="0" BorderColor="Gray" CornerRadius="0" HasShadow="False">
+                            <StackLayout  Orientation="Horizontal">
+                                <Frame Grid.Column="0" HorizontalOptions="Start"
+                                                   Padding="10,0,0,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                    <Image Grid.Column="0" Source="ic_sub.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DownAmount}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                                <Grid  HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding StockAmount}"  HorizontalTextAlignment="Center" FontSize="16" TextColor="Black"  VerticalOptions="Center">
+                                        <Label.Triggers>
+                                            <Trigger TargetType="Label" Property="Text" Value="0">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </Trigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </Grid>
+
+                                <Frame Grid.Column="1"        
+                                                   HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                    <Image Grid.Column="0" Source="ic_plus.png" HeightRequest="15" WidthRequest="15" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding UpAmount}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </StackLayout>
+
+                        </Frame>
+                    </Grid> 
+                </StackLayout>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="5"
+                          HeightRequest="50"
+                      Padding="5,0,5,0"
+                       >
+                    <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Mật khẩu giao dịch " FontSize="16"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Frame  Grid.Column="1" Grid.Row="0" Margin="0,5,0,5" Padding="0" BorderColor="Gray" CornerRadius="0" HasShadow="False">
+                        <StackLayout  Orientation="Horizontal">
+                            <custom:CustomEntry x:Name="passEntry"
+                                                    Grid.Column="0" 
+                                                    Placeholder="Mật khẩu giao dịch"
+                                                    FontSize="15"
+                                                    IsPassword="{Binding ShowHidePass}"
+                                                    Text="{Binding Pass}"
+                                                    BackgroundColor="Transparent"
+                                                    HorizontalOptions="StartAndExpand">
+
+                            </custom:CustomEntry>
+
+
+                            <Frame Grid.Column="1"        
+                                                   HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                <Image Grid.Column="0" Source="{Binding ShowHidePassSource}" HeightRequest="18" WidthRequest="18" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowOrHidePass}" CommandParameter="{Binding Source={x:Reference passEntry}}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+
+                        </StackLayout>
+
+                    </Frame>
+                </Grid>
+
+                <Button WidthRequest="200"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Margin="0,5,0,10"
+                            HorizontalOptions="Center"
+                            BackgroundColor="#034E95"
+                            Text="XÁC NHẬN MUA"
+                            TextColor="White"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            IsVisible="{Binding SellBuyVisible, Converter={xct:InvertedBoolConverter}}"
+                            >
+
+                </Button>
+                <Button WidthRequest="200"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Margin="0,5,0,10"
+                            HorizontalOptions="Center"
+                            BackgroundColor="Red"
+                            Text="XÁC NHẬN BÁN"
+                            TextColor="White"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            IsVisible="{Binding SellBuyVisible}"
+                            >
+
+                </Button>
+
+
+
+                <dve:DXPopup x:Name="popup2"
+                         AllowScrim="True"
+                         ScrimColor="#33000000"
+                             IsOpen="True"
+                         >
+                    <Grid BackgroundColor="#EBEEF2"
+                      RowSpacing="0"
+                      RowDefinitions="125,45">
+                        <StackLayout Padding="10" Grid.Row="0" Spacing="20">
+                            <Label Text="Chọn thứ tự nhập Khối lượng và Giá:" FontSize="15" TextColor="#034E95"/>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate2}" IsChecked="{Binding IsDisplayChecked, Converter={xct:InvertedBoolConverter}}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Khối lương -> Giá" TextColor="Black"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding MassToPrice}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <RadioButton ControlTemplate="{StaticResource FrameRadioTemplate2}" IsChecked="{Binding IsDisplayChecked}" VerticalOptions="CenterAndExpand" IsEnabled="False"/>
+                                <Label Text="Giá -> Khối lượng" TextColor="Black"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding MassToPrice}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="0">
+                            <Button Text="Hủy" BackgroundColor="#999999" TextColor="White" Grid.Column="0" CornerRadius="0" Command="{Binding SaveOrExitSetting}" CommandParameter="{x:Reference popup2}"/>
+                            <Button Text="Lưu" BackgroundColor="#034E95" TextColor="White" Grid.Column="1" CornerRadius="0" Command="{Binding SaveOrExitSetting}" CommandParameter="{x:Reference popup2}"/>
+                        </Grid>
+                    </Grid>
+                    <dve:DXPopup.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding ClosePopup}"/>
+                    </dve:DXPopup.Behaviors>
+                </dve:DXPopup>
+                <dve:DXPopup x:Name="popup3"
+                                 AllowScrim="True"
+                                 ScrimColor="#33000000">
+                    <Grid BackgroundColor="#EBEEF2"
+                                       WidthRequest="300"
+                                       RowSpacing="0"
+                                       RowDefinitions="50,30,225,27">
+                        <AbsoluteLayout Grid.Row="0"
+                                                         BackgroundColor="#034E95"
+                                                         WidthRequest="300"
+                                                         Padding="10,0,15,0">
+                            <Label TextColor="White" FontSize="16" HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               AbsoluteLayout.LayoutBounds="0.5,0.5,1,1" AbsoluteLayout.LayoutFlags="All">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Số dư chứng khoán hiện có"/>
+                                        
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image Source="ic_clear.png" 
+                                            AbsoluteLayout.LayoutBounds="1,0.5,16,16" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding HidePopup3}" CommandParameter="{x:Reference popup2}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </AbsoluteLayout>
+                        <StackLayout Orientation="Horizontal" Padding="10,0,10,0"
+                                     BackgroundColor="White"
+                                         Grid.Row="1">
+                                    <Image Source="ic_search2" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"/>
+                                    <custom:CustomEntry x:Name="IdStockEntryPopup"
+                                            Grid.Column="0" Placeholder="Mã"
+                                                        FontSize="14"
+                                            Text="{Binding IdStock2}"
+                                                    ClearButtonVisibility="WhileEditing"
+                                            HorizontalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Start">
+                                <Entry.Keyboard>
+                                    <Keyboard x:FactoryMethod="Create">
+                                        <x:Arguments>
+                                            <KeyboardFlags>Suggestions,CapitalizeCharacter</KeyboardFlags>
+                                        </x:Arguments>
+                                    </Keyboard>
+                                </Entry.Keyboard>
+                            </custom:CustomEntry>
+                        </StackLayout>
+                        <Grid Grid.Row="2" RowDefinitions="25,200"
+                              RowSpacing="0"
+                              Padding="0,5,0,0">
+                            <StackLayout>
+                                <Grid ColumnDefinitions="0.3*,*,0.75*,0.75*" Padding="5,0,5,0">
+                                    <Label Text="Mã" FontSize="14" TextColor="Black" Grid.Column="0" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                                    <Label Text="KL" FontSize="14" TextColor="Black" Grid.Column="1" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
+                                    <Label Text="Tỷ lệ vay" FontSize="14" TextColor="Black" Grid.Column="2" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                                    <Label Text="Ngày ĐH" FontSize="14" TextColor="Black" Grid.Column="3" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                                </Grid>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <CollectionView Grid.Row="1"
+                                        ItemsSource="{Binding SurplusStocks}"
+                                        >
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout
+                                            Padding="0,5,0,0">
+                                            <Grid ColumnDefinitions="0.3*,*,0.75*,0.75*" Padding="5,0,5,0">
+                                                <Label Text="{Binding StockId}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="0" HorizontalTextAlignment="Center"  HorizontalOptions="FillAndExpand" />
+                                                <Label Text="{Binding Mass, StringFormat='{0:###,###}'}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="1" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
+                                                <Label Text="{Binding PersentBorrow}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="2" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                                                <Label Text="{Binding DateEnd, StringFormat='{0:dd/MM/yyyy}'}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="3" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+                                            </Grid>
+                                            <BoxView HeightRequest="0.25" BackgroundColor="Gray"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                        
+                        <Grid ColumnDefinitions="*,*" Padding="5"  Grid.Row="3" BackgroundColor="White">
+                            <StackLayout Orientation="Horizontal" Grid.Column="0" HorizontalOptions="Center">
+                                <BoxView WidthRequest="15" HeightRequest="15" CornerRadius="0" BackgroundColor="PaleVioletRed"/>
+                                <Label Text="Xử lý" TextColor="Black" FontSize="14"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="Center">
+                                <BoxView WidthRequest="15" HeightRequest="15" CornerRadius="0" BackgroundColor="Orange"/>
+                                <Label Text="Hết hạn" TextColor="Black" FontSize="14"/>
+                            </StackLayout>
+                        </Grid>
+                    </Grid>
+                </dve:DXPopup>
+                <dve:DXPopup x:Name="popup4"
+                             WidthRequest="300"
+                             HeightRequest="160"
+                             PlacementTarget="{x:Reference layout}"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Top"
+                             Margin="0,60,5,0">
+                    <Grid Padding="5" RowDefinitions="*,*,*,*" WidthRequest="250">
+                        <StackLayout Grid.Row="0">
+                            <Label Text="Lệnh trong ngày" FontSize="14" Margin="20,2,0,0" TextColor="Black"/>
+                            <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1">
+                            <Label Text="Kết quả khớp lệnh" FontSize="14" Margin="20,2,0,0" TextColor="Black"/>
+                            <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="2">
+                            <Label Text="Lịch sử đặt lệnh" FontSize="14" Margin="20,2,0,0" TextColor="Black"/>
+                            <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="3">
+                            <Label Text="Lịch sử khớp lệnh" FontSize="14" Margin="20,2,0,0" TextColor="Black"/>
+                           
+                        </StackLayout>
+                    </Grid>
+                    
+                </dve:DXPopup>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

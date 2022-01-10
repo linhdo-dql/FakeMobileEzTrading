@@ -1,6 +1,7 @@
 ﻿using MUAHO.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Text;
 
@@ -34,10 +35,12 @@ namespace FakeEzMobileTrading.Models
         private double _priceMin;
         private double _totalMass;
         private double _priceOpen;
+        private double _priceClose;
         private double _foreignB;
         private double _foreignS;
 
         //
+        private string _exchangeId;
         private string _floorId;
         //Document
         private double _priceMax52T;
@@ -56,16 +59,27 @@ namespace FakeEzMobileTrading.Models
         private double _persentS;
         private bool _showHidePersent= false;
         //
-        private string _nameCollection;
-
-        public Color Green = Color.FromArgb(55, 166, 71);
+        private int _index;
+        //
+        public Color Green = Color.FromArgb(0,254,0);
         public Color Red = Color.Red;
-        public Color Pink = Color.FromArgb(210, 96, 141);
-        public Color Blue = Color.LightSteelBlue;
-        public Color Yellow = Color.LightYellow;
+        public Color Pink = Color.DeepPink;
+        public Color Blue = Color.DeepSkyBlue;
+        public Color Yellow = Color.Yellow;
         public Color White = Color.White;
         public Color Black = Color.Black;
-        
+        //
+        public Color _textColorInBoard;
+        //
+        private double _massAllowOwn;
+        private double _massOwning;
+        private double _massStillAllowB;
+        private double _persentForeignOwn;
+        private double _foreignBYTD;
+        private double _foreignBMTD;
+        private string _dateUpdate;
+
+     
         public string StockId
         {
             get{ return _stockId; }
@@ -177,6 +191,11 @@ namespace FakeEzMobileTrading.Models
             get { return _priceOpen; }
             set { SetProperty(ref _priceOpen, value); }
         }
+        public double PriceClose
+        {
+            get { return _priceClose; }
+            set { SetProperty(ref _priceClose, value); }
+        }
         public double TotalMass
         {
             get { return _totalMass; }
@@ -226,25 +245,25 @@ namespace FakeEzMobileTrading.Models
         }
         public Color PriceB1Color
         {
-            get { return SetColor(PriceB1, PriceMedium, PriceCeiling, PriceFloor);   }
+            get { return SetColor(PriceB1, PriceMedium, PriceCeiling, PriceFloor); }
         }
         public Color PriceB2Color
         {
-            get { return SetColor(PriceB1, PriceMedium, PriceCeiling, PriceFloor); }
+            get { return SetColor(PriceB2, PriceMedium, PriceCeiling, PriceFloor); }
         }
         public Color PriceB3Color
         {
-            get { return SetColor(PriceB1, PriceMedium, PriceCeiling, PriceFloor); }
+            get { return SetColor(PriceB3, PriceMedium, PriceCeiling, PriceFloor); }
         }
-        public Color PriceM1Color
+        public Color PriceS1Color
         {
             get { return SetColor(PriceS1, PriceMedium, PriceCeiling, PriceFloor); }
         }
-        public Color PriceM2Color
+        public Color PriceS2Color
         {
             get { return SetColor(PriceS2, PriceMedium, PriceCeiling, PriceFloor); }
         }
-        public Color PriceM3Color
+        public Color PriceS3Color
         {
             get { return SetColor(PriceS3, PriceMedium, PriceCeiling, PriceFloor); }
         }
@@ -278,7 +297,7 @@ namespace FakeEzMobileTrading.Models
             set { SetProperty(ref _showHidePersent, value); }
         }
 
-        public string ExchangeId { get => _floorId; set { SetProperty(ref _floorId, value); } }
+        public string ExchangeId { get => _exchangeId; set { SetProperty(ref _exchangeId, value); } }
         public double PriceMax52T { get => _priceMax52T; set { SetProperty(ref _priceMax52T, value); } }
         public double PriceMin52T { get => _priceMin52T; set { SetProperty(ref _priceMin52T, value); } }
         public double Mass30d { get => _mass30d; set { SetProperty(ref _mass30d, value); } }
@@ -293,23 +312,79 @@ namespace FakeEzMobileTrading.Models
         public double PersentB { get => _persentB; set { SetProperty(ref _persentB, value); } }
         public double PersentS { get => _persentS; set { SetProperty(ref _persentS, value); } }
 
+        public Color TextColorInBoard { get => UpDown < 0 || PriceGood == PriceCeiling ? Color.White : Color.Black; }
+        public int Index { get => _index; set { SetProperty(ref _index, value); } }
+        public string FloorId { get => _floorId; set { SetProperty(ref _floorId, value); } }
         public Color SetColor(double value, double priceMedium, double priceCeiling, double priceFloor)
         {
-            if(priceMedium == value)
+            if(value == 0)
+            {
+                return White;
+            }
+            if (value == priceMedium)
             {
                 return Yellow;
             }
-            if(priceCeiling == value)
+            else if (value == priceCeiling)
             {
                 return Pink;
-            }   
-            if(priceFloor == value)
+            }
+            else if (value == priceFloor)
             {
                 return Blue;
             }
-
-            return UpDownColor;
+            else if (value > priceMedium)
+            {
+                return Green;
+            }
+            else if (value < priceMedium)
+            {
+                return Red;
+            }
+            else
+            {
+                return UpDownColor;
+            }
 
         }
+     
+        public string UpDownSource { get => UpDown > 0 ? "ic_arrow_up.png" : (UpDown < 0 ? "ic_arrow_down.png" : "ic_arrow_equal.png"); }
+        public string StockItemChart
+        {
+            get
+            {
+                return "<html><body>\n" +
+                       "<div class=\"tradingview-widget-container\">\n" +
+                       "<div id = \"tradingview_0cdfa\" ></div>\n" +
+                       "<script type = \"text/javascript\" src= \"https://s3.tradingview.com/tv.js\" ></script>\n" +
+                       "<script type= \"text/javascript\">\n" +
+                       "new TradingView.widget(" +
+                       "{\n" +
+                       "\"autosize\": true,\n" +
+                       "\"symbol\": \"" + StockId + "\",\n" +
+                       "\"interval\": \"D\",\n" +
+                       "\"timezone\": \"Etc/UTC\",\n" +
+                       "\"theme\": \"light\",\n" +
+                       "\"style\": \"1\",\n" +
+                       "\"locale\": \"vi_VN\",\n" +
+                       "\"toolbar_bg\": \"#f1f3f6\",\n" +
+                       "\"enable_publishing\": false,\n" +
+                       "\"allow_symbol_change\": false,\n" +
+                       "\"container_id\": \"tradingview_0cdfa\"\n" +
+                       "}\n" +
+                       ");\n" +
+                       "</script>\n" +
+                       "</div>\n" +
+                       "</html></body>";
+            }
+        }
+
+        public double MassAllowOwn { get => _massAllowOwn; set { SetProperty(ref _massAllowOwn, value); } }
+        public double MassOwning { get => _massOwning; set { SetProperty(ref _massOwning, value); } }
+        public double MassStillAllowB { get => _massStillAllowB; set { SetProperty(ref _massStillAllowB, value); } }
+        public double PersentForeignOwn { get => _persentForeignOwn; set { SetProperty(ref _persentForeignOwn, value); } }
+        public double ForeignBYTD { get => _foreignBYTD; set { SetProperty(ref _foreignBYTD, value); } }
+        public double ForeignBMTD { get => _foreignBMTD; set { SetProperty(ref _foreignBMTD, value); } }
+        public string DateUpdate { get => _dateUpdate; set { SetProperty(ref _dateUpdate, value); } }
     }
 }

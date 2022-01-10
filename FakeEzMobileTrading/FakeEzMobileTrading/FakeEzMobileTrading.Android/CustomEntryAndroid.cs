@@ -27,7 +27,9 @@ namespace FakeEzMobileTrading.Droid
                 GradientDrawable gd = new GradientDrawable();
 
                 gd.SetColor(Android.Graphics.Color.Transparent);
+                gd.SetCornerRadius(10);
                 this.Control.SetBackground(gd);
+                
                 this.Control.SetPadding(20, 0, 0, 0);
 
             }

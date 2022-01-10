@@ -14,11 +14,11 @@ namespace FakeEzMobileTrading.Views
     public partial class ExchangeDetailPage : ContentPage
     {   
         public string TitlePage1 { get; set; }
-        public ExchangeDetailPage(string exchange)
+        public ExchangeDetailPage(string exchangeId)
         {
             InitializeComponent();
             
-            BindingContext = App.Exchanges.Where(item => item.ExchangeId == exchange).FirstOrDefault();
+            BindingContext = App.Exchanges.FirstOrDefault(item => item.ExchangeId == exchangeId);
         }
     }
 }

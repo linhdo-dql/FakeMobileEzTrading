@@ -21,7 +21,8 @@ namespace FakeEzMobileTrading
 
         public RepeaterView()
         {
-            Spacing = 0;
+            Spacing = 0;   
+            
         }
 
         public ICollection ItemsSource
@@ -57,6 +58,7 @@ namespace FakeEzMobileTrading
             if (!(bindable is RepeaterView control)) return;
 
             control.Children.Clear();
+            
 
             var items = (ICollection)newValue;
 
