@@ -19,7 +19,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         private ObservableCollection<StockItem> _stockItems = new ObservableCollection<StockItem>();
         private ObservableCollection<StockItem> NewStockItems { get; set; }
         private ObservableCollection<StockExchange> _stockExchanges;
-        private int tap = App.Tap;
+        private bool _tap = false;
         public ObservableCollection<StockExchange> StockExchanges {
             get { return _stockExchanges; } 
             set 
@@ -41,27 +41,36 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             }
         }
         private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;
-        private bool _showHidePersent = false, _isSortEnable;
+        private bool _showHidePersent = false, _isSortEnable, _isPageVisible = true;
         private bool _newListLayoutVisible = false, _isVisible = false, _labelVisible=false;
         private string _sortPriceSource = "ic_updown.png", _sortMassSource= "ic_updown.png", _sortIdSource= "ic_updown.png", _sortPersentSource = "ic_updown.png";
         INavigation Navigation { get; set; }
         
         public OverViewPageViewModel(Page page, INavigation navigation)
         {
-            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+
+            IsVisible = false;
+            Preferences.Set("TypeTable", 0);
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
-                IsVisible = true;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    
+                    StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.IsFavourite == true));
+                    StockFollowLists = App.CollectionsList;
+                    if (Preferences.Get("CurrentFollowList", String.Empty) != "")
+                    {
+                        StockItems = new ObservableCollection<StockItem>(App.CollectionsList.Where(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).FirstOrDefault().StockItemList);
+                        NewStockItems = StockItems;
+                        TmpCount = StockItems.Count;
+                    }
+                    IsVisible = true;
+                });
                 return false;
             });
-            StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex=>ex.IsFavourite== true));
-            StockFollowLists = new ObservableCollection<StockFollowList> (App.CollectionsList);
             
-            if(Preferences.Get("CurrentFollowList", String.Empty)!="")
-            {
-                StockItems = new ObservableCollection<StockItem>(App.CollectionsList.Where(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).FirstOrDefault().StockItemList);
-                NewStockItems = StockItems;
-                TmpCount = StockItems.Count;
-            }
+            
+            
             
             Navigation = navigation;
             
@@ -249,20 +258,16 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             ExchangeDetail = new Command(async (x) =>
             {
                 var exchange = x as StockExchange;
-                tap++;
-                if(tap==1)
-                {
+                if (_tap == true) return;
+                _tap = true;
                     await navigation.PushAsync(new ExchangeDetailPage(exchange.ExchangeId));
-                }
-                else
-                {
-                    tap = 2;
-                }
+                _tap = false;
+                
                
             });
-            SwictchOverViewMarket = new Command(() =>
+            SwictchOverViewMarket = new Command(async () =>
             {
-                navigation.PushAsync(new OverViewMarketPage());
+                await navigation.PushAsync(new OverViewMarketPage());
             });
             ShowPopup = new Command((x) =>
             {
@@ -333,14 +338,20 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 }
                 else
                 {
-                    await navigation.PushAsync(new SearchPage(0));
+                    await navigation.PushAsync(new SearchPage(3));
                 }
             });
             SwitchPriceBoard = new Command(async () =>
             {
+                if(_tap == true)
+                {
+                    return;
+                }
+                _tap = true;
                 if(App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty))!=null)
                 {
                     await (page.Parent.Parent as Page).Navigation.PushAsync(new PriceBoard(0));
+                    _tap = false;
                 }  
                 else
                 {
@@ -381,9 +392,25 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             {
                 StockFollowLists = new ObservableCollection<StockFollowList>(App.CollectionsList);
             });
-
-
-
+            SwitchNotifyPage = new Command(async () =>
+            {
+                if (_tap == true) return;
+                _tap = true;
+                await page.Navigation.PushModalAsync(new NotifyPage());
+                _tap = false;
+            });
+            SwitchSearchPage = new Command(async () =>
+            {
+               await page.Navigation.PushAsync(new SearchPage(1));
+            });
+            SelectItemS = new Command(async (x) =>
+            {
+                if (_tap == true) return;
+                _tap = true;
+                var item = x as StockItem;
+                await page.Navigation.PushAsync(new ItemDetailPage(item));
+                _tap = false;
+            });
         }
         private string _typeFilter = "+/-";
         public string TypeFilter
@@ -488,8 +515,11 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         public Command InitListItem { get; }
         public Command SwitchPriceBoard { get; }
         public Command SelectList { get; }
+        public Command SelectItemS { get; }
         public Command ResetCollectionView { get; }
         public Command ResetStockFollowList { get; }
+        public Command SwitchNotifyPage { get; }
+        public Command SwitchSearchPage { get; }
 
     }
 }

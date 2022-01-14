@@ -1,13 +1,193 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Hủy / Sửa lệnh"
-             x:Class="FakeEzMobileTrading.Views.HomePages.EditPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+             x:Class="FakeEzMobileTrading.Views.HomePages.EditPage"
+             xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid">
+    <NavigationPage.TitleView>
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
+            <Label Text="Hủy / Sửa lệnh" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"/>
+            <Image Source="ic_history_command.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" Margin="0,3,0,0"/>
         </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <Grid RowDefinitions="*,30" RowSpacing="0" IsVisible="{Binding TableCommandVisible}">
+            <Grid VerticalOptions="FillAndExpand" Grid.Row="0">
+                <dxg:DataGridView x:Name="grid3" ItemsSource="{Binding CommandConditions}" 
+                                                  ColumnHeaderHeight="40" 
+                                                  RowHeight="40" FixedColumnSeparatorWidth="1"
+                                                  VerticalLineThickness="1"
+                                                  SelectionMode="None"
+                                                  IsHorizontalScrollBarVisible="False"
+                                                  IsVerticalScrollBarVisible="False"
+                                                  >
+                    <dxg:DataGridView.CellStyle>
+                        <dxg:CellStyle HorizontalLineThickness="1" />
+                    </dxg:DataGridView.CellStyle>
+
+                    <dxg:DataGridView.ColumnHeaderStyle>
+                        <dxg:ColumnHeaderStyle HorizontalLineThickness="1"/>
+                    </dxg:DataGridView.ColumnHeaderStyle>
+
+                    <dxg:DataGridView.Columns>
+                        <dxg:TemplateColumn Caption="Mã" FieldName="StockId" FixedStyle="Start" 
+                                                        HeaderBackgroundColor="#EBEEF2" 
+                                                        Width="30" 
+                                                        HeaderFontColor="Black" 
+                                                        HeaderPadding="0"
+                                                        FontSize="15" HeaderFontSize="15"
+                                                        Padding="0"
+                                                        HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Khối lượng" FieldName="StockID"  
+                                                        HeaderBackgroundColor="#EBEEF2" 
+                                                        HeaderFontColor="Black" 
+                                                        Width="80" 
+                                                        HeaderPadding="0"
+                                                        HeaderFontSize="15"
+                                                        HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Giá" FieldName="Mass"  
+                                                        HeaderBackgroundColor="#EBEEF2" 
+                                                        HeaderFontColor="Black" 
+                                                        Width="50" 
+                                                        HeaderPadding="0"
+                                                        Padding="0"
+                                                        HeaderFontSize="15"
+                                                        HorizontalContentAlignment="Center">
+                           
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="KL còn lại" FieldName="Price"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="90" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label Text="{Binding Item.Price, StringFormat='{0:###,###}'}" TextColor="{Binding Item.TextColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="Center"
+                                                               FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Tình trạng" FieldName="PriceCondition"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="90" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Loại GD" FieldName="Status"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          Padding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label Text="{Binding Item.Status}" TextColor="{Binding Item.TextColor}"  
+                                                               VerticalOptions="Center" HorizontalOptions="Center"
+                                                               FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Sàn" FieldName="Notify"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="30" 
+                                                          HeaderPadding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label Text="{Binding Item.Notify}" TextColor="{Binding Item.TextColor}" 
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Loại lệnh" FieldName="TypeSign"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="80" 
+                                                          HeaderPadding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,0,10,0">
+                                        <Label Text="{Binding Item.TypeSign}" TextColor="{Binding Item.TextColor}"  
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                        <dxg:TemplateColumn Caption="Thời gian" FieldName="TimeOrder"  
+                                                          HeaderBackgroundColor="#EBEEF2" 
+                                                          HeaderFontColor="Black" 
+                                                          Width="90" 
+                                                          HeaderPadding="0"
+                                                          HeaderFontSize="15"
+                                                          HorizontalContentAlignment="Center">
+                            <dxg:TemplateColumn.DisplayTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,0,5,0">
+                                        <Label Text="{Binding Item.TimeOrder , StringFormat='{0:dd/MM/yyyy HH:mm:ss}'}" TextColor="{Binding Item.TextColor}"  
+                                                               VerticalOptions="Center" HorizontalOptions="End"
+                                                               HorizontalTextAlignment="End"
+                                                               FontSize="15"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TemplateColumn.DisplayTemplate>
+                        </dxg:TemplateColumn>
+
+                    </dxg:DataGridView.Columns>
+                </dxg:DataGridView>
+            </Grid>
+
+
+            <Grid ColumnDefinitions="*,*" Padding="5"  Grid.Row="1" BackgroundColor="White">
+                <StackLayout Orientation="Horizontal" Grid.Column="0" HorizontalOptions="Center">
+                    <BoxView WidthRequest="18" HeightRequest="15" BackgroundColor="#034e95"/>
+                    <Label Text="Mua" TextColor="Black" FontSize="14"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="Center">
+                    <BoxView WidthRequest="18" HeightRequest="15" BackgroundColor="Red"/>
+                    <Label Text="Bán" TextColor="Black" FontSize="14"/>
+                </StackLayout>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

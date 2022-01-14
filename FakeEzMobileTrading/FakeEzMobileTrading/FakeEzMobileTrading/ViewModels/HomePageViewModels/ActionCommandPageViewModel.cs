@@ -25,12 +25,13 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         private bool _upDownVisible = true;
         private bool _labelPriceVisible = true;
         private bool _isDisplayChecked = true;
-
+        private bool _isVisiblePage = false;
+        private bool _tap = false;
         public string IdStock { 
             get { return _idStock; } 
             set 
             {
-                if (value == "") { StockNameVisible = false; StockItem = new StockItem(); StockPrice = 0; StockAmount = 0; Pass = ""; LabelPriceVisible = false; };
+                if (value == "") { StockNameVisible = false; StockItem = new StockItem() ; StockPrice = 0; StockAmount = 0; Pass = ""; LabelPriceVisible = false; };
                 SetProperty(ref _idStock, value); 
             }
         }
@@ -91,6 +92,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         public bool ShowHidePass { get => _showHidePass; set { ShowHidePassSource = value == true ? "ic_hide_pass.png" : "ic_show_pass.png"; SetProperty(ref _showHidePass, value); } }
         public bool UpDownVisible { get => _upDownVisible; set { SetProperty(ref _upDownVisible, value); } }
         public bool LabelPriceVisible { get => _labelPriceVisible; set { SetProperty(ref _labelPriceVisible, value); } }
+        public bool IsVisiblePage { get => _isVisiblePage; set { SetProperty(ref _isVisiblePage, value); } }
         public bool IsDisplayChecked { get => _isDisplayChecked; 
             set 
             { 
@@ -102,6 +104,15 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 
         public ActionCommandPageViewModel(Page page)
         {
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+             {
+                 Device.BeginInvokeOnMainThread(() =>
+                 {
+                     IsVisiblePage = true;
+                 });
+                 return false;
+             });
+           
             MyMoney = 900000000;
             Pass = "";
             SurplusStocks = App.SuplusStocks;
@@ -179,9 +190,13 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 
                 }
             });
-            SwitchCommandConditionPage = new Command(() =>
+            SwitchCommandConditionPage = new Command(async () =>
             {
-                App.Current.MainPage = new NavigationPage( new MainPage("cc"));
+                if (_tap == true) return;
+                _tap = true;
+                IsVisiblePage = false;
+                await page.Navigation.PushModalAsync(new NavigationPage( new MainPage("cc")));
+                _tap = false;
             });
             ShowDialogSetting = new Command(() =>
             {

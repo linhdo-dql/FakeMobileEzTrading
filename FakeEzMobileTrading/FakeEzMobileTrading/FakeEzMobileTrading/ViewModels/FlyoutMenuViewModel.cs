@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-
 namespace FakeEzMobileTrading.ViewModels
 {
     public class FlyoutMenuViewModel : BaseViewModel
@@ -25,7 +25,6 @@ namespace FakeEzMobileTrading.ViewModels
         private bool _listFavouriteVisible = false;
         private bool _istapped = false;
         private int _tapp = 0;
-
         public FlyoutMenuViewModel(Page page)
         {
             SetResource();
@@ -33,11 +32,8 @@ namespace FakeEzMobileTrading.ViewModels
             ShowHideSubMenu = new Command((x) =>
             {
                 ItemMenu item = x as ItemMenu;
-                
-                
                     item.IsVisible = !item.IsVisible;
                     //UpdateUIItem(item);
-                
             });
             ShowFavouriteIcon = new Command(() =>
             {
@@ -47,7 +43,6 @@ namespace FakeEzMobileTrading.ViewModels
                     item.IconShowMore = "";
                     item.IconShowMoreEnable = false;
                     item.IconFavouriteVisible = true;
-                    
                 }
                 ItemMarkets = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 1));
                 ItemTrans = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 2));
@@ -68,7 +63,6 @@ namespace FakeEzMobileTrading.ViewModels
                     if (item.SubMenu != null)
                     {
                         item.IconShowMoreEnable = true;
-
                     }
                     item.IconFavouriteVisible = false;
                 }
@@ -87,62 +81,53 @@ namespace FakeEzMobileTrading.ViewModels
             {
                 ItemMenu item = x as ItemMenu;
                 item.IsFavourite = !item.IsFavourite;
-                
                 ItemFavourites = new ObservableCollection<ItemMenu>(ItemMenus.Where(i => i.IsFavourite == true));
-                
-
-                
             });
-            ChangePage = new Command((x) =>
+            ChangePage = new Command(async (x) =>
             {
                 if(SuccessVisible) { return; }
-                _tapp++;
-                if (_istapped)
+                if (_istapped==true)
+                {
                     return;
+                }
                 ItemMenu item = x as ItemMenu;
-                
-
+                _tapp++;
                 _istapped = true;
-
-                if (_tapp == 1 || _tapp!=3)
+                await Task.Run(() =>
                 {
-                    switch (item.Id)
+                    Task.Delay(300).Wait();
+                    Device.BeginInvokeOnMainThread(async () =>
                     {
-                        case "tongquan": (page.Parent as FlyoutPage).Detail = new NavigationPage(new HomePage(0)); break;
-                        case "banggia": (page.Parent as FlyoutPage).Navigation.PushAsync(new PriceBoard(0)); _tapp = 2; break;
-                        case "tintuc": (page.Parent as FlyoutPage).Detail = new NavigationPage(new NewPage()); break;
-                        case "fptsnhandinh": (page.Parent as FlyoutPage).Detail = new NavigationPage(new FPTSIdentityPage()); break;
-                        case "lichsukien": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ActionEventPage()); break;
-                        case "bieudo": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ChartPage()); break;
-                        default: (page.Parent as FlyoutPage).Detail = new NavigationPage(new SendMoneyPage()); break;
-                    }
-                }
-                else 
-                {
-                    _tapp = 0;
-                }
-                    
-
-               
-
-                _istapped = false;
+                        switch (item.Id)
+                        {
+                            case "tongquan": (page.Parent as FlyoutPage).Detail = new NavigationPage(new HomePage(0)); break;
+                            case "banggia": if (_tapp == 1 || _tapp!=3) { (page.Parent as FlyoutPage).Navigation.PushAsync(new PriceBoard(0)); _tapp = 2; } else { _tapp = 0; }; break;
+                            case "tintuc": (page.Parent as FlyoutPage).Detail = new NavigationPage(new NewPage()); break;
+                            case "fptsnhandinh": (page.Parent as FlyoutPage).Detail = new NavigationPage(new FPTSIdentityPage()); break;
+                            case "lichsukien": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ActionEventPage()); break;
+                            case "bieudo": (page.Parent as FlyoutPage).Detail = new NavigationPage(new ChartPage()); break;
+                            case "baocaogiaodich": item.IsVisible = !item.IsVisible; break;
+                            default: (page.Parent as FlyoutPage).Detail = new NavigationPage(new SendMoneyPage()); break;
+                        }
+                        
+                          
+                    });
+                });
                 (page.Parent as FlyoutPage).IsPresented = false;
+                _istapped = false;
             });
         }
         public ObservableCollection<ItemMenu> ItemMenus
         {
             get { return _itemMenu; }
             set {
-                
                 SetProperty(ref _itemMenu, value);
-                
             }
         }
         public ObservableCollection<ItemMenu> ItemFavourites
         {
             get { return _itemFavour; }
             set {
-                
                 SetProperty(ref _itemFavour, value); 
             }
         }
@@ -185,7 +170,7 @@ namespace FakeEzMobileTrading.ViewModels
                 new ItemMenu () {TypeList = 1, Id = "giaodichphaisinh", Icon="ic_m1_gdphaisinh.png", Name="Giao dịch phái sinh", SubMenu=null},
                 new ItemMenu () {TypeList = 2, Id = "datlenh", Icon="ic_m2_datlenh.png", Name="Đặt lệnh", SubMenu=null},
                 new ItemMenu () {TypeList = 2, Id = "lenhdieukien", Icon="ic_m2_datlenhdk.png", Name="Lệnh điều kiện", SubMenu=null},
-                new ItemMenu () {TypeList = 2, Id = "baocaogiaodinh", Icon="ic_m2_baocaogd.png", Name="Báo cáo giao dịch", SubMenu = new string[]{"Lệnh trong ngày", "Lịch sử đặt lệnh","Lệnh ứng trước"} },
+                new ItemMenu () {TypeList = 2, Id = "baocaogiaodich", Icon="ic_m2_baocaogd.png", Name="Báo cáo giao dịch", SubMenu = new string[]{"Lệnh trong ngày", "Lịch sử đặt lệnh","Lệnh ứng trước"} },
                 new ItemMenu () {TypeList = 2, Id = "quanlytaikhoan", Icon="ic_m2_quanlytk.png", Name="Quản lý tài khoản", SubMenu= new string[]{"Sao kê chứng khoán", "Sao kê tiền", "Tra cứu phí lưu ký", "Tra cứu tình trạng chứng quyền","Tra cứu biểu phí"}},
                 new ItemMenu () {TypeList = 2, Id = "baocaotaisan", Icon="ic_m2_bctaisan.png", Name="Báo cáo tài sản", SubMenu=null},
                 new ItemMenu () {TypeList = 2, Id = "banlole", Icon="ic_m2_banlole.png", Name="Bán lô lẻ", SubMenu=null},
@@ -206,7 +191,6 @@ namespace FakeEzMobileTrading.ViewModels
             ItemTrans = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 2));
             ItemSales = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 3));
             ItemSupports = new ObservableCollection<ItemMenu>(ItemMenus.Where(item => item.TypeList == 4));
-
         }
         public bool SuccessVisible
         {
@@ -222,6 +206,5 @@ namespace FakeEzMobileTrading.ViewModels
            get { return _listFavouriteVisible; }
            set { SetProperty(ref _listFavouriteVisible, value); }
         }
-        
     }
 }

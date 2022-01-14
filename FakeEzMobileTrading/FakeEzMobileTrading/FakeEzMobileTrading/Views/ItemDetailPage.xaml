@@ -9,27 +9,32 @@
              xmlns:dxc="http://schemas.devexpress.com/xamarin/2014/forms/collectionview"
              xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews">
     <NavigationPage.TitleView>
-        <StackLayout Padding="0">
+        <StackLayout Padding="0" HorizontalOptions="FillAndExpand">
             <Label Text="{Binding StockItem.StockId}" FontSize="16" TextColor="White"/>
-            <Label Text="{Binding StockItem.StockName}" FontSize="12" TextColor="White"/>
+            <Label Text="{Binding StockItem.StockName}" FontSize="12" TextColor="White" MaxLines="1" LineBreakMode="TailTruncation"/>
         </StackLayout>
     </NavigationPage.TitleView>
     <ContentPage.Content>
        
-         <Grid>
+         <Grid >
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color="#034E95" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="40" HeightRequest="40">
+
+            </ActivityIndicator>
             <dxn:TabView SelectedItemIndicatorColor="#034e95"
                                  ItemHeaderHeight="20"
                                  ItemHeaderPlacementOnSelection="Center"
-                                 
                                  HeaderPanelItemSpacing="10"
-                         HeaderPanelIndent="10"
+                                 HeaderPanelIndent="10"
+                         x:Name="gridPage"
                                  HeaderPanelContentAlignment="Start"
                                  ItemHeaderFontAttributes="Bold"
                                  ItemHeaderFontSize="15"
                          HorizontalOptions="Start"
                          SwipeEnabled="False"
+                         
                          HeaderPanelShadowColor="Gray"
                          HeaderPanelShadowHeight="1"
+                         
                           >
 
                 <dxn:TabViewItem HeaderText="Giao dịch"
@@ -38,25 +43,29 @@
                                          HeaderPadding="0"
                                          HeaderWidth="Auto">
                     <dxn:TabViewItem.Content>
-                        <ScrollView>
+                        <ScrollView VerticalScrollBarVisibility="Never">
                             <Grid RowDefinitions="200,160,200,Auto">
+                                
                                 <Frame Grid.Row="0" Padding="0">
                                     <Grid RowDefinitions="0.25*,0.2*,*"
-                          Padding="10,10,10,10">
+                                        Padding="10,10,10,10" >
                                         <StackLayout Orientation="Horizontal" Grid.Row="0" Spacing="10">
                                             <Image WidthRequest="20" HeightRequest="20" Source="{Binding StockItem.UpDownSource}" Margin="0,3,0,0" VerticalOptions="CenterAndExpand"/>
-                                            <Label Text="{Binding StockItem.PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" VerticalOptions="CenterAndExpand" 
-                                   FontSize="25" FontAttributes="Bold" TextColor="Black"/>
-                                            <Label Text="{Binding StockItem.UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000*(-1)'}" TextColor="{Binding StockItem.UpDownColor}"
-                                   VerticalOptions="Center"
-                                   Margin="0,5,0,0"
-                                   FontSize="16"
-                                   FontAttributes="Bold"/>
-                                            <Label Text="{Binding StockItem.Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000*(-1)', StringFormat='({0:F2}%)'}" TextColor="{Binding StockItem.UpDownColor}"
-                                   VerticalOptions="Center"
-                                   Margin="0,5,0,0"
-                                   FontSize="16"
-                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding StockItem.PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" VerticalOptions="CenterAndExpand" 
+                                                   FontSize="25" FontAttributes="Bold" TextColor="Black"/>
+                                            <StackLayout Margin="0,2,0,0" Orientation="Horizontal" BackgroundColor="{Binding StockItem.BgColor}" Padding="3" VerticalOptions="CenterAndExpand">
+                                                <Label Text="{Binding StockItem.UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='abs(x/1000)', StringFormat='{0:F2}'}" TextColor="{Binding StockItem.PriceGoodColor}"
+                                                       VerticalOptions="Center"
+                                                       FontSize="16"
+                                                       HorizontalOptions="Center"
+                                                       FontAttributes="Bold"/>
+                                                <Label Text="{Binding StockItem.Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='abs(x/1000)', StringFormat='({0:F2}%)'}" TextColor="{Binding StockItem.PriceGoodColor}"
+                                                       VerticalOptions="Center"
+                                                       FontSize="16"
+                                                       HorizontalOptions="Center"
+                                                       FontAttributes="Bold"/>
+                                            </StackLayout>
+                                            
                                         </StackLayout>
                                         <Grid ColumnDefinitions="*,*" Grid.Row="1"
                               ColumnSpacing="10">
@@ -85,7 +94,7 @@
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
                                                 <Label Text="Sàn:" HorizontalOptions="Start" TextColor="Black" FontSize="16"/>
-                                                <Label Text="{Binding StockItem.PriceCeiling, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="DeepSkyBlue" HorizontalOptions="EndAndExpand"
+                                                <Label Text="{Binding StockItem.PriceFloor, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000'}" TextColor="DeepSkyBlue" HorizontalOptions="EndAndExpand"
                                        FontSize="16"/>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
@@ -152,8 +161,32 @@
                                    Grid.Column="0">
                                                 <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
                                             </Frame>
-                                            <Label Text="100" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceB1X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceB1, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgB1Color}" TextColor="{Binding StockItem.PriceB1Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
 
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
@@ -162,8 +195,32 @@
                                    Grid.Column="0">
                                                 <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
                                             </Frame>
-                                            <Label Text="600" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceB2X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceB2, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgB2Color}" TextColor="{Binding StockItem.PriceB2Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
 
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
@@ -172,8 +229,32 @@
                                    Grid.Column="0">
                                                 <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
                                             </Frame>
-                                            <Label Text="1000" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceB3X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceB3, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="2" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgB3Color}" TextColor="{Binding StockItem.PriceB3Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
 
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
@@ -182,8 +263,32 @@
                                    Grid.Column="2">
                                                 <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
                                             </Frame>
-                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceS1X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceS1, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="0" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgS1Color}" TextColor="{Binding StockItem.PriceS1Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
 
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
@@ -192,8 +297,32 @@
                                    Grid.Column="2">
                                                 <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
                                             </Frame>
-                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceS2X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceS2, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="0" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgS2Color}" TextColor="{Binding StockItem.PriceS2Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
 
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
@@ -202,8 +331,32 @@
                                    Grid.Column="2">
                                                 <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
                                             </Frame>
-                                            <Label Text="1000" HorizontalOptions="Start" Grid.Column="1" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
-                                            <Label Text="12.55" HorizontalOptions="Start" Grid.Column="0" VerticalOptions="Center" FontSize="16" TextColor="Black"/>
+                                            <Label Text="{Binding StockItem.PriceS3X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Text="{Binding StockItem.PriceS3, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000',StringFormat='{0:F1}'}" HorizontalOptions="End" Grid.Column="0" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" BackgroundColor="{Binding StockItem.BgS3Color}" TextColor="{Binding StockItem.PriceS3Color}">
+                                                <Label.Triggers>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0.0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                    <Trigger TargetType="Label" Property="Text" Value="0,0">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </Trigger>
+                                                </Label.Triggers>
+                                            </Label>
                                         </Grid>
                                         <Grid ColumnDefinitions="50,*,50"
                               ColumnSpacing="15"
@@ -224,7 +377,6 @@
                                             </Grid>
                                         </Grid>
                                     </Grid>
-
                                 </Frame>
                                 <Frame Grid.Row="2"
                        Padding="5,5,5,0">
@@ -816,6 +968,7 @@
                 </dxn:TabViewItem>
 
             </dxn:TabView>
+            
         </Grid>  
     </ContentPage.Content>
 </ContentPage>

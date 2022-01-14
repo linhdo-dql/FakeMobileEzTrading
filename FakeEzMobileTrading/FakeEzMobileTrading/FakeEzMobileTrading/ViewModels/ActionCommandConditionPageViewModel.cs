@@ -163,7 +163,15 @@ namespace FakeEzMobileTrading.ViewModels
         {
             ContentPageVisible = false;
             IsBusy = true;
-            Task.Delay(2000);
+            Device.StartTimer(TimeSpan.FromSeconds(2), () => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    IsBusy = false;
+                    ContentPageVisible = true;
+                    
+                });
+                return false;
+            });
             MyMoney = 900000000;
             SurplusStocks = App.SuplusStocks;
             Pass = "";
@@ -661,8 +669,7 @@ namespace FakeEzMobileTrading.ViewModels
             });
 
             InitCalendar(page, DateTime.Now.Year, DateTime.Now.Month);
-            ContentPageVisible = true;
-            IsBusy = false;
+           
         }
         public Command SelectedStock { get; }
         public Command SelectedStock2 { get; }

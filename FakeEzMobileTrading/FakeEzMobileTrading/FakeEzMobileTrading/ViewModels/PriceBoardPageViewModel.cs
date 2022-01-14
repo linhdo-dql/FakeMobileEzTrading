@@ -23,9 +23,11 @@ namespace FakeEzMobileTrading.ViewModels
         public ObservableCollection<StockFollowList> StockFollowListsk { get => _stockFollowList; set { SetProperty(ref _stockFollowList, value); } }
         private bool _isBusy = false, _newListLayoutVisible, _fullOrShort, _isDisplayChecked = false, _isScrollChecked = false, _isVisible = false;
         private string _selectedStockId;
+        private bool _tap = false;
         public PriceBoardPageViewModel(Page page, INavigation navigation)
         {
             IsBusy = true;
+            Preferences.Set("TypeTable", 1);
             Task.Run(async () =>
             {
                 await Task.Delay(1000);
@@ -159,8 +161,10 @@ namespace FakeEzMobileTrading.ViewModels
             });
             InitListItem = new Command(async (x) =>
             {
-               
-                    await navigation.PushAsync(new SearchPage(1));
+                if (_tap == true) return;
+                _tap = true;
+                    await navigation.PushAsync(new SearchPage(0));
+                _tap = false;
                 
             });
             SettingBoard = new Command((x) =>
@@ -204,21 +208,64 @@ namespace FakeEzMobileTrading.ViewModels
                 SelectedStockId = (string)x;
                 page.FindByName<DXPopup>("popup3").IsOpen = true;
             });
-            DeleteStockItem = new Command(() =>
+            DeleteStockItem = new Command(async () =>
             {
-                App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList.Remove(StockItems.FirstOrDefault(x => x.StockId == SelectedStockId));
-                page.FindByName<DXPopup>("popup3").IsOpen = false;
+              
+                bool b = await page.DisplayAlert("Xác nhận", "Xóa mã " + SelectedStockId + " khỏi danh mục theo dõi?", "Đồng ý", "Hủy");
+                if(b == true)
+                {
+                    IsBusy = true;
+                    await Task.Delay(1000);
+                    StockItems.Remove(StockItems.FirstOrDefault(x => x.StockId == SelectedStockId));
+                    App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList.Remove(StockItems.FirstOrDefault(x => x.StockId == SelectedStockId));
+                    page.FindByName<DXPopup>("popup3").IsOpen = false;
+                    IsBusy = false;
+                }
+                
             });
-            RowSelected = new Command((x) =>
+            RowSelected = new Command(async (x) =>
             {
+                if (_tap == true) return;
+                _tap = true;
+               var item = x as StockItem;
+               await page.Navigation.PushAsync(new ItemDetailPage(item));
+                _tap = false;
+            });
+            RowSelected2 = new Command(async (x) =>
+            {
+                if (_tap == true) return;
+                _tap = true;
                 var item = x as StockItem;
-                page.Navigation.PushAsync(new ItemDetailPage());
+                await page.Navigation.PushAsync(new ItemDetailPage(item));
+                _tap = false;
             });
-            ShowItemDetailPage = new Command(() =>
+            ShowItemDetailPage = new Command(async () =>
             {
-                page.Navigation.PushAsync(new ItemDetailPage());
+                if (_tap == true) return;
+                _tap = true;
+                await page.Navigation.PushAsync(new ItemDetailPage(App.Items.FirstOrDefault(i=> i.StockId==SelectedStockId)));
                 page.FindByName<DXPopup>("popup3").IsOpen = false;
+                _tap = false;
             });
+            SelectExchangeStock = new Command(async (x) =>
+           {
+               if (_tap == true) return;
+               _tap = true;
+               var item = x as StockExchange;
+               await page.Navigation.PushAsync(new ExchangeDetailPage(item.ExchangeId));
+               _tap = false;
+
+           });
+            ShowExchangeList = new Command(async () =>
+            {
+                if (_tap == true) return;
+                _tap = true;
+               
+                await page.Navigation.PushAsync(new OverViewMarketPage());
+                _tap = false;
+
+            });
+
 
         }
         public bool IsBusy
@@ -279,6 +326,9 @@ namespace FakeEzMobileTrading.ViewModels
         public Command ShowPopupDetail { get; }
         public Command DeleteStockItem { get; }
         public Command RowSelected { get; }
+        public Command RowSelected2 { get; }
         public Command ShowItemDetailPage { get; }
+        public Command SelectExchangeStock { get; }
+        public Command ShowExchangeList { get; }
     }
 }

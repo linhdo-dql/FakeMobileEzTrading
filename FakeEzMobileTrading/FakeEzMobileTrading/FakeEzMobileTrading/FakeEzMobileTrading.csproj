@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<AotAssemblies>True</AotAssemblies>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
@@ -41,6 +42,9 @@
     </Compile>
     <Compile Update="Views\FPTSIdentityPage.xaml.cs">
       <DependentUpon>FPTSIdentityPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FormSendPage.xaml.cs">
+      <DependentUpon>FormSendPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -79,6 +83,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\NewPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\NotifyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\OverViewMarketPage.xaml">

@@ -129,7 +129,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid IsVisible="{Binding ContentPageVisible}">
+        <Grid >
             <dxn:TabView SelectedItemIndicatorColor="#034e95"
                          ItemHeaderHeight="20"
                          HeaderPanelItemSpacing="0"
@@ -150,7 +150,7 @@
                                          HeaderWidth="*">
                     <dxn:TabViewItem.Content>
                          <ScrollView VerticalScrollBarVisibility="Never">
-            <StackLayout x:Name="layout">
+                            <StackLayout x:Name="layout" IsVisible="{Binding ContentPageVisible}">
                 <Grid>
                     <Label Padding="10" IsVisible="{Binding SellBuyVisible, Converter={xct:InvertedBoolConverter}}">
                         <Label.FormattedText>
@@ -842,7 +842,7 @@
                                               RowSpacing="0"
                                               Padding="0,5,0,0">
                                             <StackLayout>
-                                                <Grid ColumnDefinitions="0.3*,*,0.75*,0.75*" Padding="5,0,5,0">
+                                                <Grid ColumnDefinitions="0.3*,*,0.65*,*" Padding="5,0,5,0">
                                                     <Label Text="Mã" FontSize="14" TextColor="Black" Grid.Column="0" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
                                                     <Label Text="KL" FontSize="14" TextColor="Black" Grid.Column="1" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
                                                     <Label Text="Tỷ lệ vay" FontSize="14" TextColor="Black" Grid.Column="2" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
@@ -857,7 +857,7 @@
                                                     <DataTemplate>
                                                         <StackLayout
                                             Padding="0,5,0,0">
-                                                            <Grid ColumnDefinitions="0.3*,*,0.75*,0.75*" Padding="5,0,5,0">
+                                                            <Grid ColumnDefinitions="0.3*,*,0.65*,*" Padding="5,0,5,0">
                                                                 <Label Text="{Binding StockId}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="0" HorizontalTextAlignment="Center"  HorizontalOptions="FillAndExpand" />
                                                                 <Label Text="{Binding Mass, StringFormat='{0:###,###}'}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="1" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
                                                                 <Label Text="{Binding PersentBorrow}" FontSize="14" TextColor="{Binding TextColors}" Grid.Column="2" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>

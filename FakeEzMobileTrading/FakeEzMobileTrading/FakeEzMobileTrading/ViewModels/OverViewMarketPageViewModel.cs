@@ -17,8 +17,10 @@ namespace FakeEzMobileTrading.ViewModels
         public ObservableCollection<StockExchange> HNXStockExChanges { get; set; }
         private string _typeFilter = "+/-", _typeFilter2 = "Khối lượng";
         private bool _showHidePersent = false, _showHideValue = false;
+        private bool _tap = false;
         public OverViewMarketPageViewModel(Page page, INavigation navigation)
         {
+            
             HSXStockExChanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.TypeExchange == "HSX"));
             HNXStockExChanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.TypeExchange == "HNX"));
             ChangeFilter = new Command(() =>
@@ -49,10 +51,13 @@ namespace FakeEzMobileTrading.ViewModels
                     }
                 }
             });
-            SwicthExchangDetail = new Command((x) =>
+            SwicthExchangDetail = new Command(async (x) =>
             {
+                if (_tap == true) return;
+                _tap = true;
                 var item = x as StockExchange;
-                navigation.PushAsync(new ExchangeDetailPage(item.ExchangeId));
+                await navigation.PushAsync(new ExchangeDetailPage(item.ExchangeId));
+                _tap = false;
             });
         }
         

@@ -4,6 +4,12 @@
              x:Class="FakeEzMobileTrading.Views.ChartPage"
              Title="Biểu đồ"
              xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews">
+    <NavigationPage.TitleView>
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
+            <Label Text="Biểu đồ" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
     <ContentPage.Content>
         <Grid>
             <custom:CustomWebView x:Name="webView" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">

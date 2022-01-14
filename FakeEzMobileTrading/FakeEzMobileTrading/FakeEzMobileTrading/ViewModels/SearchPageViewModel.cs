@@ -1,5 +1,6 @@
 ﻿using Android.Preferences;
 using FakeEzMobileTrading.Models;
+using FakeEzMobileTrading.Views;
 using MUAHO.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,21 +27,30 @@ namespace FakeEzMobileTrading.ViewModels
                 SetProperty(ref _allStockItems, value); 
             } 
         }
-        public SearchPageViewModel(Page page)
+        public SearchPageViewModel(Page page, int type)
         {
             AllStockItems = new ObservableCollection<StockItem>(App.Items);
             AddToList = new Command((x) =>
             {
                 var item = x as StockItem;
                 ObservableCollection<StockItem> stockItems = App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", "")).StockItemList;
-                StockItem itemtmp = item;
                
-                itemtmp.Index = stockItems.Count == 0 ? 0 : stockItems.Max(i => i.Index)+1;
-                if(stockItems.FirstOrDefault(l=>l.StockId == item.StockId) == null)
+                if (type == 0 || type == 3)
                 {
-                    stockItems.Add(itemtmp);
+                    
+                    if (stockItems.FirstOrDefault(l => l.StockId == item.StockId) == null)
+                    {
+                        stockItems.Add(item);
+                    }
+                    page.Navigation.PopAsync();
                 }
-                page.Navigation.PopAsync();
+                else
+                {
+                    page.Navigation.PushAsync(new ItemDetailPage(item));
+                }
+               
+                
+                
             });
             HidePopup = new Command((x) =>
             {

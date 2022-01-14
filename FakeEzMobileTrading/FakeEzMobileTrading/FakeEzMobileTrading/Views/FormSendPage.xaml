@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FakeEzMobileTrading.Views.FormSendPage"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             NavigationPage.HasNavigationBar="False"
+             >
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <AbsoluteLayout
+                HeightRequest="80"
+                BackgroundColor="#034E95">
+                <Label Text="Mẫu chuyển tiền" 
+                   TextColor="White" FontSize="18"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   WidthRequest="300"
+                   FontAttributes="Bold"
+                   AbsoluteLayout.LayoutBounds="0,0.5,1,1"
+                   AbsoluteLayout.LayoutFlags="All"/>
+                <Image Source="ic_clear.png" 
+                               AbsoluteLayout.LayoutBounds="0.95,0.5,16,16" AbsoluteLayout.LayoutFlags="PositionProportional">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding HidePopup}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </AbsoluteLayout>
+            <StackLayout
+                HeightRequest="60"
+                BackgroundColor="#EBEEF2">
+                <custom:CustomEntryWithBorder 
+                    HeightRequest="40"
+                    WidthRequest="250"
+                    Placeholder="Tìm kiếm"
+                    TextColor="#034E95"
+                    VerticalOptions="Center"
+                    FontSize="14"
+                    Text="{Binding StrSearch}"
+                    Margin="30,10,30,10">
+                    
+                </custom:CustomEntryWithBorder>   
+            </StackLayout>
+            <CollectionView x:Name="AllForms"
+                ItemsSource="{Binding AllForms}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" Padding="5" x:Name="FormItem">
+                                <StackLayout HorizontalOptions="StartAndExpand">
+                                    <Label Text="{Binding Title}" FontSize="16" TextColor="#034E95"/>
+                                    <Label Text="{Binding Number}" FontSize="16" TextColor="Black"/>
+                                    <Label Text="{Binding Name}" FontSize="16" TextColor="Black"/>
+                                    <Label Text="{Binding Address}" FontSize="16" TextColor="Black"/>
+                                </StackLayout>
+                                <Image Source="ic_edit_1.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"/>
+                            </StackLayout>
+                            <BoxView HeightRequest="0.15" Color="Gray"/>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.FormSelected, Source={x:Reference AllForms}}" CommandParameter="{Binding Source={x:Reference FormItem}, Path=BindingContext}"/>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

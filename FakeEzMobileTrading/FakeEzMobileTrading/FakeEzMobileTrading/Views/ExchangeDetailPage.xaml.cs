@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,7 +17,7 @@ namespace FakeEzMobileTrading.Views
         public ExchangeDetailPage(string exchangeId)
         {
             InitializeComponent();
-            
+            Preferences.Set("TypeTable", 0);
             BindingContext = App.Exchanges.FirstOrDefault(item => item.ExchangeId == exchangeId);
         }
     }

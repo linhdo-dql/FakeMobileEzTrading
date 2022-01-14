@@ -18,16 +18,16 @@ namespace FakeEzMobileTrading.Views
         public SearchPage(int type)
         {
             InitializeComponent();
-            BindingContext = new SearchPageViewModel(this);
+            BindingContext = new SearchPageViewModel(this, type);
             _type = type;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindingContext = new SearchPageViewModel(this);
-            App.Tap = 0;
-            if(_type == 0)
+            BindingContext = new SearchPageViewModel(this, _type);
+            
+            if(_type == 1 || _type == 3)
             {
                 DependencyService.Get<IOrientationService>().Portrait();
             }

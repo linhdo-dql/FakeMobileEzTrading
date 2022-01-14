@@ -86,16 +86,18 @@
                                             <StackLayout Orientation="Horizontal"
                                                      Spacing="10">
                                                 <Label Text="{Binding ExchangeId, StringFormat='{0}:'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" FontAttributes="Bold"/>
-                                                <Label Text="{Binding ExchangePrice, StringFormat='{0:n}',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" 
+                                                <StackLayout Orientation="Horizontal" BackgroundColor="{Binding BgColor}">
+                                                    <Label Text="{Binding ExchangePrice, StringFormat='{0:n}',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" 
                                                            FontSize="13"
                                                            FontAttributes="Bold"/>
-                                                <StackLayout Orientation="Horizontal"
+                                                    <StackLayout Orientation="Horizontal"
                                                                  Spacing="13"
                                                                  HorizontalOptions="Center">
-                                                    <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
+                                                        <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
                                                                />
-                                                    <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}%'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
+                                                        <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}%'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="13"
                                                                />
+                                                    </StackLayout>
                                                 </StackLayout>
 
                                             </StackLayout>
@@ -103,7 +105,9 @@
                                                 <Label Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='GT: {0:n} tỷ'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13"/>
                                                 <Label Text="{Binding ExchangeMass,  StringFormat='KL: {0:###,###}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13"/>
                                             </StackLayout>
-
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.SelectExchangeStock, Source={x:Reference StockExchanges}}" CommandParameter="{Binding Source={x:Reference ExchangeItem}, Path=BindingContext}" />
+                                            </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -112,7 +116,7 @@
                         </repeater:RepeaterView>
                         <Image Source="ic_arr_right2.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFit" HorizontalOptions="End">
                             <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SwictchOverViewMarket}"/>
+                                <TapGestureRecognizer Command="{Binding ShowExchangeList}"/>
                             </Image.GestureRecognizers>
                         </Image>
                     </StackLayout>
@@ -151,11 +155,11 @@
                                                         HorizontalContentAlignment="Center">
                             <dxg:TemplateColumn.DisplayTemplate>
                                 <DataTemplate>
-                                    <Grid BackgroundColor="{Binding Item.UpDownColor}">
+                                    <Grid BackgroundColor="{Binding Item.BgIdColor}">
                                         <Label Text="{Binding Item.StockId}"
                                            VerticalOptions="Center" HorizontalOptions="Center"
                                            FontSize="13"
-                                           TextColor="{Binding Item.TextColorInBoard}"/>
+                                           TextColor="White"/>
 
 
                                         <Grid.GestureRecognizers>
@@ -223,7 +227,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                              BackgroundColor="{Binding Item.BgB3Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB3, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB3Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -275,7 +279,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                              BackgroundColor="{Binding Item.BgB2Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB2, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB2Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -327,7 +331,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                              BackgroundColor="{Binding Item.BgB1Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB1, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceB1Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -379,7 +383,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#444444">
+                                              BackgroundColor="{Binding Item.BgColor}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceGood, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceGoodColor}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -405,7 +409,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#444444">
+                                              BackgroundColor="{Binding Item.BgColor}">
                                         <Label Grid.Row="0" Text="{Binding Item.UpDown, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.UpDownColor}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -431,7 +435,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                      BackgroundColor="{Binding Item.BgS1Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS1, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS1Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -481,7 +485,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                      BackgroundColor="{Binding Item.BgS2Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS2, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS2Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -531,7 +535,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                      BackgroundColor="{Binding Item.BgS3Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS3, Converter={xct:MathExpressionConverter},ConverterParameter='x/1000', StringFormat='{0:F2}'}" TextColor="{Binding Item.PriceS3Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -705,11 +709,11 @@
                                                         HorizontalContentAlignment="Center">
                             <dxg:TemplateColumn.DisplayTemplate>
                                 <DataTemplate>
-                                    <Grid BackgroundColor="{Binding Item.UpDownColor}">
+                                    <Grid BackgroundColor="{Binding Item.BgIdColor}">
                                         <Label Text="{Binding Item.StockId}"
                                            VerticalOptions="Center" HorizontalOptions="Center"
                                            FontSize="13"
-                                           TextColor="{Binding Item.TextColorInBoard}"/>
+                                           TextColor="White"/>
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding BindingContext.ShowPopupDetail, Source={x:Reference dvFull}}" CommandParameter="{Binding Item.StockId}"/>
                                         </Grid.GestureRecognizers>
@@ -775,7 +779,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                               BackgroundColor="{Binding Item.BgB3Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB3, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB3Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -827,7 +831,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                               BackgroundColor="{Binding Item.BgB2Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB2, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB2Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -879,7 +883,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#222222">
+                                               BackgroundColor="{Binding Item.BgB1Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceB1, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceB1Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -931,7 +935,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#444444">
+                                              BackgroundColor="{Binding Item.BgColor}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceGood, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceGoodColor}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -957,7 +961,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                              BackgroundColor="#444444">
+                                              BackgroundColor="{Binding Item.BgColor}">
                                         <Label Grid.Row="0" Text="{Binding Item.UpDown}" TextColor="{Binding Item.UpDownColor}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -983,7 +987,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                      BackgroundColor="{Binding Item.BgS1Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS1, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS1Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -1033,7 +1037,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                       BackgroundColor="{Binding Item.BgS2Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS2, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS2Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"
@@ -1083,7 +1087,7 @@
                                     <Grid RowDefinitions="*,*"
                                               RowSpacing="0" 
                                               Padding="0,0,5,0"
-                                      BackgroundColor="#222222">
+                                       BackgroundColor="{Binding Item.BgS3Color}">
                                         <Label Grid.Row="0" Text="{Binding Item.PriceS3, StringFormat='{0:###,###}'}" TextColor="{Binding Item.PriceS3Color}" 
                                                                     HorizontalTextAlignment="End"
                                                                    FontSize="13"

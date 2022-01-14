@@ -1,4 +1,5 @@
-﻿using FakeEzMobileTrading.Models;
+﻿using DevExpress.XamarinForms.Navigation;
+using FakeEzMobileTrading.Models;
 using FakeEzMobileTrading.Models.ItemStatistic;
 using Java.Util;
 using MUAHO.ViewModels;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels
@@ -20,7 +23,23 @@ namespace FakeEzMobileTrading.ViewModels
         public int _nextOrPrev = 0;
         public ItemDetailPageViewModel(Page page,StockItem sI)
         {
-           StockItem = sI;
+            Preferences.Set("TypeTable", 0);
+            IsBusy = true;
+            page.FindByName<TabView>("gridPage").IsVisible = false;
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    page.FindByName<TabView>("gridPage").IsVisible = true;
+                    IsBusy = false;
+                });
+                return false;
+            });
+           
+
+            StockItem = sI;
+           
+           
            PriceStatistics = new ObservableCollection<PriceStatistic>(App.ItemStatistics.FirstOrDefault(i => i.StockIdStatistic == sI.StockId).PriceStatistic.Take(6));
            CompanyNews = App.CompanyNews;
            Next = new Command(() =>
@@ -37,6 +56,8 @@ namespace FakeEzMobileTrading.ViewModels
                 PriceStatistics = SetSourcePrice(NextOrPrev, sI.StockId);
 
             });
+
+            
         }
         public int NextOrPrev
         {
@@ -64,5 +85,9 @@ namespace FakeEzMobileTrading.ViewModels
             }
             return s;
         }
+
+        
+        private bool _isBusy = false;
+        public bool IsBusy { get => _isBusy; set { SetProperty(ref _isBusy, value); } }
     }
 }

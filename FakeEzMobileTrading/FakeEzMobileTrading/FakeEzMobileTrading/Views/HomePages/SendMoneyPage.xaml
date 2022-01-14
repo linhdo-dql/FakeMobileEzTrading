@@ -1,13 +1,331 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Chuyển tiền"
-             x:Class="FakeEzMobileTrading.Views.HomePages.SendMoneyPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+             x:Class="FakeEzMobileTrading.Views.HomePages.SendMoneyPage"
+             xmlns:dxn="http://schemas.devexpress.com/xamarin/2014/forms/navigation"
+             xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
+             xmlns:dxe="http://schemas.devexpress.com/xamarin/2014/forms/editors"
+             xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+              BackgroundColor="White"
+             >
+    <NavigationPage.TitleView>
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
+            <Label Text="Chuyển tiền" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"/>
+            <Image Source="ic_history_command.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" Margin="0,3,0,0"/>
         </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:TextCaseConverter x:Key="TextCaseConverter" Type="FirstUpperRestLower"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="100,*">
+            <Frame Padding="0"  Grid.Row="0">
+                <StackLayout>
+                    <StackLayout Padding="10,5,10,0" Orientation="Horizontal">
+                        <Label Text="Tiền mặt (A)" TextColor="Black" FontSize="16"/>
+                        <Label Text="962,000,000" TextColor="Black" FontSize="16" HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Padding="10,5,10,0" Orientation="Horizontal">
+                        <Label Text="Tiền ứng trước (B)" TextColor="Black" FontSize="16"/>
+                        <Label Text="30,000,000" TextColor="Black" FontSize="16" HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Padding="10,5,10,0" Orientation="Horizontal">
+                        <Label Text="SỐ DƯ KHẢ DỤNG (A+B)" TextColor="Black" FontSize="16"/>
+                        <Label Text="992,000,000" TextColor="#034E95" FontAttributes="Bold" FontSize="16" HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+            
+            <dxn:TabView SelectedItemIndicatorColor="#034e95"
+                         ItemHeaderHeight="20"
+                         HeaderPanelItemSpacing="0"
+                         HorizontalOptions="CenterAndExpand"
+                         ItemHeaderFontAttributes="Bold"
+                         ItemHeaderFontSize="15"
+                         HeaderPanelMaxHeight="20"
+                         HeaderPanelShadowColor="Gray"
+                         HeaderPanelShadowHeight="1"
+                         SwipeEnabled="False"
+                         Grid.Row="1"
+                         ItemHeaderTapped="TabView_ItemHeaderTapped">
+                        <dxn:TabViewItem HeaderText="Ngân hàng"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="*">
+                        <ScrollView VerticalScrollBarVisibility="Never">
+                        <StackLayout Spacing="3" Padding="5">
+                            <Frame x:Name="frameMoney" Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                        <Label Text="VND" FontSize="18" VerticalOptions="Center" FontAttributes="Bold" TextColor="#034E95"/>
+                                        <custom:CustomEntry Text="{Binding StrMoney}" HorizontalOptions="FillAndExpand" 
+                                                        FontSize="16"
+                                                        MaxLength="15"
+                                                        Keyboard="Numeric"
+                                                        Placeholder="Nhập số tiền"
+                                                        ClearButtonVisibility="WhileEditing">
+                                            <custom:CustomEntry.Behaviors>
+                                                <toolkit:EventToCommandBehavior Command="{Binding FormatChanged}" EventName="TextChanged"></toolkit:EventToCommandBehavior>
+                                            </custom:CustomEntry.Behaviors>
+                                        </custom:CustomEntry>
+                                    </StackLayout>
+                                    <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                </StackLayout>
+                            </Frame>
+                           
+                            <Label Text="{Binding MoneyToLetter, Converter={StaticResource TextCaseConverter}}" FontAttributes="Italic" FontSize="16" TextColor="#034E95" Padding="10,0,10,0">
+                                <Label.Triggers>
+                                    <Trigger TargetType="Label" Property="Text" Value="">
+                                        <Setter Property="IsVisible" Value="False"/>
+                                    </Trigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Frame x:Name="frame1" Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                        <Label Text="{Binding FormSend.Number}" FontSize="16" TextColor="Black" HorizontalOptions="StartAndExpand">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="Nhập số tài khoản">
+                                                    <Setter Property="TextColor" Value="DarkGray"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Image Source="ic_contact_book.png" WidthRequest="25" HeightRequest="25" VerticalOptions="Center"/>
+                                    </StackLayout>
+                                    <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                </StackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SwitchFormSendPage}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame x:Name="frame2" Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                <StackLayout>
+                                    <Label Text="{Binding FormSend.Name}" FontSize="16" TextColor="Black" HorizontalOptions="StartAndExpand" Padding="10,15,10,10">
+                                        <Label.Triggers>
+                                            <Trigger TargetType="Label" Property="Text" Value="Tên người thụ hưởng">
+                                                <Setter Property="TextColor" Value="DarkGray"/>
+                                            </Trigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                </StackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SwitchFormSendPage}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame x:Name="frame3" Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                        <Label Text="{Binding FormSend.Address}" FontSize="16" TextColor="Black" HorizontalOptions="StartAndExpand">
+                                            <Label.Triggers>
+                                                <Trigger TargetType="Label" Property="Text" Value="Ngân hàng thụ hưởng">
+                                                    <Setter Property="TextColor" Value="DarkGray"/>
+                                                </Trigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Image Source="ic_arr_right.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"/>
+                                    </StackLayout>
+                                    <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                </StackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SwitchFormSendPage}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame x:Name="frameContent" Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="5,15,10,10">
+                                        <custom:CustomEntry Text="{Binding StrContent}" HorizontalOptions="FillAndExpand" 
+                                                        FontSize="16"
+                                                        Placeholder="Nội dung chuyển tiền"
+                                                        ClearButtonVisibility="WhileEditing">
+                                            <custom:CustomEntry.Behaviors>
+                                                <toolkit:EventToCommandBehavior Command="{Binding ContentTextChanged}" EventName="TextChanged"/>
+                                            </custom:CustomEntry.Behaviors>
+                                        </custom:CustomEntry>
+                                    </StackLayout>
+                                    <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                </StackLayout>
+                                
+                            </Frame>
+                            <StackLayout HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                <Label TextColor="Black" FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Phí tạm tính: "/>
+                                            <Span Text="{Binding StrFeeMoney}"/>
+                                            <Span Text=" VND"/>
+                                        </FormattedString>
+                                       
+                                    </Label.FormattedText>
+                                </Label>                                                         
+                                <Label Text="{Binding DateSend, StringFormat='Ngày chuyển: Hôm nay, {0}'}" TextColor="Black" FontSize="16"/>
+                            </StackLayout>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="5"
+                                  HeightRequest="50"
+                                  Padding="10,0,0,0">
+                                <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Mật khẩu giao dịch " FontSize="16"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Frame  x:Name="framePass"
+                                        Grid.Column="1" Grid.Row="0"
+                                        Margin="0,5,0,5" Padding="0" BorderColor="Gray" CornerRadius="3" HasShadow="False">
+                                    <StackLayout  Orientation="Horizontal">
+                                        <custom:CustomEntry 
+                                                    Grid.Column="0" 
+                                                    FontSize="15"
+                                                    Placeholder="Nhập mật khẩu"
+                                                    IsPassword="{Binding ShowHidePass}"
+                                                    Text="{Binding Pass}"
+                                                    BackgroundColor="Transparent"
+                                                    HorizontalOptions="StartAndExpand">
+                                            <custom:CustomEntry.Behaviors>
+                                                <toolkit:EventToCommandBehavior Command="{Binding PassTextChanged}" EventName="TextChanged"/>
+                                            </custom:CustomEntry.Behaviors>
+                                        </custom:CustomEntry>
+
+
+                                        <Frame Grid.Column="1"        
+                                                   HorizontalOptions="End"
+                                                   Padding="0,0,10,0"
+                                                   BackgroundColor="Transparent"
+                                                   HasShadow="False">
+                                            <Image Grid.Column="0" Source="{Binding ShowHidePassSource}" HeightRequest="18" WidthRequest="18" HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand"/>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ShowHide}"/>
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+
+                                    </StackLayout>
+
+                                </Frame>
+
+                            </Grid>
+                            <Button WidthRequest="200"
+                                    HeightRequest="50"
+                                    CornerRadius="25"
+                                    Margin="0,15,0,30"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="LimeGreen"
+                                    Text="XÁC NHẬN"
+                                    TextColor="White"
+                                    FontSize="16"
+                                    Command="{Binding Accept}"
+                                    FontAttributes="Bold">
+
+                            </Button>   
+                        </StackLayout>
+                                        
+                                    </ScrollView>
+                            
+                        </dxn:TabViewItem>
+                        <dxn:TabViewItem HeaderText="Ký quỹ CK phái sinh"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="*">
+                            <ScrollView>
+                                <StackLayout Spacing="3" Padding="5">
+                                    <Frame Padding="0" BorderColor="Transparent" CornerRadius="3" HasShadow="False">
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                                <Label Text="VND" FontSize="18" VerticalOptions="Center" FontAttributes="Bold" TextColor="#034E95"/>
+                                                <custom:CustomEntry Text="" HorizontalOptions="FillAndExpand" 
+                                                                FontSize="16"
+                                                                MaxLength="15"
+                                                                Keyboard="Numeric"
+                                                                Placeholder="Nhập số tiền"
+                                                                ClearButtonVisibility="WhileEditing">
+                                                    <custom:CustomEntry.Behaviors>
+                                                        <toolkit:EventToCommandBehavior Command="{Binding FormatChanged}" EventName="TextChanged"></toolkit:EventToCommandBehavior>
+                                                    </custom:CustomEntry.Behaviors>
+                                                </custom:CustomEntry>
+                                            </StackLayout>
+                                            <BoxView BackgroundColor="Gray" HeightRequest="0.2"/>
+                                        </StackLayout>
+                                    </Frame>
+
+                                    <Label Text="" FontAttributes="Italic" FontSize="16" TextColor="#034E95" Padding="10,0,10,10">
+                                        <Label.Triggers>
+                                            <Trigger TargetType="Label" Property="Text" Value="">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </Trigger>
+                                        </Label.Triggers>
+                                    </Label>
+                         
+                                    <StackLayout HorizontalOptions="FillAndExpand" Padding="10,15,10,10">
+                                        <Label Text="Phí tạm tính: 0 VND" TextColor="Black" FontSize="16"/>
+                                        <Label Text="{Binding DateSend, StringFormat='Ngày chuyển: Hôm nay, {0}'}" TextColor="Black" FontSize="16"/>
+                                    </StackLayout>
+                                    <Grid ColumnDefinitions="0.2*,0.3*" ColumnSpacing="5"
+                                          HeightRequest="50"
+                                          Padding="10,0,0,0">
+                                        <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Mật khẩu giao dịch " FontSize="16"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Frame  Grid.Column="1" Grid.Row="0"
+                                                Margin="0,5,0,5" Padding="0" BorderColor="Gray" CornerRadius="3" HasShadow="False">
+                                            <StackLayout  Orientation="Horizontal">
+                                                <custom:CustomEntry x:Name="passEntry"
+                                                            Grid.Column="0" 
+                                                            FontSize="15"
+                                                            Placeholder="Nhập mật khẩu"
+                                                            IsPassword="{Binding ShowHidePass}"
+                                                            BackgroundColor="Transparent"
+                                                            HorizontalOptions="StartAndExpand">
+
+                                                </custom:CustomEntry>
+
+
+                                                <Frame Grid.Column="1"        
+                                                           HorizontalOptions="End"
+                                                           Padding="0,0,10,0"
+                                                           BackgroundColor="Transparent"
+                                                           HasShadow="False">
+                                                    <Image Grid.Column="0" Source="{Binding ShowHidePassSource}" HeightRequest="18" WidthRequest="18" HorizontalOptions="CenterAndExpand"
+                                                            VerticalOptions="CenterAndExpand"/>
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding ShowHide}"/>
+                                                    </Frame.GestureRecognizers>
+                                                </Frame>
+
+                                            </StackLayout>
+
+                                        </Frame>
+
+                                    </Grid>
+                                    <Button WidthRequest="200"
+                                    HeightRequest="50"
+                                    CornerRadius="25"
+                                    Margin="0,15,0,30"
+                                    HorizontalOptions="Center"
+                                    BackgroundColor="LimeGreen"
+                                    Text="XÁC NHẬN"
+                                    TextColor="White"
+                                    FontSize="16"
+                                    FontAttributes="Bold"
+                                    >
+
+                                    </Button>
+                                </StackLayout>
+
+                            </ScrollView>
+                </dxn:TabViewItem>
+                    </dxn:TabView>
+                </Grid>
+        
     </ContentPage.Content>
 </ContentPage>

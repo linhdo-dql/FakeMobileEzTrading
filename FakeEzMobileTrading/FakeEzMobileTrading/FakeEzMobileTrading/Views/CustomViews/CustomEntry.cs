@@ -7,5 +7,6 @@ namespace FakeEzMobileTrading.Views.CustomViews
 {
     public class CustomEntry : Entry
     {
+        
     }
 }

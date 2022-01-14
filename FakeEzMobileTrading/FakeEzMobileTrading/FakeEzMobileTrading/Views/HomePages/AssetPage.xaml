@@ -1,13 +1,169 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Tài sản"
+             xmlns:dxn="http://schemas.devexpress.com/xamarin/2014/forms/navigation"
              x:Class="FakeEzMobileTrading.Views.HomePages.AssetPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <NavigationPage.TitleView>
+        <StackLayout  Orientation="Horizontal" Padding="0,0,16,0">
+            <Label Text="Báo cáo tài sản" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="Start"/>
+            <Image Source="ic_attention.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" Margin="0,3,0,0"/>
         </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <dxn:TabView SelectedItemIndicatorColor="#034e95"
+                         ItemHeaderHeight="20"
+                         HeaderPanelItemSpacing="0"
+                         HorizontalOptions="CenterAndExpand"
+                         HeaderPanelContentAlignment="Center"
+                         ItemHeaderFontAttributes="Bold"
+                         ItemHeaderFontSize="15"
+                         HeaderPanelMaxHeight="20"
+                         HeaderPanelShadowColor="Gray"
+                         HeaderPanelShadowHeight="1"
+                         SwipeEnabled="False"
+                                 >
+            <dxn:TabViewItem HeaderText="Báo cáo tài sản"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="*">
+                <Grid RowDefinitions="45,260,45,45,*">
+                    <Frame Padding="0" Grid.Row="0">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="10,0,10,0">
+                            <Label Text="I. CHỨNG KHOÁN" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                            <Label Text="2339" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                        </StackLayout>
+                        
+                    </Frame>
+                    <Frame Padding="0" Grid.Row="1">
+                        <Grid RowDefinitions="*,*,*,*,*"
+                              RowSpacing="0">
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="0" Padding="10,5,10,0">
+                                    <Label Text="II. TIỀN" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                                    <Label Text="900.000.000" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout Padding="15,5,10,0" Grid.Row="1">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Tiền trong tài khoản" TextColor="Black" FontSize="15" HorizontalTextAlignment="Start"/>
+                                    <Label Text="900.000.000" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout Padding="15,5,10,0" Grid.Row="2" >
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Tiền bán chờ thanh toán" TextColor="Black" FontSize="15" HorizontalTextAlignment="Start"/>
+                                    <Label Text="900.000.000" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout Padding="30,5,10,0" Grid.Row="3">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="T1" TextColor="Black" FontSize="15" HorizontalTextAlignment="Start"/>
+                                    <Label Text="2.500.000.000" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout Padding="30,5,10,0" Grid.Row="4">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="T2" TextColor="Black" FontSize="15" HorizontalTextAlignment="Start"/>
+                                    <Label Text="500.000.000" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                            </StackLayout>
+                            <StackLayout Padding="15,5,10,0" Grid.Row="5">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Tiền cổ tức về" TextColor="Black" FontSize="15" HorizontalTextAlignment="Start"/>
+                                    <Label Text="0" TextColor="Black" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                    <Frame Padding="0" Grid.Row="2">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="10,0,10,0">
+                                    <Label Text="III. CHỨNG KHOÁN VÀ TIỀN (I +II)" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                                    <Label Text="9.000.000.000" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+
+                    </Frame>
+                    <Frame Padding="0" Grid.Row="3">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="10,0,10,0">
+                                    <Label Text="IV. DƯ NỢ VAY KÝ QŨY" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                                    <Label Text="1.000.000.000" TextColor="Red" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+
+                    </Frame>
+                        <Frame Padding="0" Grid.Row="4">
+                            <StackLayout Orientation="Horizontal"  Padding="10,0,10,0">
+                                <Label Text="GIÁ TRỊ TÀI SẢN RÒNG(III + IV)" TextColor="Black" FontAttributes="Bold" FontSize="16" HorizontalTextAlignment="Start"/>
+                                <Label Text="8.000.000.000" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                        </Frame>
+                    
+
+
+                </Grid>
+            </dxn:TabViewItem>
+            <dxn:TabViewItem HeaderText="Chứng khoán"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="*">
+                <StackLayout Padding="10,10,0,0">
+                    <Label Text="I. CHỨNG KHOÁN THƯỜNG" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                    <Label Text="II. CHỨNG KHOÁN HẠN CHẾ" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                    <Label Text="III. CHỨNG KHOÁN KÝ QUỸ" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
+                </StackLayout>
+            </dxn:TabViewItem>
+            <dxn:TabViewItem HeaderText="Tiền"
+                                         HeaderTextColor="#58555A"
+                                         SelectedHeaderTextColor="#034e95"
+                                         HeaderPadding="0"
+                                         HeaderWidth="*">
+                <Grid ColumnDefinitions="*,0.15,*"
+                      ColumnSpacing="0"
+                      RowSpacing="0"
+                      Margin="0,5,0,0"
+                      RowDefinitions="0.15,35,0.15,35,0.15,35,0.15,35,0.15,35,0.15,35,0.15,35,0.15,35,0.15">
+                    <BoxView HeightRequest="0.15" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView HeightRequest="0.15" Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="1" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="3" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="5" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="7" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="9" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="11" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="13" Grid.Column="1" BackgroundColor="Gray"/>
+                    <BoxView WidthRequest="0.15" Grid.Row="15" Grid.Column="1" BackgroundColor="Gray"/>
+                    <Label Text="Số dư đầu" Grid.Column="0" Grid.Row="1" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Ứng trước" Grid.Column="0" Grid.Row="3" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Đang chuyển" Grid.Column="0" Grid.Row="5" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Sức mua CK còn lại" Grid.Column="0" Grid.Row="7" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Tiền khác" Grid.Column="0" Grid.Row="9" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Đang treo" Grid.Column="0" Grid.Row="11" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Nợ phí" Grid.Column="0" Grid.Row="13" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="Số dư HT" Grid.Column="0" Grid.Row="15" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Start" Padding="10,0,0,0"/>
+                    <Label Text="9.000.000.000" Grid.Column="2" Grid.Row="1" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="500.000.000" Grid.Column="2" Grid.Row="3" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="2.500.000.000" Grid.Column="2" Grid.Row="5" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="1500" Grid.Column="2" Grid.Row="7" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="4.500.000.000" Grid.Column="2" Grid.Row="9" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="3.000.000.000" Grid.Column="2" Grid.Row="11" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="0" Grid.Column="2" Grid.Row="13" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                    <Label Text="9.000.000.000" Grid.Column="2" Grid.Row="15" TextColor="Black" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" Padding="0,0,10,0"/>
+                </Grid>
+            </dxn:TabViewItem>
+        </dxn:TabView>
     </ContentPage.Content>
 </ContentPage>

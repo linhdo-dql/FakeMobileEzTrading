@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FakeEzMobileTrading.Views.NotifyPage"
+             xmlns:dvc ="http://schemas.devexpress.com/xamarin/2014/forms/collectionview">
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Orientation="Horizontal" Padding="10,0,15,0"
+                     HeightRequest="70"
+                     BackgroundColor="#034E95">
+                <Image Source="ic_back_left.png" WidthRequest="20" HeightRequest="23" HorizontalOptions="Start" Margin="0,0,10,0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackPage}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Thông báo" FontSize="20" TextColor="White" FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand"
+                       VerticalOptions="Center"
+                   />
+                <Image Source="ic_setting.png" WidthRequest="20" HeightRequest="20"/>
+
+            </StackLayout>
+        <dvc:DXCollectionView x:Name="Notifications"
+            ItemsSource="{Binding Notifications}"
+                              IsScrollBarVisible="False">
+            <dvc:DXCollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout x:Name="ItemNotify" BackgroundColor="{Binding ColorActive}">
+                        <Grid 
+                            ColumnDefinitions="60,*,60"
+                            RowDefinitions="Auto,Auto"
+                            Padding="10">
+                            <Image Source="{Binding TypeSoure}" WidthRequest="40" HeightRequest="40" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Image Source="ic_showmore_2.png" WidthRequest="20" HeightRequest="20" Grid.Column="2" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="End"/>
+                            <Label Text="{Binding Name}" FontSize="16" TextColor="Black" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                            <Label Text="{Binding Title}" FontSize="15" TextColor="Black" MaxLines="{Binding MaxLine}" LineBreakMode="TailTruncation" Grid.Row="1" Grid.Column="1"/>
+                            <Label Text="{Binding DateTimeAgo}" FontSize="12" TextColor="Gray" Grid.Column="2" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="End"/>
+                        </Grid>
+                        <BoxView HeightRequest="0.15" BackgroundColor="Gray"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.MoreTap, Source={x:Reference Notifications}}" CommandParameter="{Binding Source={x:Reference ItemNotify}, Path=BindingContext}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                    
+                </DataTemplate>
+            </dvc:DXCollectionView.ItemTemplate>
+            
+        </dvc:DXCollectionView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -79,11 +79,11 @@
                                                     <Label Text="{Binding ExchangeId}" TextColor="#034e95" FontSize="14" VerticalOptions="Center"/>
 
                                                 </StackLayout>
-                                                <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0" BackgroundColor="{Binding BgColor}">
                                                     <Label Text="{Binding ExchangePrice, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='{0:n}'}" TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
 
                                                 </StackLayout>
-                                                <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0" BackgroundColor="{Binding BgColor}">
                                                     <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" 
                                                            TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference HSXStockExChanges}, Converter={xct:InvertedBoolConverter}}"/>
                                                     <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference HSXStockExChanges}}"/>
@@ -174,11 +174,11 @@
                                                         <Label Text="{Binding ExchangeId}" TextColor="#034e95" FontSize="14" VerticalOptions="Center"/>
 
                                                     </StackLayout>
-                                                    <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="0" BackgroundColor="{Binding BgColor}">
                                                         <Label Text="{Binding ExchangePrice, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='{0:n}'}" TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
 
                                                     </StackLayout>
-                                                    <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="2" Spacing="0" BackgroundColor="{Binding BgColor}"> 
                                                         <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}'}" 
                                                            TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference HNXStockExChanges}, Converter={xct:InvertedBoolConverter}}"/>
                                                     <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding UpDownColor}" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference HNXStockExChanges}}"/>

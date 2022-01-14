@@ -1,4 +1,5 @@
-﻿using FakeEzMobileTrading.ViewModels;
+﻿using FakeEzMobileTrading.Models;
+using FakeEzMobileTrading.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace FakeEzMobileTrading.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ItemDetailPage : ContentPage
     {
-        public ItemDetailPage()
+        public ItemDetailPage(StockItem s)
         {
             InitializeComponent();
-            BindingContext = new ItemDetailPageViewModel(this,App.Items[0]);
+            BindingContext = new ItemDetailPageViewModel(this,s);
         }
     }
 }
