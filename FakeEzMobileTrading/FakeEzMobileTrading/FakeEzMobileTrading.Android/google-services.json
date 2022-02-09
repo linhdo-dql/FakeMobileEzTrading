@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "597941419217",
+    "project_id": "fakeezmobiletrading",
+    "storage_bucket": "fakeezmobiletrading.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597941419217:android:d93652da86d0c3c6fd59f0",
+        "android_client_info": {
+          "package_name": "com.companyname.fakeezmobiletrading"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597941419217-u00crvgoqu3vm10hntcsqn627329un8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPAnSbZgNzyFYf01fS5DgbG-EE_RJaz-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597941419217-u00crvgoqu3vm10hntcsqn627329un8f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

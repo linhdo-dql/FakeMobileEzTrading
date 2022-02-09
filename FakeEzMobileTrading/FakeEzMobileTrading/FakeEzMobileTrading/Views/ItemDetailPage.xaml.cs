@@ -1,5 +1,6 @@
 ﻿using FakeEzMobileTrading.Models;
 using FakeEzMobileTrading.ViewModels;
+using FakeEzMobileTrading.Views.HomePages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,16 @@ namespace FakeEzMobileTrading.Views
         {
             InitializeComponent();
             BindingContext = new ItemDetailPageViewModel(this,s);
+        }
+
+        private async void btnSell_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ActionCommandPage((sender as Button).ClassId, true));
+        }
+
+        private async void btnBuy_Clicked321(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ActionCommandPage((sender as Button).ClassId, false));
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 {
@@ -40,7 +41,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 SetProperty(ref _stockItems, value);
             }
         }
-        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;
+        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;                                                                                                   
         private bool _showHidePersent = false, _isSortEnable, _isPageVisible = true;
         private bool _newListLayoutVisible = false, _isVisible = false, _labelVisible=false;
         private string _sortPriceSource = "ic_updown.png", _sortMassSource= "ic_updown.png", _sortIdSource= "ic_updown.png", _sortPersentSource = "ic_updown.png";
@@ -48,9 +49,8 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         
         public OverViewPageViewModel(Page page, INavigation navigation)
         {
-
-            IsVisible = false;
             Preferences.Set("TypeTable", 0);
+            IsVisible = false;
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -60,7 +60,10 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                     StockFollowLists = App.CollectionsList;
                     if (Preferences.Get("CurrentFollowList", String.Empty) != "")
                     {
-                        StockItems = new ObservableCollection<StockItem>(App.CollectionsList.Where(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).FirstOrDefault().StockItemList);
+                        ObservableCollection<StockItem> kz = App.CollectionsList.Where(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty)).FirstOrDefault().StockItemList;
+                        
+                        StockItems = new ObservableCollection<StockItem>(kz);
+                        Preferences.Set("TypeTable", 0);
                         NewStockItems = StockItems;
                         TmpCount = StockItems.Count;
                     }

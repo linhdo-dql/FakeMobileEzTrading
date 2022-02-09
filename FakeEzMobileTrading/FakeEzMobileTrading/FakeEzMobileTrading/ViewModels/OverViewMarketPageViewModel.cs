@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels
@@ -20,7 +21,7 @@ namespace FakeEzMobileTrading.ViewModels
         private bool _tap = false;
         public OverViewMarketPageViewModel(Page page, INavigation navigation)
         {
-            
+            Preferences.Set("TypeTable", 0);
             HSXStockExChanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.TypeExchange == "HSX"));
             HNXStockExChanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.TypeExchange == "HNX"));
             ChangeFilter = new Command(() =>

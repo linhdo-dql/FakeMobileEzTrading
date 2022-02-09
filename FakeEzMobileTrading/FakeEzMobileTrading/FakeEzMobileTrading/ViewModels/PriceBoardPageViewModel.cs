@@ -1,6 +1,7 @@
 ﻿using DevExpress.XamarinForms.Popup;
 using FakeEzMobileTrading.Models;
 using FakeEzMobileTrading.Views;
+using FakeEzMobileTrading.Views.HomePages;
 using MUAHO.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace FakeEzMobileTrading.ViewModels
 {
@@ -26,20 +28,20 @@ namespace FakeEzMobileTrading.ViewModels
         private bool _tap = false;
         public PriceBoardPageViewModel(Page page, INavigation navigation)
         {
-            IsBusy = true;
+
             Preferences.Set("TypeTable", 1);
             Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                await Task.Delay(2000);
+               
                 
-                StockFollowListsk = App.CollectionsList;
-                FullOrShort = IsDisplayChecked = Preferences.Get("FullOrSort", false);
-                StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.IsFavourite == true));
-                StockItems = new ObservableCollection<StockItem>(App.CollectionsList.FirstOrDefault(l => l.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList);
                 IsVisible = true;
-                IsBusy = false;
             });
-            
+            StockFollowListsk = App.CollectionsList;
+            FullOrShort = IsDisplayChecked = Preferences.Get("FullOrSort", false);
+            StockExchanges = new ObservableCollection<StockExchange>(App.Exchanges.Where(ex => ex.IsFavourite == true));
+            ObservableCollection<StockItem> kx = App.CollectionsList.FirstOrDefault(l => l.Name == Preferences.Get("CurrentFollowList", String.Empty)).StockItemList;
+            StockItems = new ObservableCollection<StockItem>(kx);
             RefreshClick = new Command(() =>
             {
                 IsBusy = true;
@@ -206,6 +208,10 @@ namespace FakeEzMobileTrading.ViewModels
             ShowPopupDetail = new Command((x) =>
             {
                 SelectedStockId = (string)x;
+                if(String.IsNullOrEmpty(SelectedStockId))
+                {
+                    return;
+                }
                 page.FindByName<DXPopup>("popup3").IsOpen = true;
             });
             DeleteStockItem = new Command(async () =>
@@ -265,7 +271,13 @@ namespace FakeEzMobileTrading.ViewModels
                 _tap = false;
 
             });
-
+            SellOrBuyStockItem = new Command(async (x) =>
+            {
+                page.FindByName<DXPopup>("popup3").IsOpen = false;
+                var type = (x as StackLayout).ClassId;
+                await page.Navigation.PushAsync(new ActionCommandPage(SelectedStockId, bool.Parse(type)));
+            });
+            
 
         }
         public bool IsBusy
@@ -330,5 +342,6 @@ namespace FakeEzMobileTrading.ViewModels
         public Command ShowItemDetailPage { get; }
         public Command SelectExchangeStock { get; }
         public Command ShowExchangeList { get; }
+        public Command SellOrBuyStockItem { get; }
     }
 }

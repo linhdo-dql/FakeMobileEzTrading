@@ -6,9 +6,10 @@
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
              xmlns:xcp="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
              xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup" 
-             x:Class="FakeEzMobileTrading.Views.HomePages.ActionCommandPage">
+             x:Class="FakeEzMobileTrading.Views.HomePages.ActionCommandPage"
+             xmlns:vm="clr-namespace:FakeEzMobileTrading.ViewModels.HomePageViewModels">
     <NavigationPage.TitleView>
-        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0" x:DataType="vm:ActionCommandPageViewModel">
             <Label Text="Đặt lệnh" FontSize="20" TextColor="White" FontAttributes="Bold"
                    HorizontalOptions="StartAndExpand"/>
             <StackLayout Orientation="Horizontal" Spacing="15">

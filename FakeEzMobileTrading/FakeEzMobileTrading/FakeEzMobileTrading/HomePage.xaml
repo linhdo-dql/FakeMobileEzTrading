@@ -14,31 +14,7 @@
             
              >
     <TabbedPage.Children>
-        <NavigationPage Title="Thị trường" IconImageSource="ic_bm_thitruong.png">
-            <x:Arguments>
-                <homepage:OverViewPage/>
-            </x:Arguments>
-        </NavigationPage>
-        <NavigationPage Title="Tài sản" IconImageSource="ic_bm_taisan.png">
-            <x:Arguments>
-                <homepage:AssetPage/>
-            </x:Arguments>
-        </NavigationPage>
-        <NavigationPage Title="Đặt lệnh" IconImageSource="ic_bm_datlenh.png">
-            <x:Arguments>
-                <homepage:ActionCommandPage/>
-            </x:Arguments>
-        </NavigationPage>
-        <NavigationPage Title="Hủy / Sửa" IconImageSource="ic_bm_editing.png">
-            <x:Arguments>
-                <homepage:EditPage/>
-            </x:Arguments>
-        </NavigationPage>
-        <NavigationPage Title="Chuyển tiền" IconImageSource="ic_bm_chuyentien.png">
-            <x:Arguments>
-                <homepage:SendMoneyPage/>
-            </x:Arguments>
-        </NavigationPage>
+        
     </TabbedPage.Children>
 
 </TabbedPage>

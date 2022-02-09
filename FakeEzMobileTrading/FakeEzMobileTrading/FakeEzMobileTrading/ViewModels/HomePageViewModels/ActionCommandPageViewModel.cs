@@ -102,7 +102,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         public ObservableCollection<SurplusStock> SurplusStocks { get => _surplusStocks; set { SetProperty(ref _surplusStocks, value); } }
 
 
-        public ActionCommandPageViewModel(Page page)
+        public ActionCommandPageViewModel(Page page, string currentId, bool typeSend)
         {
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>
              {
@@ -115,6 +115,17 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
            
             MyMoney = 900000000;
             Pass = "";
+            if(currentId != "")
+            {
+                IdStock = currentId;
+                StockItem = App.Items.FirstOrDefault(z => z.StockId == currentId);
+                StockNameVisible = true;
+                UpDownVisible = true;
+                LabelPriceVisible = true;
+                SellBuyVisible = false;
+                StockPrice = StockItem.PriceFloor;
+                page.FindByName<RadioButton>("rdLO").IsChecked = true;
+            }
             SurplusStocks = App.SuplusStocks;
             StockPrice = StockItem.PriceFloor;
             StockAmount = 0;
@@ -129,6 +140,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                         StockNameVisible = true;
                         UpDownVisible = true;
                         LabelPriceVisible = true;
+                        SellBuyVisible = false;
                         StockPrice = StockItem.PriceFloor;
                         page.FindByName<RadioButton>("rdLO").IsChecked = true;
                     }

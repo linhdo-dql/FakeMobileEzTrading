@@ -15,17 +15,21 @@ namespace FakeEzMobileTrading.Views.HomePages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ActionCommandPage : ContentPage
     {
-        public ActionCommandPage()
+        private string _currentId;
+        private bool _type;
+        public ActionCommandPage(string currentId, bool type)
         {
             InitializeComponent();
-            BindingContext = new ActionCommandPageViewModel(this);
+            _currentId = currentId;
+            _type = type;
+            BindingContext = new ActionCommandPageViewModel(this, _currentId, _type);
 
 
         }
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            BindingContext = new ActionCommandPageViewModel(this);
+            BindingContext = new ActionCommandPageViewModel(this, _currentId, _type);
             Device.StartTimer(new TimeSpan(0, 0, 5), ()=>
             {
                 Device.BeginInvokeOnMainThread(async () =>

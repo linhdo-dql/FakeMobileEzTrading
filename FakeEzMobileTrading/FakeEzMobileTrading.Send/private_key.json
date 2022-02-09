@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fakeezmobiletrading",
+  "private_key_id": "4c3f800328f61e965ced8ea70f7f6cfcd75a730d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCGJAPC8xVzwRMV\nggrbV5zuGsLSr8OXzw/K0hPtY3CaAiWpPVCs0dzOQH6VpJlHsTnqwGjWEjxlk7tl\nfQi6X+4frhsMPK/7Kb+cKyktDT1woPOdfhjZ8PccRHLAl7lU4hxb5/tociRjJpqD\nfbHZWZDyhtLwxrFd694r6M4MnwNuroLHuJDQB8LhCI3ZapRR5UL9nlmzZTnzVN8C\nYr/telxuAnDTFp9D5bcRgBgyc5cDKB1V4EbY/Vg3KWmmuOJAvNLzRTQcZCdXihPS\ndaCutPCBj7lX7TZTA7k6qyhlYBTLqxQ0MSXQTTODYexl3hADJBjAIkPgW12Shay/\n3WqjDoBlAgMBAAECggEADG01MP/ybo8GHNG3fkLjTZaKkliIit16hcxI3s69vXKx\n+Pfua5gkd7H3WBcPwRm8tw/clmpJkJJrQ5dd8eAVr/ch19QebGrdbpL8BUmq9a5f\naylllXkSd1qq88cKev/YZzY6Lt6WGt5WZZSFH5DB0gnl7DrH7x687f3q6rXnbD8Z\nlbRssfTog9fdKV6nrOvP+oiM/2v6XycGsvXInpMrhBjzRxu8R+DwPffB4OAll59i\nK8AU0wzqNYikwVktV71ClVUaVVVG9xcA27oPYBWIbLgzDZrIL5MQ0hKVaBDrXNnV\n+DOERpCBnZ9RsKg95dk8eAsKNxPm6Py15BftNdr5CQKBgQC7nFSHCtAyW7g/it+r\nEPkja4Ggar1CYzRnOFiU/u6LorP09mTBGOat/i4REE3dqkzqf9qttYATFYsFAd8v\n0ymUwUnakT2wdbBDjzIrqckDTBnqxE2tKPNSG6mmhGKwICN8a4cAUxP59D8PXgsV\n5PXl0FmshEmQ/g2MxXLXeqrPOQKBgQC3CekePIVviVBj2AA0UPpAzdQXc7rK1Hi6\nPkq90qbXE38AQrxfMOEyrRbP8W8gMGN0vFpu1ICfMH0JyYbtftksD1sR7WnP2PHR\nlM4rEIrMBi0ncGk5bz9uzM6ywOCTaP50qyjbKF+u4WTnNvKL5G21ZZhHfgzjJ2mX\n5VdNf49OjQKBgFKNucwqf+6I2YxsaXt23ootdj7GeT1LNfXtn10AyKr9Dz7NZQxr\nDqalYFP13q2ZkHrng6xIX3EGW8P6TOFYg8WHQB5DJugNAWDZE/SOo3sl84mQk7WM\nfXU14vL48gwaOEM5dZA4/mNQjKcQdMRPmbxkb/EvzMdWY1P8VkpnGd5RAoGBAKW7\nJ4TlL7zKDCwbTDQSjkVXGQ8TDrLQp2+bL3mo3sAnOvs1cfKPA5kq+FjYNtJifesZ\nEJkBeGSrNsxB2RX5oRIv5TnaSdCUkoA9yF9d3w7VGNV5Bw2mGT1t3EomMjHHA38H\n6zpk2B40n3RrYDoiXuO8VaGGFI0pBocudVoKgeuRAoGBAIJ5p3S/uJmhUNdQkhMt\nmsqhSnrsgTFpTLnvuIwQBzcP3ToAMSxzx3GetpOGdqNkGgUASufWwQV2j5AfOOwe\nI6qjqPUNbOdp+VbotPc88r9YD1B569DPUxtBGJEVStHDpgCBfAZmZ/v7D8LjdEyd\neJycs2kcVrvlgEUrumZTrgWO\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-jh4x4@fakeezmobiletrading.iam.gserviceaccount.com",
+  "client_id": "101005938093858712155",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-jh4x4%40fakeezmobiletrading.iam.gserviceaccount.com"
+}

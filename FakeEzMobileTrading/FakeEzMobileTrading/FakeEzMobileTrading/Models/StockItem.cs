@@ -108,10 +108,10 @@ namespace FakeEzMobileTrading.Models
         public double PriceB1
         {
             get { return _priceB1; }
-            set 
+            set
             {
                 PriceB1Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceB1, value); 
+                SetProperty(ref _priceB1, value);
             }
         }
         public double PriceB1X
@@ -122,26 +122,27 @@ namespace FakeEzMobileTrading.Models
         public double PriceB2
         {
             get { return _priceB2; }
-            set 
+            set
             {
                 PriceB2Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceB2, value); 
+                SetProperty(ref _priceB2, value);
             }
         }
         public double PriceB2X
         {
             get { return _priceB2X; }
-            set 
-            { 
-                SetProperty(ref _priceB2X, value); }
+            set
+            {
+                SetProperty(ref _priceB2X, value);
+            }
         }
         public double PriceB3
         {
             get { return _priceB3; }
-            set 
+            set
             {
                 PriceB3Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceB3, value); 
+                SetProperty(ref _priceB3, value);
             }
         }
         public double PriceB3X
@@ -152,27 +153,27 @@ namespace FakeEzMobileTrading.Models
         public double PriceS1
         {
             get { return _priceS1; }
-            set 
+            set
             {
                 PriceS1Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceS1, value); 
+                SetProperty(ref _priceS1, value);
             }
         }
         public double PriceS1X
         {
             get { return _priceS1X; }
-            set 
-            { 
-                SetProperty(ref _priceS1X, value); 
+            set
+            {
+                SetProperty(ref _priceS1X, value);
             }
         }
         public double PriceS2
         {
             get { return _priceS2; }
-            set 
+            set
             {
                 PriceS2Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceS2, value); 
+                SetProperty(ref _priceS2, value);
             }
         }
         public double PriceS2X
@@ -183,10 +184,10 @@ namespace FakeEzMobileTrading.Models
         public double PriceS3
         {
             get { return _priceS3; }
-            set 
+            set
             {
                 PriceS3Color = SetColor2(value, PriceMedium, PriceCeiling, PriceFloor);
-                SetProperty(ref _priceS3, value); 
+                SetProperty(ref _priceS3, value);
             }
         }
         public double PriceS3X
@@ -363,10 +364,10 @@ namespace FakeEzMobileTrading.Models
         public Color PriceGoodColor
         {
             get { return _priceGoodColor; }
-            set 
+            set
             {
                 UpDownColor = value;
-                SetProperty(ref _priceGoodColor, value); 
+                SetProperty(ref _priceGoodColor, value);
             }
         }
         private Color _bgColor = Color.FromHex("#444444");
@@ -547,13 +548,13 @@ namespace FakeEzMobileTrading.Models
         {
             Device.StartTimer(new TimeSpan(0, 0, refreshTime), () =>
             {
-                double[] arr = new double[] { 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90, -90, 100, 200, 300, 400, 500, 600, 700, 800, 900, -100, -200, -300, -400, -500, -600, -700, -800, -900, 1000, -1000};
+                double[] arr = new double[] { 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90, -90, 100, 200, 300, 400, 500, 600, 700, 800, 900, -100, -200, -300, -400, -500, -600, -700, -800, -900, 1000, -1000 };
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
-                { 
-                   int typeTable = Preferences.Get("TypeTable", 0);
-                   if (typeTable == 1)
-                   {
+                {
+                    int typeTable = Preferences.Get("TypeTable", 0);
+                    if (typeTable == 1)
+                    {
                         if (PriceGood == PriceCeiling)
                         {
                             PriceS3X = 0;
@@ -579,28 +580,28 @@ namespace FakeEzMobileTrading.Models
                         PriceGoodColor = SetColor2(PriceGood, PriceMedium, PriceCeiling, PriceFloor);
                         BgColor = Color.FromHex("#444444");
                         Device.StartTimer(new TimeSpan(0, 0, refreshTime - 1), () =>
-                       {   
-                           int rdT = new Random().Next(0,1);
-                           double tmp = PriceGood + random;
-                           if (tmp >= PriceCeiling)
-                           {
-                               PriceGood = PriceCeiling;
-                           }
-                           else if(tmp <= PriceFloor)
-                           {
-                               PriceGood = PriceFloor;
-                           }
-                           else
-                           {
-                               PriceGood = tmp;
-                               BgColor = PriceGoodColor;
-                               PriceGoodColor = Color.White;
-                           }
-                           return false;
-                       });
-                   }
-                   else
-                   {
+                        {
+                            int rdT = new Random().Next(0, 1);
+                            double tmp = PriceGood + random;
+                            if (tmp >= PriceCeiling)
+                            {
+                                PriceGood = PriceCeiling;
+                            }
+                            else if (tmp <= PriceFloor)
+                            {
+                                PriceGood = PriceFloor;
+                            }
+                            else
+                            {
+                                PriceGood = tmp;
+                                BgColor = PriceGoodColor;
+                                PriceGoodColor = Color.White;
+                            }
+                            return false;
+                        });
+                    }
+                    else
+                    {
                         if (PriceGood == PriceCeiling)
                         {
                             PriceS3X = 0;
@@ -653,7 +654,7 @@ namespace FakeEzMobileTrading.Models
         {
             Device.StartTimer(new TimeSpan(0, 0, refreshTime), () =>
             {
-                double[] arr = new double[] { 10, -10};
+                double[] arr = new double[] { 10, -10 };
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -682,7 +683,7 @@ namespace FakeEzMobileTrading.Models
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                  
+
                     if (PriceB1 <= 0)
                     {
                         BgB1Color = Color.FromHex("#222222");
@@ -758,7 +759,7 @@ namespace FakeEzMobileTrading.Models
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    
+
                     if (PriceB2 <= 0)
                     {
                         BgB2Color = Color.FromHex("#222222");
@@ -900,7 +901,7 @@ namespace FakeEzMobileTrading.Models
                         BgS1Color = Color.FromHex("#222222");
                         return;
                     }
-                    if (PriceS1 == PriceCeiling || PriceS1 ==0)
+                    if (PriceS1 == PriceCeiling || PriceS1 == 0)
                     {
                         BgS1Color = Color.FromHex("#222222");
                         return;
@@ -970,7 +971,7 @@ namespace FakeEzMobileTrading.Models
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                   
+
                     if (PriceS2 <= 0)
                     {
                         BgS1Color = Color.FromHex("#222222");
@@ -1038,7 +1039,7 @@ namespace FakeEzMobileTrading.Models
                 double random = arr[new Random().Next(arr.Length)];
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                   
+
                     if (PriceS3 <= 0)
                     {
                         BgS1Color = Color.FromHex("#222222");
@@ -1060,7 +1061,7 @@ namespace FakeEzMobileTrading.Models
                         BgS3Color = Color.FromHex("#222222");
                         Device.StartTimer(new TimeSpan(0, 0, refreshTime - 1), () =>
                         {
-                            
+
                             double tmp = PriceS3 + random;
                             if (tmp - 100 >= PriceS2)
                             {
@@ -1072,7 +1073,7 @@ namespace FakeEzMobileTrading.Models
                             {
                                 PriceS3 = PriceS2 + 100;
                             }
-                            
+
                             return false;
                         });
                     }
@@ -1082,7 +1083,7 @@ namespace FakeEzMobileTrading.Models
                         BgS3Color = Color.FromHex("#FFFFFF");
                         Device.StartTimer(new TimeSpan(0, 0, refreshTime - 1), () =>
                         {
-                            
+
                             double tmp = PriceS3 + random;
                             if (tmp - 100 >= PriceS2)
                             {
@@ -1102,5 +1103,5 @@ namespace FakeEzMobileTrading.Models
             });
         }
     }
-   
+
 }

@@ -5,6 +5,9 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using CarouselView.FormsPlugin.Droid;
+using Plugin.FirebasePushNotification;
+using Xamarin.Forms;
+using FakeEzMobileTrading.Views;
 
 namespace FakeEzMobileTrading.Droid
 {
@@ -18,8 +21,16 @@ namespace FakeEzMobileTrading.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+            MessagingCenter.Subscribe<PriceBoard>(this, "SetLandscapeModeOn", sender =>
+            {
+                RequestedOrientation = ScreenOrientation.Landscape;
+            });
+            MessagingCenter.Subscribe<PriceBoard>(this, "SetLandscapeModeOff", sender =>
+            {
+                RequestedOrientation = ScreenOrientation.Portrait;
+            });
 
-            
+            FirebasePushNotificationManager.ProcessIntent(this, Intent);
             CarouselViewRenderer.Init();
            
         }

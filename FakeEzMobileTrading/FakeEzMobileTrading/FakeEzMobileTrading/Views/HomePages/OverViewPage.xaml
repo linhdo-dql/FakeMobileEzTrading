@@ -13,15 +13,21 @@
              android:TabbedPage.IsSmoothScrollEnabled="False"
              android:TabbedPage.IsSwipePagingEnabled="False"
              android:TabbedPage.ToolbarPlacement="Bottom"
+             xmlns:vm ="clr-namespace:FakeEzMobileTrading.ViewModels.HomePageViewModels"
              xmlns:repeater="clr-namespace:FakeEzMobileTrading"
+             xmlns:md="clr-namespace:FakeEzMobileTrading.Models"
+              x:DataType="vm:OverViewPageViewModel"
              >
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" Padding="0,0,15,0">
+            
             <Label Text="EzMobile Trading" FontSize="20" TextColor="White" FontAttributes="Bold"
-                   HorizontalOptions="StartAndExpand"
-                   />
+                   HorizontalOptions="StartAndExpand"/>
+            
             <StackLayout Orientation="Horizontal" Spacing="15">
+                
                 <Image Source="ic_transaction.png" WidthRequest="20" HeightRequest="20" Margin="0,0,5,0"/>
+                
                 <AbsoluteLayout WidthRequest="20" HeightRequest="20">
                     <Image Source="ic_bell.png" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All"/>
                     <Frame Padding="0" BackgroundColor="Red" AbsoluteLayout.LayoutBounds="0.75,0.15,8,8" AbsoluteLayout.LayoutFlags="PositionProportional" CornerRadius="10" HasShadow="False">
@@ -30,128 +36,132 @@
                         <TapGestureRecognizer Command="{Binding SwitchNotifyPage}"/>
                     </AbsoluteLayout.GestureRecognizers>
                 </AbsoluteLayout>
+                
                 <Image Source="ic_search.png" WidthRequest="20" HeightRequest="20">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SwitchSearchPage}"/>
                     </Image.GestureRecognizers>
                 </Image>
+                
             </StackLayout>
+            
         </StackLayout>
     </NavigationPage.TitleView>
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:MathExpressionConverter x:Key="MathExpressionConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <Grid>
-            <ActivityIndicator IsRunning="{Binding IsVisible, Converter={xct:InvertedBoolConverter}}"
+       
+            <Grid RowDefinitions="110,*" 
+              x:DataType="vm:OverViewPageViewModel"
+              BackgroundColor="#F1F1F1" IsVisible="{Binding IsVisible}">
+                
+                <ActivityIndicator IsRunning="{Binding IsVisible, Converter={xct:InvertedBoolConverter}}"
                                WidthRequest="30"
                                HeightRequest="30"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
-                               Color="#034E95">
+                               Color="#034E95"
+                                   Grid.RowSpan="2">
 
-            </ActivityIndicator>
-            <Grid RowDefinitions="110,*" 
-              BackgroundColor="#F1F1F1" IsVisible="{Binding IsVisible}">
+                </ActivityIndicator>
+                
                 <Frame Grid.Row="0" Padding="0">
+                    
                     <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                        
                         <StackLayout Orientation="Horizontal" Padding="0,0,10,0">
-                            <repeater:RepeaterView x:Name="listExchanges"
+
+                        <repeater:RepeaterView x:Name="listExchanges"
                                                Orientation="Horizontal"
-                                               ItemsSource="{Binding StockExchanges}"
-                                               
-                                               >
-                                <repeater:RepeaterView.ItemTemplate>
+                                               ItemsSource="{Binding StockExchanges}">
+                            <repeater:RepeaterView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <StackLayout x:Name="ExchangeItem"
-                                                     WidthRequest="100"
-                                                     Padding="5"
-                                                     >
-                                                <Label Text="{Binding ExchangeId}" HorizontalTextAlignment="Center"   TextColor="Black" FontSize="16"/>
-                                                <Grid RowDefinitions="Auto"
-                                                      ColumnDefinitions="Auto"
-                                                      HorizontalOptions="Center">
-                                                    <Label Text="{Binding ExchangePrice, StringFormat='{0:n}',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" 
+                                            <Grid
+                                                ColumnDefinitions="*,*"
+                                                RowDefinitions="*,*,*,*"
+                                                x:DataType="md:StockExchange"
+                                                x:Name="ExchangeItem"
+                                                WidthRequest="100"
+                                                Padding="5">
+                                                
+                                                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ExchangeId}" HorizontalTextAlignment="Center"   TextColor="Black" FontSize="16"/>
+                                                
+                                                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   Text="{Binding ExchangePrice, StringFormat='{0:n}',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" 
                                                    BackgroundColor="{Binding BgColor}"
-                                                           Padding="5,0,5,0"
+                                                   Padding="5,0,5,0"
                                                    FontSize="16"
                                                    FontAttributes="Bold"/>
-                                                </Grid>
-                                                
-                                                <StackLayout Orientation="Horizontal"
-                                                         Spacing="10"
-                                                         HorizontalOptions="Center"
-                                                             BackgroundColor="{Binding BgColor}">
-                                                    <Label Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="14"
-                                                       />
-                                                    <Label Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}%'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="14"
-                                                       />
-                                                </StackLayout>
-                                                <Label Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='{0:n} tỷ'}" HorizontalTextAlignment="Center" TextColor="Black" FontSize="14"/>
-                                                <StackLayout.GestureRecognizers>
+
+                                                <Label Grid.Row="2" Grid.Column="0" Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="14" BackgroundColor="{Binding BgColor}"/>
+
+                                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='{0:F2}%'}" HorizontalTextAlignment="Center" TextColor="{Binding UpDownColor}" FontSize="14" BackgroundColor="{Binding BgColor}"/>
+
+                                                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='{0:n} tỷ'}" HorizontalTextAlignment="Center" TextColor="Black" FontSize="14"/>
+
+                                            <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding BindingContext.ExchangeDetail, Source={x:Reference listExchanges}}" CommandParameter="{Binding  Source={x:Reference ExchangeItem}, Path=BindingContext}"/>
-                                                </StackLayout.GestureRecognizers>
-                                            </StackLayout>
+                                                </Grid.GestureRecognizers>
+                                            </Grid>
                                         </ViewCell>
                                     </DataTemplate>
                                 </repeater:RepeaterView.ItemTemplate>
-
                             </repeater:RepeaterView>
+                            
                             <Image Source="ic_arr_right.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFit" HorizontalOptions="End">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SwictchOverViewMarket}"/>
                                 </Image.GestureRecognizers>
                             </Image>
+                            
                         </StackLayout>
+                        
                     </ScrollView>
+                    
                 </Frame>
                 <Frame Grid.Row="1" Padding="0">
                     <Grid RowDefinitions="40,40,*" RowSpacing="0">
+                        
                         <StackLayout Orientation="Horizontal"
-                             Padding="10,10,10,10"
-                                 Grid.Row="0" Spacing="0">
+                                     Padding="10,10,10,10"
+                                     Grid.Row="0" Spacing="0">
+                            
                             <Label Text="BẢNG GIÁ" FontSize="16" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
-                            <StackLayout Orientation="Horizontal" Spacing="0" VerticalOptions="CenterAndExpand" >
-                                <Frame Padding="10,0,5,0" HasShadow="False" HorizontalOptions="StartAndExpand">
-                                    <Image Source="ic_list.png" WidthRequest="22" HeightRequest="22" Margin="0,0,5,0">
-                                       
-                                    </Image>
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowPopup}" CommandParameter="{Binding Source={x:Reference popup}}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>
-                                <Frame Padding="10,0,5,0" HasShadow="False" HorizontalOptions="FillAndExpand">
-                                    <Image Source="ic_plus.png" WidthRequest="18" HeightRequest="18">
-                                       
-                                    </Image>
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding InitListItem}" CommandParameter="{Binding Source={x:Reference popup}}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>
-                               
-
-                                    <Frame Padding="10,0,5,0" HasShadow="False"
-                                           HorizontalOptions="FillAndExpand">
-                                        <Image Source="ic_arr_right.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFill">
-                                           
-                                        </Image>
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding SwitchPriceBoard}" CommandParameter="{Binding Source={x:Reference popup}}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>
-                            </StackLayout>
+                           
+                            <Image Source="ic_list.png" WidthRequest="35" HeightRequest="30" Margin="0,0,5,0">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowPopup}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                                    
+                            <Image Source="ic_plus.png" WidthRequest="35" HeightRequest="55">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding InitListItem}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                                    
+                            <Image Source="ic_arr_right.png" WidthRequest="35" HeightRequest="55" Aspect="AspectFill">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SwitchPriceBoard}" CommandParameter="{Binding Source={x:Reference popup}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            
                         </StackLayout>
-                        <Grid ColumnDefinitions="0.5*,0.55*,0.45*,*"
+                        
+                        <Grid ColumnDefinitions="0.5*,0.6*,0.6*,*"
                           RowDefinitions="*,0.5"
                           Padding="0,0,0,0"
                           RowSpacing="0"
-                          ColumnSpacing="20"
-                          Grid.Row="1"
-                          >
+                          Grid.Row="1">
+                            
                             <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                
                                 <Label Text="Mã" TextColor="Black" FontSize="16"
                                    VerticalOptions="CenterAndExpand" Margin="5,0,0,0"
                                    IsEnabled="{Binding IsEnableSort}">
@@ -159,6 +169,7 @@
                                         <TapGestureRecognizer Command="{Binding SortId}" CommandParameter="{x:Reference btnSortId}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
+                                
                                 <Image x:Name="btnSortId"
                                    Source="{Binding SortIdSource}"
                                    WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand"
@@ -169,20 +180,26 @@
                                         <TapGestureRecognizer Command="{Binding SortId}" CommandParameter="{x:Reference btnSortId}"/>
                                     </Image.GestureRecognizers>
                                 </Image>
+                                
                                 <StackLayout.Triggers>
                                     <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference btnSortId}, Path=IsVisible}" Value="False">
                                         <Setter Property="Padding" Value="5,0,5,0"/>
                                     </DataTrigger>
                                 </StackLayout.Triggers>
+                                
                             </StackLayout>
-                            <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="EndAndExpand" Margin="0,0,20,0">
+                            
+                            <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="FillAndExpand">
+                                
                                 <Label Text="Giá" TextColor="Black" FontSize="16" 
+                                       HorizontalOptions="EndAndExpand"
                                    VerticalOptions="CenterAndExpand"
-                                   IsEnabled="{Binding IsEnableSort}" >
+                                   IsEnabled="{Binding IsEnableSort}">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding SortPrice}" CommandParameter="{x:Reference btnSortPrice}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
+                                
                                 <Image x:Name="btnSortPrice"
                                    Source="{Binding SortPriceSource}" WidthRequest="15"
                                    HeightRequest="15" VerticalOptions="CenterAndExpand" 
@@ -193,23 +210,28 @@
                                         <TapGestureRecognizer Command="{Binding SortPrice}" CommandParameter="{x:Reference btnSortPrice}"/>
                                     </Image.GestureRecognizers>
                                 </Image>
+                                
                                 <StackLayout.Triggers>
                                     <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference btnSortPrice}, Path=IsVisible}" Value="False">
                                         <Setter Property="Padding" Value="5,0,5,0"/>
                                     </DataTrigger>
                                 </StackLayout.Triggers>
+                                
                             </StackLayout>
+                            
                             <StackLayout Orientation="Horizontal" Grid.Column="2">
+                                
                                 <AbsoluteLayout x:Name="changeFilter"
                                             HorizontalOptions="StartAndExpand" WidthRequest="80"
                                             ClassId="True" VerticalOptions="CenterAndExpand"
                                             >
-                                    <Image Source="ic_top_left.png" WidthRequest="10" HeightRequest="10" AbsoluteLayout.LayoutBounds="0,0,10,10" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                                    <Image Source="ic_top_left.png" WidthRequest="10" HeightRequest="10" AbsoluteLayout.LayoutBounds="0.3,0,10,10" AbsoluteLayout.LayoutFlags="PositionProportional"/>
                                     <Label x:Name="lblFilter" Text="{Binding TypeFilter}" FontSize="16" TextColor="Black" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" HorizontalTextAlignment="End" VerticalOptions="CenterAndExpand"/>
                                     <AbsoluteLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ChangeFilter}" CommandParameter="{Binding Source={x:Reference changeFilter}}"/>
                                     </AbsoluteLayout.GestureRecognizers>
                                 </AbsoluteLayout>
+                                
                                 <Image x:Name="btnSortPersentOrUpdown"
                                    Source="{Binding SortPersentSource}"
                                    WidthRequest="15" HeightRequest="15" VerticalOptions="CenterAndExpand"
@@ -221,13 +243,16 @@
                                         <TapGestureRecognizer Command="{Binding SortPersentOrUpDown}" CommandParameter="{x:Reference btnSortPersentOrUpdown}"/>
                                     </Image.GestureRecognizers>
                                 </Image>
+                                
                                 <StackLayout.Triggers>
                                     <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference btnSortPrice}, Path=IsVisible}" Value="False">
                                         <Setter Property="Padding" Value="5,0,5,0"/>
                                     </DataTrigger>
                                 </StackLayout.Triggers>
+                                
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" Grid.Column="3" HorizontalOptions="EndAndExpand">
+                               
                                 <Label Text="Khối lượng" TextColor="Black" 
                                    FontSize="16" VerticalOptions="CenterAndExpand"
                                    IsEnabled="{Binding IsEnableSort}">
@@ -235,6 +260,7 @@
                                         <TapGestureRecognizer Command="{Binding SortMass}" CommandParameter="{x:Reference btnSortMass}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
+                                
                                 <Image x:Name="btnSortMass"
                                    Source="{Binding SortMassSource}"
                                    WidthRequest="15" HeightRequest="15"
@@ -246,16 +272,20 @@
                                         <TapGestureRecognizer Command="{Binding SortMass}" CommandParameter="{x:Reference btnSortMass}"/>
                                     </Image.GestureRecognizers>
                                 </Image>
+                                
                                 <StackLayout.Triggers>
                                     <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference btnSortPrice}, Path=IsVisible}" Value="False">
                                         <Setter Property="Padding" Value="5,0,15,0"/>
                                     </DataTrigger>
                                 </StackLayout.Triggers>
+                                
                             </StackLayout>
+                            
                             <BoxView HeightRequest="1" BackgroundColor="Gray" Grid.Row="1" Grid.ColumnSpan="4"/>
+                            
                         </Grid>
                         <AbsoluteLayout Grid.Row="2">
-                            <Label />
+                           
                             <dvc:DXCollectionView x:Name="StockItems"
                                           ItemsSource="{Binding StockItems, Mode=TwoWay}"
                                           AbsoluteLayout.LayoutBounds="1,1,1,1"
@@ -276,29 +306,23 @@
                                             </SwipeView.RightItems>
                                             <SwipeView.Content>
                                                 <StackLayout Spacing="0" >
-                                                    <Grid ColumnDefinitions="0.5*,0.55*,0.45*,*"
-                                                  Padding="5,0,5,0"
-                                                  ColumnSpacing="20" >
-                                                        <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="0">
-                                                            <Label Text="{Binding StockId}" TextColor="{Binding BgIdColor}" FontSize="16" VerticalOptions="Center"/>
+                                                    <Grid ColumnDefinitions="0.5*,0.6*,0.6*,*"
+                                                          Padding="5,0,5,0"
+                                                          ColumnSpacing="20">
+                                                        
+                                                        <Label Grid.Column="0" Padding="0,8,0,8" Text="{Binding StockId}" TextColor="{Binding BgIdColor}" FontSize="16" VerticalOptions="Center"/>
 
-                                                        </StackLayout>
-                                                        <StackLayout Padding="0,8,0,8" Orientation="Horizontal" Grid.Column="1" Spacing="0" Margin="0,0,20,0" BackgroundColor="{Binding BgColor}">
-                                                            <Label Text="{Binding PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                                                        <Label Grid.Column="1" Padding="0,8,0,8" Text="{Binding PriceGood, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="{Binding BgColor}" HorizontalTextAlignment="End"/>
 
-                                                        </StackLayout>
-                                                        <StackLayout Padding="0,8,0,8" Orientation="Horizontal" Grid.Column="2" Spacing="0" BackgroundColor="{Binding BgColor}">
-                                                            <Label Text="{Binding UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F1}'}" 
-                                                           TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}, Converter={xct:InvertedBoolConverter}}"/>
-                                                            <Label Text="{Binding Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}}"/>
-                                                        </StackLayout>
-                                                        <StackLayout Orientation="Horizontal" Grid.Column="3" Padding="0,0,10,0">
-                                                            <Label Text="{Binding TotalMass,StringFormat='{0:###,###}'}" TextColor="{Binding ColorDefault2}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
-                                                        </StackLayout>
+                                                    <Label Grid.Column="2" Padding="0,8,0,8" Text="{Binding UpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F1}'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="FillAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}, Converter={xct:InvertedBoolConverter}}"  BackgroundColor="{Binding BgColor}" HorizontalTextAlignment="End"/>
+                                                    <Label Grid.Column="2" Padding="0,8,0,8" Text="{Binding Persent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/1000', StringFormat='{0:F2}%'}" TextColor="{Binding PriceGoodColor}" FontSize="16" HorizontalOptions="FillAndExpand" VerticalOptions="Center" IsVisible="{Binding BindingContext.ShowHidePersent, Source={x:Reference StockItems}}"  BackgroundColor="{Binding BgColor}" HorizontalTextAlignment="End"/>
+
+                                                        <Label Grid.Column="3" Text="{Binding TotalMass,StringFormat='{0:###,###}'}" TextColor="{Binding ColorDefault2}" FontSize="16" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
 
                                                         <Grid.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding BindingContext.SelectItemS, Source={x:Reference StockItems}}" CommandParameter="{Binding Source={x:Reference StockItem}, Path=BindingContext}"/>
                                                         </Grid.GestureRecognizers>
+                                                        
                                                     </Grid>
                                                     <BoxView HeightRequest="0.5" BackgroundColor="Gray"/>
 
@@ -308,6 +332,7 @@
 
                                     </DataTemplate>
                                 </dvc:DXCollectionView.ItemTemplate>
+                                
                             </dvc:DXCollectionView>
                             <Label Text="Vui lòng nhấn vào '+' để thêm mã cổ phiếu." 
                                AbsoluteLayout.LayoutBounds="0.5,0.2,200,100" 
@@ -415,6 +440,5 @@
                 </dve:DXPopup>
 
             </Grid>
-        </Grid>
     </ContentPage.Content>
 </ContentPage>

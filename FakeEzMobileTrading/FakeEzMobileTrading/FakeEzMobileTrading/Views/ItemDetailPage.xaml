@@ -4,6 +4,7 @@
              x:Class="FakeEzMobileTrading.Views.ItemDetailPage"
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
              NavigationPage.HasBackButton="True"
+             xmlns:vm="clr-namespace:FakeEzMobileTrading.ViewModels"
              xmlns:dxn="http://schemas.devexpress.com/xamarin/2014/forms/navigation"
              xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
              xmlns:dxc="http://schemas.devexpress.com/xamarin/2014/forms/collectionview"
@@ -16,7 +17,7 @@
     </NavigationPage.TitleView>
     <ContentPage.Content>
        
-         <Grid >
+         <Grid x:DataType="vm:ItemDetailPageViewModel">
             <ActivityIndicator IsRunning="{Binding IsBusy}" Color="#034E95" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="40" HeightRequest="40">
 
             </ActivityIndicator>
@@ -157,10 +158,11 @@
                                         </Label>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="1" Grid.Column="0">
-                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
-                                   Grid.Column="0">
-                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="IndianRed" Padding="0"
+                                                Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="0" CornerRadius="2"
+                                                    Clicked="btnSell_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceB1X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">
@@ -191,10 +193,11 @@
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="2" Grid.Column="0">
-                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
-                                   Grid.Column="0">
-                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="IndianRed" Padding="0"
+                                                Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="0" CornerRadius="2"
+                                                    Clicked="btnSell_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceB2X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">
@@ -225,10 +228,11 @@
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="3" Grid.Column="0">
-                                            <Frame BackgroundColor="IndianRed" Padding="0" HasShadow="False"
-                                   Grid.Column="0">
-                                                <Label Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="IndianRed" Padding="0"
+                                                Text="BÁN" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="0" CornerRadius="2"
+                                                    Clicked="btnSell_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceB3X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">
@@ -259,10 +263,11 @@
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="1" Grid.Column="1">
-                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
-                                   Grid.Column="2">
-                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="CornflowerBlue" Padding="0"
+                                                Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="2" CornerRadius="2"
+                                                    Clicked="btnBuy_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceS1X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">
@@ -293,10 +298,11 @@
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="2" Grid.Column="1">
-                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
-                                   Grid.Column="2">
-                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="CornflowerBlue" Padding="0"
+                                                Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="2" CornerRadius="2"
+                                                    Clicked="btnBuy_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceS2X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">
@@ -327,10 +333,11 @@
                                         </Grid>
                                         <Grid ColumnDefinitions="*,*,*"
                               Grid.Row="3" Grid.Column="1">
-                                            <Frame BackgroundColor="CornflowerBlue" Padding="0" HasShadow="False"
-                                   Grid.Column="2">
-                                                <Label Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                                            </Frame>
+                                            <Button ClassId="{Binding StockItem.StockId}" BackgroundColor="CornflowerBlue" Padding="0"
+                                                Text="MUA" TextColor="White" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"
+                                                Grid.Column="2" CornerRadius="2"
+                                                    Clicked="btnBuy_Clicked">
+                                            </Button>
                                             <Label Text="{Binding StockItem.PriceS3X}" HorizontalOptions="End" Grid.Column="1" VerticalOptions="Center" FontSize="15" Padding="3,2,3,2" Margin="0,-2,0,0" TextColor="Black">
                                                 <Label.Triggers>
                                                     <Trigger TargetType="Label" Property="Text" Value="0">

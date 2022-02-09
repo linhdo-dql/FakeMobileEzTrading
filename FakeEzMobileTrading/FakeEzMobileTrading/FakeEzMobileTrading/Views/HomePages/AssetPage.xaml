@@ -85,7 +85,7 @@
                     <Frame Padding="0" Grid.Row="2">
                                 <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="10,0,10,0">
                                     <Label Text="III. CHỨNG KHOÁN VÀ TIỀN (I +II)" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start"/>
-                                    <Label Text="9.000.000.000" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
+                                    <Label Text="9.000.0000" TextColor="#034E95" FontAttributes="Bold" FontSize="15" HorizontalOptions="EndAndExpand"/>
                                 </StackLayout>
 
                     </Frame>

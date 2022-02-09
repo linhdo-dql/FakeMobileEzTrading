@@ -30,6 +30,7 @@ namespace FakeEzMobileTrading.Views
         {
             base.OnAppearing();
             DependencyService.Get<IOrientationService>().Landscape();
+           
             if(time!=0)
             {
                 BindingContext = new PriceBoardPageViewModel(this, Navigation);
@@ -44,6 +45,7 @@ namespace FakeEzMobileTrading.Views
         {
             base.OnDisappearing();
             DependencyService.Get<IOrientationService>().Portrait();
+           
         }
 
         private void DataGridView_CompleteRowDragDrop(object sender, DevExpress.XamarinForms.DataGrid.CompleteRowDragDropEventArgs e)

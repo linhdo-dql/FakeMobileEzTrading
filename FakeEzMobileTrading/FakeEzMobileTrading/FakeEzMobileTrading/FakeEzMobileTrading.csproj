@@ -16,6 +16,8 @@
     <PackageReference Include="DevExpress.XamarinForms.Editors" Version="21.2.4" />
     <PackageReference Include="DevExpress.XamarinForms.Grid" Version="21.2.4" />
     <PackageReference Include="DevExpress.XamarinForms.Navigation" Version="21.2.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Plugin.FirebasePushNotification" Version="3.4.1" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
     <PackageReference Include="System.ObjectModel" Version="4.3.0" />
     <PackageReference Include="Xam.TabView" Version="1.0.5" />

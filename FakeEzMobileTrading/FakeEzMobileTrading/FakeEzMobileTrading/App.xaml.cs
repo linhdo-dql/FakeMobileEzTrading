@@ -2,6 +2,7 @@
 using FakeEzMobileTrading.Models.ItemStatistic;
 using FakeEzMobileTrading.Views;
 using MUAHO.ViewModels;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -484,6 +485,13 @@ namespace FakeEzMobileTrading
 
             Preferences.Set("tmpM", "");
             MainPage = new NavigationPage( new MainPage(""));
+
+            CrossFirebasePushNotification.Current.OnTokenRefresh += Current_OnTokenRefresh;
+        }
+
+        private void Current_OnTokenRefresh(object source, FirebasePushNotificationTokenEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"Token: {e.Token}");
         }
 
         protected override void OnStart()
