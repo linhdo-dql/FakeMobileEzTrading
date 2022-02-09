@@ -1,7 +1,6 @@
 ﻿using DevExpress.XamarinForms.Navigation;
 using FakeEzMobileTrading.Models;
 using FakeEzMobileTrading.Models.ItemStatistic;
-using Java.Util;
 using MUAHO.ViewModels;
 using System;
 using System.Collections.Generic;
