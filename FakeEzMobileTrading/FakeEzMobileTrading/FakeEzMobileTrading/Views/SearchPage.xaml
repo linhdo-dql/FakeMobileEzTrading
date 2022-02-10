@@ -37,13 +37,13 @@
                     FontSize="14"
                     Text="{Binding SearchContent}"
                     Margin="30,10,30,10">
-                    <custom:CustomEntry.Keyboard>
+                    <Entry.Keyboard>
                         <Keyboard x:FactoryMethod="Create">
                             <x:Arguments>
                                 <KeyboardFlags>Suggestions,CapitalizeCharacter</KeyboardFlags>
                             </x:Arguments>
                         </Keyboard>
-                    </custom:CustomEntry.Keyboard>
+                    </Entry.Keyboard>
                 </custom:CustomEntryWithBorder>   
             </StackLayout>
             <CollectionView x:Name="AllStockItems"

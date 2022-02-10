@@ -15,7 +15,7 @@ using Xamarin.Forms.Internals;
 
 namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 {
-    public class OverViewPageViewModel : BaseViewModel 
+    public class MarketPageViewModel : BaseViewModel 
     {   
         private ObservableCollection<StockItem> _stockItems = new ObservableCollection<StockItem>();
         private ObservableCollection<StockItem> NewStockItems { get; set; }
@@ -41,13 +41,13 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 SetProperty(ref _stockItems, value);
             }
         }
-        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;                                                                                                   
-        private bool _showHidePersent = false, _isSortEnable, _isPageVisible = true;
+        private int _amountTapSortId = 0, _amountTapSortPrice = 0, _amountTapSortPersentOrUpdown = 0, _amountTapSortMass = 0, _tmpCount;
+        private bool _showHidePersent = false, _isSortEnable;
         private bool _newListLayoutVisible = false, _isVisible = false, _labelVisible=false;
         private string _sortPriceSource = "ic_updown.png", _sortMassSource= "ic_updown.png", _sortIdSource= "ic_updown.png", _sortPersentSource = "ic_updown.png";
         INavigation Navigation { get; set; }
         
-        public OverViewPageViewModel(Page page, INavigation navigation)
+        public MarketPageViewModel(Page page, INavigation navigation)
         {
             Preferences.Set("TypeTable", 0);
             IsVisible = false;
@@ -353,7 +353,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 _tap = true;
                 if(App.CollectionsList.FirstOrDefault(list => list.Name == Preferences.Get("CurrentFollowList", String.Empty))!=null)
                 {
-                    await (page.Parent.Parent as Page).Navigation.PushAsync(new PriceBoard(0));
+                    await (page.Parent.Parent as Page).Navigation.PushAsync(new PriceBoardPage(0));
                     _tap = false;
                 }  
                 else
@@ -411,7 +411,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 if (_tap == true) return;
                 _tap = true;
                 var item = x as StockItem;
-                await page.Navigation.PushAsync(new ItemDetailPage(item));
+                await page.Navigation.PushAsync(new StockDetailPage(item));
                 _tap = false;
             });
         }

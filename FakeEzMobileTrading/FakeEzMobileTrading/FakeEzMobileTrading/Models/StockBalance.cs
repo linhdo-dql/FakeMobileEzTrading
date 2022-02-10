@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FakeEzMobileTrading.Models
 {
-    public class SurplusStock
+    public class StockBalance
     {
         private string _stockId;
         private double _mass;

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FakeEzMobileTrading.Models
 {
-    public class CommandCondition : BaseViewModel
+    public class ConditionalCommand : BaseViewModel
     {
         private string _stockID;
         private string _conditionID;

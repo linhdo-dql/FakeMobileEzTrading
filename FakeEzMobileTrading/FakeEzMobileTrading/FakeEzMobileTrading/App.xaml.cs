@@ -353,10 +353,10 @@ namespace FakeEzMobileTrading
             new CompanyNew() {Id="VCB",Title="Nghị quyết HĐQT về việc phê duyệt kế hoạch chi trả cổ tức năm 2020 bằng tiền năm 2019 bằng cổ phiếu", Created=DateTime.Now},
             new CompanyNew() {Id="VCB",Title="Thông báo công văn của UBCKNN về hồ sơ mời thầu cổ phiếu VCB0123183 năm 2021", Created=DateTime.Now}
         };
-        public static ObservableCollection<CommandCondition> CommandConditions = new ObservableCollection<CommandCondition>()
+        public static ObservableCollection<ConditionalCommand> CommandConditions = new ObservableCollection<ConditionalCommand>()
         {
-           new CommandCondition(){ StockID = "FTS", Mass = 100, Price=55000, Condition=true, PriceCondition = 54300, Status="Chờ kích hoạt", TypeSign="Ký quỹ", TimeOrder= DateTime.Now, TimeActive = DateTime.Now, Type = true },
-           new CommandCondition(){ StockID = "FTS", Mass = 100, Price=55000, Condition=true, PriceCondition = 54300, Status="Thành công", TypeSign="Ký quỹ", TimeOrder= DateTime.ParseExact("12/01/2022","dd/MM/yyyy", null), TimeActive = DateTime.Now, Type =  false },
+           new ConditionalCommand(){ StockID = "FTS", Mass = 100, Price=55000, Condition=true, PriceCondition = 54300, Status="Chờ kích hoạt", TypeSign="Ký quỹ", TimeOrder= DateTime.Now, TimeActive = DateTime.Now, Type = true },
+           new ConditionalCommand(){ StockID = "FTS", Mass = 100, Price=55000, Condition=true, PriceCondition = 54300, Status="Thành công", TypeSign="Ký quỹ", TimeOrder= DateTime.ParseExact("12/01/2022","dd/MM/yyyy", null), TimeActive = DateTime.Now, Type =  false },
         };
         public static ObservableCollection<New> ActionEvents = new ObservableCollection<New>()
         {
@@ -439,18 +439,18 @@ namespace FakeEzMobileTrading
             new New() {Id =6,Title ="Chỉ số sản xuất công nghiệ[ tháng 12 năm 2021", DatetimeN="29/12/2021 10:03", Source="Theo gso.gov.vn"},
             new New() {Id =6,Title ="Báo cáo tình hình kinh tế - xã hội quý IV và năm 2021", DatetimeN="29/12/2021 10:03", Source="Theo Tổng cục Thống kê"},
         };
-        public static ObservableCollection<SurplusStock> SuplusStocks = new ObservableCollection<SurplusStock>()
+        public static ObservableCollection<StockBalance> SuplusStocks = new ObservableCollection<StockBalance>()
         {
-            new SurplusStock()  {StockId = "VCB", Mass = 1000, PersentBorrow = 0.25, DateEnd= DateTime.ParseExact("12/12/2022","dd/MM/yyyy", null), Status = true},
-            new SurplusStock()  {StockId = "PVC", Mass = 500, PersentBorrow = 0.25, DateEnd= DateTime.ParseExact("15/09/2022","dd/MM/yyyy", null), Status = false},
-            new SurplusStock()  {StockId = "SHB", Mass = 500, PersentBorrow = 0.15, DateEnd= DateTime.ParseExact("22/10/2022","dd/MM/yyyy", null), Status = true},
-            new SurplusStock()  {StockId = "AAA", Mass = 339, PersentBorrow = 0.15, DateEnd= DateTime.ParseExact("12/02/2022","dd/MM/yyyy", null), Status = false}
+            new StockBalance()  {StockId = "VCB", Mass = 1000, PersentBorrow = 0.25, DateEnd= DateTime.ParseExact("12/12/2022","dd/MM/yyyy", null), Status = true},
+            new StockBalance()  {StockId = "PVC", Mass = 500, PersentBorrow = 0.25, DateEnd= DateTime.ParseExact("15/09/2022","dd/MM/yyyy", null), Status = false},
+            new StockBalance()  {StockId = "SHB", Mass = 500, PersentBorrow = 0.15, DateEnd= DateTime.ParseExact("22/10/2022","dd/MM/yyyy", null), Status = true},
+            new StockBalance()  {StockId = "AAA", Mass = 339, PersentBorrow = 0.15, DateEnd= DateTime.ParseExact("12/02/2022","dd/MM/yyyy", null), Status = false}
         };
-        public static ObservableCollection<FormSend> FormSends = new ObservableCollection<FormSend>()
+        public static ObservableCollection<FormTransfer> FormSends = new ObservableCollection<FormTransfer>()
         {
-            new FormSend() {ID = 1, Title="NỘP TIỀN ĐẤU GIÁ",Number="1221 0000 3191 39",Name="CTY CP CHUNG KHOAN FPT", Address="Đầu tư và Phát triền - BIDV CN Hà Thành Hà Nội"},
-            new FormSend() {ID = 2, Title="NỘP PHÍ THUẾ DỊCH VỤ FPTS",Number="1480 0153 6549",Name="CONG TY CO PHAN CHUNG KHOAN FPT", Address="Công Thương - VietinBank CN Nam Thăng Long"},
-            new FormSend() {ID = 3, Title="NỘP TIỀN THỰC HIỆN QUYỀN MUA PHÁT HÀNH THÊM",Number="1221 0000 3221 46",Name="CTY CP CHUNG KHOAN FPT", Address="Đầu tư và Phát triền - BIDV CN Hà Thành Hà Nội"}
+            new FormTransfer() {ID = 1, Title="NỘP TIỀN ĐẤU GIÁ",Number="1221 0000 3191 39",Name="CTY CP CHUNG KHOAN FPT", Address="Đầu tư và Phát triền - BIDV CN Hà Thành Hà Nội"},
+            new FormTransfer() {ID = 2, Title="NỘP PHÍ THUẾ DỊCH VỤ FPTS",Number="1480 0153 6549",Name="CONG TY CO PHAN CHUNG KHOAN FPT", Address="Công Thương - VietinBank CN Nam Thăng Long"},
+            new FormTransfer() {ID = 3, Title="NỘP TIỀN THỰC HIỆN QUYỀN MUA PHÁT HÀNH THÊM",Number="1221 0000 3221 46",Name="CTY CP CHUNG KHOAN FPT", Address="Đầu tư và Phát triền - BIDV CN Hà Thành Hà Nội"}
         };
         public static ObservableCollection<Notification> Notifications = new ObservableCollection<Notification>()
         {

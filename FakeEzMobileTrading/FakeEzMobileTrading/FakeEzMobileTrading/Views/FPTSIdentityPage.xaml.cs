@@ -15,7 +15,7 @@ namespace FakeEzMobileTrading.Views
         public FPTSIdentityPage()
         {
             InitializeComponent();
-            BindingContext = new FPTSIdentitysPageViewModel();
+            BindingContext = new FPTSsIdentityPageViewModel();
         }
     }
 }

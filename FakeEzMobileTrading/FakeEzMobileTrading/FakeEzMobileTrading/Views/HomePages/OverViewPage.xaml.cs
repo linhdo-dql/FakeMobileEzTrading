@@ -20,12 +20,12 @@ namespace FakeEzMobileTrading.Views.HomePages
         public OverViewPage()
         {
             InitializeComponent();
-            BindingContext = new OverViewPageViewModel(this, Navigation);
+            BindingContext = new MarketPageViewModel(this, Navigation);
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindingContext = new OverViewPageViewModel(this, Navigation);
+            BindingContext = new MarketPageViewModel(this, Navigation);
         }
 
         private void StockItems_DragItem(object sender, DevExpress.XamarinForms.CollectionView.DragItemEventArgs e)

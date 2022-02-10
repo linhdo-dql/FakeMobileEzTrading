@@ -13,10 +13,7 @@
              android:TabbedPage.IsSmoothScrollEnabled="False"
              android:TabbedPage.IsSwipePagingEnabled="False"
              android:TabbedPage.ToolbarPlacement="Bottom"
-             xmlns:vm ="clr-namespace:FakeEzMobileTrading.ViewModels.HomePageViewModels"
              xmlns:repeater="clr-namespace:FakeEzMobileTrading"
-             xmlns:md="clr-namespace:FakeEzMobileTrading.Models"
-              x:DataType="vm:OverViewPageViewModel"
              >
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" Padding="0,0,15,0">
@@ -57,7 +54,6 @@
     <ContentPage.Content>
        
             <Grid RowDefinitions="110,*" 
-              x:DataType="vm:OverViewPageViewModel"
               BackgroundColor="#F1F1F1" IsVisible="{Binding IsVisible}">
                 
                 <ActivityIndicator IsRunning="{Binding IsVisible, Converter={xct:InvertedBoolConverter}}"
@@ -76,16 +72,14 @@
                         
                         <StackLayout Orientation="Horizontal" Padding="0,0,10,0">
 
-                        <repeater:RepeaterView x:Name="listExchanges"
+                        <StackLayout x:Name="listExchanges"
                                                Orientation="Horizontal"
-                                               ItemsSource="{Binding StockExchanges}">
-                            <repeater:RepeaterView.ItemTemplate>
+                                             BindableLayout.ItemsSource="{Binding StockExchanges}">
+                            <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
                                             <Grid
                                                 ColumnDefinitions="*,*"
                                                 RowDefinitions="*,*,*,*"
-                                                x:DataType="md:StockExchange"
                                                 x:Name="ExchangeItem"
                                                 WidthRequest="100"
                                                 Padding="5">
@@ -109,10 +103,9 @@
                                                     <TapGestureRecognizer Command="{Binding BindingContext.ExchangeDetail, Source={x:Reference listExchanges}}" CommandParameter="{Binding  Source={x:Reference ExchangeItem}, Path=BindingContext}"/>
                                                 </Grid.GestureRecognizers>
                                             </Grid>
-                                        </ViewCell>
                                     </DataTemplate>
-                                </repeater:RepeaterView.ItemTemplate>
-                            </repeater:RepeaterView>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
                             
                             <Image Source="ic_arr_right.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFit" HorizontalOptions="End">
                                 <Image.GestureRecognizers>
@@ -347,7 +340,6 @@
 
                 </Frame>
                 <dve:DXPopup x:Name="popup"
-                         AllowScrim="True"
                          ScrimColor="#33000000">
                     <Grid BackgroundColor="#EBEEF2"
                       HeightRequest="300"

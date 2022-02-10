@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading
 {
-    public class ActionEventPageViewModel : BaseViewModel
+    public class EventCalendarPageViewModel : BaseViewModel
     {
    
 
@@ -29,7 +29,7 @@ namespace FakeEzMobileTrading
 
 
         private string _strSearch, _strSearch1, _strSearch2, _strSearch3, _strSearch4;
-        public ActionEventPageViewModel()
+        public EventCalendarPageViewModel()
         {
             
             IPONews = new ObservableCollection<New>(App.ActionEvents.Where(n => n.Id ==1));

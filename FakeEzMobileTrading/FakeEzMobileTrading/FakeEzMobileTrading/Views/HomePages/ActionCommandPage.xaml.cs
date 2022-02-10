@@ -22,14 +22,14 @@ namespace FakeEzMobileTrading.Views.HomePages
             InitializeComponent();
             _currentId = currentId;
             _type = type;
-            BindingContext = new ActionCommandPageViewModel(this, _currentId, _type);
+            BindingContext = new SetCommandBasicPageViewModel(this, _currentId, _type);
 
 
         }
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindingContext = new ActionCommandPageViewModel(this, _currentId, _type);
+            BindingContext = new SetCommandBasicPageViewModel(this, _currentId, _type);
             Device.StartTimer(new TimeSpan(0, 0, 5), ()=>
             {
                 Device.BeginInvokeOnMainThread(async () =>

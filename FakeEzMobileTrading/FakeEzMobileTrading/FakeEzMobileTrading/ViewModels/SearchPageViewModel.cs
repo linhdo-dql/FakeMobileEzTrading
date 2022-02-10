@@ -46,7 +46,7 @@ namespace FakeEzMobileTrading.ViewModels
                 }
                 else
                 {
-                    page.Navigation.PushAsync(new ItemDetailPage(item));
+                    page.Navigation.PushAsync(new StockDetailPage(item));
                 }
                
                 

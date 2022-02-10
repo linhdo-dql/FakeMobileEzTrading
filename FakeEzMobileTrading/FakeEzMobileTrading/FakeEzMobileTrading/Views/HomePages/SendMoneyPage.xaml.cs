@@ -17,13 +17,13 @@ namespace FakeEzMobileTrading.Views.HomePages
         public SendMoneyPage()
         {
             InitializeComponent();
-            BindingContext = new SendMoneyPageViewModel(this);
+            BindingContext = new TransferMoneyPageViewModel(this);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing(); 
-            BindingContext = new SendMoneyPageViewModel(this);
+            BindingContext = new TransferMoneyPageViewModel(this);
         }
 
         private async void TabView_ItemHeaderTapped(object sender, DevExpress.XamarinForms.Navigation.ItemHeaderTappedEventArgs e)

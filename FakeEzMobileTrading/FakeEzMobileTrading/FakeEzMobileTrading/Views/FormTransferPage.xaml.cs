@@ -13,12 +13,12 @@ using Xamarin.Forms.Xaml;
 namespace FakeEzMobileTrading.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FormSendPage : ContentPage
+    public partial class FormTransferPage : ContentPage
     {
-        public FormSendPage()
+        public FormTransferPage()
         {
             InitializeComponent();
-            BindingContext = new FormSendPageViewModel(this);
+            BindingContext = new FormTransferPageViewModel(this);
         }
 
         protected override void OnAppearing()

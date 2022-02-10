@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 {
-    public class SendMoneyPageViewModel : BaseViewModel
+    public class TransferMoneyPageViewModel : BaseViewModel
     {
        
         public string _strMoney;
@@ -102,13 +102,13 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
         }
 
         public string DateSend { get; set; }
-        private FormSend _formSend;
-        public FormSend FormSend
+        private FormTransfer _formSend;
+        public FormTransfer FormSend
         {
             get { return _formSend; }
             set { SetProperty( ref _formSend, value); } 
         }
-        public SendMoneyPageViewModel(Page page)
+        public TransferMoneyPageViewModel(Page page)
         {
             
 
@@ -122,7 +122,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             }
             else
             {
-                FormSend = new FormSend() {ID=100, Number = "Nhập số tài khoản", Name = "Tên người thụ hưởng", Address = "Ngân hàng thụ hưởng" };
+                FormSend = new FormTransfer() {ID=100, Number = "Nhập số tài khoản", Name = "Tên người thụ hưởng", Address = "Ngân hàng thụ hưởng" };
             }
             string mony = Preferences.Get("tmpM", "");
             if(mony!="")
@@ -158,7 +158,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             SwitchFormSendPage = new Command(async () =>
             {
                 Preferences.Set("tmpM", StrMoney);
-                await page.Navigation.PushAsync(new FormSendPage());
+                await page.Navigation.PushAsync(new FormTransferPage());
             });
             Accept = new Command(() =>
             {

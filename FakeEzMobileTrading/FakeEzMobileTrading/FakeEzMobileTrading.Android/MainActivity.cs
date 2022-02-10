@@ -21,11 +21,11 @@ namespace FakeEzMobileTrading.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
-            MessagingCenter.Subscribe<PriceBoard>(this, "SetLandscapeModeOn", sender =>
+            MessagingCenter.Subscribe<PriceBoardPage>(this, "SetLandscapeModeOn", sender =>
             {
                 RequestedOrientation = ScreenOrientation.Landscape;
             });
-            MessagingCenter.Subscribe<PriceBoard>(this, "SetLandscapeModeOff", sender =>
+            MessagingCenter.Subscribe<PriceBoardPage>(this, "SetLandscapeModeOff", sender =>
             {
                 RequestedOrientation = ScreenOrientation.Portrait;
             });

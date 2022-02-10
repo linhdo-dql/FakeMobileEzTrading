@@ -28,19 +28,28 @@
 
   <ItemGroup>
     <Compile Update="Views\ActionCommandConditionPage.xaml.cs">
-      <DependentUpon>ActionCommandConditionPage.xaml</DependentUpon>
+      <DependentUpon>SetCommandConditionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ActionEventPage.xaml.cs">
-      <DependentUpon>ActionEventPage.xaml</DependentUpon>
+    <Compile Update="Views\EventCalendarPage.xaml.cs">
+      <DependentUpon>EventCalendarPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ItemDetailPage.xaml.cs">
-      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
+    <Compile Update="Views\HomePages\ActionCommandPage.xaml.cs">
+      <DependentUpon>SetCommandBasicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\HomePages\OverViewPage.xaml.cs">
+      <DependentUpon>MarketPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PriceBoardPage.xaml.cs">
+      <DependentUpon>PriceBoardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StockDetailPage.xaml.cs">
+      <DependentUpon>StockDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\FPTSIdentityPage.xaml.cs">
       <DependentUpon>FPTSIdentityPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\FormSendPage.xaml.cs">
-      <DependentUpon>FormSendPage.xaml</DependentUpon>
+    <Compile Update="Views\FormTransferPage.xaml.cs">
+      <DependentUpon>FormTransferPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -52,9 +61,6 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ChartPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ExchangeDetailChildView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ExchangeDetailPage.xaml">
@@ -75,7 +81,7 @@
     <EmbeddedResource Update="Views\FlyoutMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ItemDetailPage.xaml">
+    <EmbeddedResource Update="Views\StockDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\NewPage.xaml">
@@ -87,7 +93,7 @@
     <EmbeddedResource Update="Views\OverViewMarketPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\PriceBoard.xaml">
+    <EmbeddedResource Update="Views\PriceBoardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SearchPage.xaml">

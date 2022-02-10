@@ -6,10 +6,9 @@
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
              xmlns:xcp="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
              xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup" 
-             x:Class="FakeEzMobileTrading.Views.HomePages.ActionCommandPage"
-             xmlns:vm="clr-namespace:FakeEzMobileTrading.ViewModels.HomePageViewModels">
+             x:Class="FakeEzMobileTrading.Views.HomePages.ActionCommandPage">
     <NavigationPage.TitleView>
-        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0" x:DataType="vm:ActionCommandPageViewModel">
+        <StackLayout  Orientation="Horizontal" Padding="0,0,15,0">
             <Label Text="Đặt lệnh" FontSize="20" TextColor="White" FontAttributes="Bold"
                    HorizontalOptions="StartAndExpand"/>
             <StackLayout Orientation="Horizontal" Spacing="15">
@@ -318,7 +317,7 @@
                       x:Name="layoutPriceMass"
                       Padding="5,0,5,0">
 
-                        <StackLayout x:Name="layoutPrice" Grid.Row="{Binding PositionPrice}">
+                        <StackLayout x:Name="layoutPrice">
                             <Grid ColumnDefinitions="*,*" ColumnSpacing="5" Grid.Row="0" HeightRequest="50">
                                 <Label Grid.Column="0" Grid.Row="0" TextColor="Black" VerticalOptions="Center">
                                     <Label.FormattedText>
@@ -577,7 +576,6 @@
 
 
                     <dve:DXPopup x:Name="popup2"
-                         AllowScrim="True"
                          ScrimColor="#33000000"
                              IsOpen="True"
                          >
@@ -612,7 +610,6 @@
                         </dve:DXPopup.Behaviors>
                     </dve:DXPopup>
                     <dve:DXPopup x:Name="popup3"
-                                 AllowScrim="True"
                                  ScrimColor="#33000000">
                         <Grid BackgroundColor="#EBEEF2"
                                        WidthRequest="300"

@@ -234,7 +234,7 @@ namespace FakeEzMobileTrading.ViewModels
                 if (_tap == true) return;
                 _tap = true;
                var item = x as StockItem;
-               await page.Navigation.PushAsync(new ItemDetailPage(item));
+               await page.Navigation.PushAsync(new StockDetailPage(item));
                 _tap = false;
             });
             RowSelected2 = new Command(async (x) =>
@@ -242,14 +242,14 @@ namespace FakeEzMobileTrading.ViewModels
                 if (_tap == true) return;
                 _tap = true;
                 var item = x as StockItem;
-                await page.Navigation.PushAsync(new ItemDetailPage(item));
+                await page.Navigation.PushAsync(new StockDetailPage(item));
                 _tap = false;
             });
             ShowItemDetailPage = new Command(async () =>
             {
                 if (_tap == true) return;
                 _tap = true;
-                await page.Navigation.PushAsync(new ItemDetailPage(App.Items.FirstOrDefault(i=> i.StockId==SelectedStockId)));
+                await page.Navigation.PushAsync(new StockDetailPage(App.Items.FirstOrDefault(i=> i.StockId==SelectedStockId)));
                 page.FindByName<DXPopup>("popup3").IsOpen = false;
                 _tap = false;
             });

@@ -1,4 +1,5 @@
-﻿using FakeEzMobileTrading.ViewModels;
+﻿using FakeEzMobileTrading.Menus;
+using FakeEzMobileTrading.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace FakeEzMobileTrading
         {
             base.OnAppearing();
             //BindingContext = new FlyoutMenuViewModel(this);
-            scrollView.ScrollToAsync(scrollLayout, ScrollToPosition.Start, false);
+            //scrollView.ScrollToAsync(scrollLayout, ScrollToPosition.Start, false);
 
         }
     }

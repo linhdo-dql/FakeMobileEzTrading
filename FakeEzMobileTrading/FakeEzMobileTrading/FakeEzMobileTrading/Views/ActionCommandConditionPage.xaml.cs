@@ -22,7 +22,7 @@ namespace FakeEzMobileTrading.Views
 
 
         }
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
             BindingContext = new ActionCommandConditionPageViewModel(this);

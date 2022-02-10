@@ -12,10 +12,10 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
 {
-    public class ActionCommandPageViewModel : BaseViewModel
+    public class SetCommandBasicPageViewModel : BaseViewModel
     {
         private StockItem _stockItem = new StockItem();
-        private ObservableCollection<SurplusStock> _surplusStocks;
+        private ObservableCollection<StockBalance> _surplusStocks;
         private string _idStock, _idStock2, _pass="", _showHidePassSource = "ic_hide_pass.png", _stockPrice2;
         private double _stockPrice, _stockAmount;
         private double _myMoney;
@@ -40,7 +40,7 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
             get { return _idStock2; }
             set
             {
-                SurplusStocks = new ObservableCollection<SurplusStock>(App.SuplusStocks.Where(s => s.StockId.ToLower().Trim().Contains(value.ToLower().Trim())));
+                SurplusStocks = new ObservableCollection<StockBalance>(App.SuplusStocks.Where(s => s.StockId.ToLower().Trim().Contains(value.ToLower().Trim())));
                 SetProperty(ref _idStock2, value);
             }
         }
@@ -99,10 +99,10 @@ namespace FakeEzMobileTrading.ViewModels.HomePageViewModels
                 SetProperty(ref _isDisplayChecked, value); 
             } 
         }
-        public ObservableCollection<SurplusStock> SurplusStocks { get => _surplusStocks; set { SetProperty(ref _surplusStocks, value); } }
+        public ObservableCollection<StockBalance> SurplusStocks { get => _surplusStocks; set { SetProperty(ref _surplusStocks, value); } }
 
 
-        public ActionCommandPageViewModel(Page page, string currentId, bool typeSend)
+        public SetCommandBasicPageViewModel(Page page, string currentId, bool typeSend)
         {
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>
              {

@@ -18,9 +18,9 @@ namespace FakeEzMobileTrading.ViewModels
     {
         
         private StockItem _stockItem = new StockItem();
-        private ObservableCollection<CommandCondition> _commandConditions;
-        private ObservableCollection<SurplusStock> _surplusStocks;
-        private CommandCondition _commandDetail;
+        private ObservableCollection<ConditionalCommand> _commandConditions;
+        private ObservableCollection<StockBalance> _surplusStocks;
+        private ConditionalCommand _commandDetail;
         private string _idStock, _idStock2, _idStock3, _pass = "", _showHidePassSource = "ic_hide_pass.png", _stockPrice2, _typeFilter = "Tất cả", _fromDate = DateTime.Now.ToString("dd/MM/yyyy"), _toDate = DateTime.Now.ToString("dd/MM/yyyy");
         private double _stockPrice, _stockPriceCondition, _stockAmount;
         private double _myMoney;
@@ -34,8 +34,8 @@ namespace FakeEzMobileTrading.ViewModels
         private bool _contentPageVisible = false;
         private int _currentYear, _currentMonth;
         private int _typePopup;
-        public ObservableCollection<CommandCondition> CommandConditions { get=> _commandConditions; set { SetProperty(ref _commandConditions, value); } }
-        public CommandCondition CommandDetail { get => _commandDetail; set { SetProperty(ref _commandDetail, value); } }
+        public ObservableCollection<ConditionalCommand> CommandConditions { get=> _commandConditions; set { SetProperty(ref _commandConditions, value); } }
+        public ConditionalCommand CommandDetail { get => _commandDetail; set { SetProperty(ref _commandDetail, value); } }
         public string IdStock
         {
             get { return _idStock; }
@@ -67,7 +67,7 @@ namespace FakeEzMobileTrading.ViewModels
             get { return _idStock3; }
             set
             {
-                SurplusStocks = new ObservableCollection<SurplusStock>(App.SuplusStocks.Where(s => s.StockId.ToLower().Trim().Contains(value.ToLower().Trim())));
+                SurplusStocks = new ObservableCollection<StockBalance>(App.SuplusStocks.Where(s => s.StockId.ToLower().Trim().Contains(value.ToLower().Trim())));
                 SetProperty(ref _idStock3, value);
             }
         }
@@ -144,7 +144,7 @@ namespace FakeEzMobileTrading.ViewModels
             get { return _typePopup; }
             set { SetProperty(ref _typePopup, value); }
         }
-        public ObservableCollection<SurplusStock> SurplusStocks { get => _surplusStocks; set { SetProperty(ref _surplusStocks, value); } }
+        public ObservableCollection<StockBalance> SurplusStocks { get => _surplusStocks; set { SetProperty(ref _surplusStocks, value); } }
 
         public bool StockNameVisible { get => _stockNameVisible; set { StockPriceCondition = value == false ? 0 : StockPriceCondition; SetProperty(ref _stockNameVisible, value); } }
         public bool SellBuyVisible { get => _sellBuyVisible; set { SetProperty(ref _sellBuyVisible, value); } }
@@ -469,7 +469,7 @@ namespace FakeEzMobileTrading.ViewModels
                 if (b == true)
                 {
                     IsBusy = true;
-                    CommandCondition c = new CommandCondition()
+                    ConditionalCommand c = new ConditionalCommand()
                     {
                         StockID = IdStock,
                         Price = StockPrice,
@@ -508,7 +508,7 @@ namespace FakeEzMobileTrading.ViewModels
                 if (b == true)
                 {
                     IsBusy = true;
-                    CommandCondition c = new CommandCondition()
+                    ConditionalCommand c = new ConditionalCommand()
                     {
                         StockID = IdStock,
                         Price = StockPrice,
@@ -547,22 +547,22 @@ namespace FakeEzMobileTrading.ViewModels
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.StockID == IdStock2 && c.Status == TypeFilter));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.StockID == IdStock2 && c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.StockID == IdStock2));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.StockID == IdStock2));
                         }
                     }
                     else
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.Status == TypeFilter));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= fromDate && c.TimeOrder <= toDate) && c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => c.TimeOrder >= fromDate && c.TimeOrder <= toDate));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => c.TimeOrder >= fromDate && c.TimeOrder <= toDate));
                         }
                     }    
                 }
@@ -572,22 +572,22 @@ namespace FakeEzMobileTrading.ViewModels
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.StockID == IdStock2 && c.Status == TypeFilter));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.StockID == IdStock2 && c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.StockID == IdStock2));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.StockID == IdStock2));
                         }
                     }
                     else
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.Status == TypeFilter));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => (c.TimeOrder >= toDate && c.TimeOrder <= fromDate) && c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => c.TimeOrder >= toDate && c.TimeOrder <= fromDate));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => c.TimeOrder >= toDate && c.TimeOrder <= fromDate));
                         }
                     }
                 }
@@ -597,22 +597,22 @@ namespace FakeEzMobileTrading.ViewModels
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => c.StockID == IdStock2 && c.Status == TypeFilter));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => c.StockID == IdStock2 && c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => c.StockID == IdStock2));
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => c.StockID == IdStock2));
                         }
                     }
                     else
                     {
                         if (TypeFilter != "Tất cả" && TypeFilter != "Trạng thái")
                         {
-                             CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions.Where(c => c.Status == TypeFilter));
+                             CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions.Where(c => c.Status == TypeFilter));
                         }
                         else
                         {
-                            CommandConditions = new ObservableCollection<CommandCondition>(App.CommandConditions);
+                            CommandConditions = new ObservableCollection<ConditionalCommand>(App.CommandConditions);
                         }
                     }
                 }
@@ -622,7 +622,7 @@ namespace FakeEzMobileTrading.ViewModels
             });
             SelectCommand = new Command((x) =>
             {
-                var command = x as CommandCondition;
+                var command = x as ConditionalCommand;
                 CommandDetail = command;
                 if(command.Status!="Đã hủy")
                 {

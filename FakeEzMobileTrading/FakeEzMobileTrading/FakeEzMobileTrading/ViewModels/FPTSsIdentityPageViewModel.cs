@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading
 {
-    public class FPTSIdentitysPageViewModel : BaseViewModel
+    public class FPTSsIdentityPageViewModel : BaseViewModel
     {
         public ObservableCollection<New> FPTSNews { get; set; }
         public ObservableCollection<New> CKNews { get; set; }
@@ -21,7 +21,7 @@ namespace FakeEzMobileTrading
         public ObservableCollection<New> CommunityNews { get; set; }
 
         private string _strSearch;
-        public FPTSIdentitysPageViewModel()
+        public FPTSsIdentityPageViewModel()
         {
             FPTSNews = new ObservableCollection<New>(App.FPTSIdentifys.Where(n => n.Id == 1));
             CKNews = new ObservableCollection<New>(App.FPTSIdentifys.Where(n => n.Id == 2));

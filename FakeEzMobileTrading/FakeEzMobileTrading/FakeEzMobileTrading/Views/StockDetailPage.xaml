@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FakeEzMobileTrading.Views.ItemDetailPage"
+             x:Class="FakeEzMobileTrading.Views.StockDetailPage"
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
              NavigationPage.HasBackButton="True"
-             xmlns:vm="clr-namespace:FakeEzMobileTrading.ViewModels"
              xmlns:dxn="http://schemas.devexpress.com/xamarin/2014/forms/navigation"
              xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
              xmlns:dxc="http://schemas.devexpress.com/xamarin/2014/forms/collectionview"
@@ -17,7 +16,7 @@
     </NavigationPage.TitleView>
     <ContentPage.Content>
        
-         <Grid x:DataType="vm:ItemDetailPageViewModel">
+         <Grid>
             <ActivityIndicator IsRunning="{Binding IsBusy}" Color="#034E95" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="40" HeightRequest="40">
 
             </ActivityIndicator>

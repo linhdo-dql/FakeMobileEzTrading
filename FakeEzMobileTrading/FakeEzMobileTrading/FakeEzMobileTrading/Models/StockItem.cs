@@ -46,8 +46,6 @@ namespace FakeEzMobileTrading.Models
         private double _priceMax52T;
         private double _priceMin52T;
         private double _mass30d;
-        private double _esp;
-        private double _pe;
         private double _pb;
         private double _persentForeign;
         private double _money;
@@ -462,7 +460,6 @@ namespace FakeEzMobileTrading.Models
         public double PriceMin52T { get => _priceMin52T; set { SetProperty(ref _priceMin52T, value); } }
         public double Mass30d { get => _mass30d; set { SetProperty(ref _mass30d, value); } }
         public double Esp { get => _mass30d; set { SetProperty(ref _mass30d, value); } }
-        public double Pe { get => _pe; set { SetProperty(ref _pe, value); } }
         public double Pb { get => _pb; set { SetProperty(ref _pb, value); } }
         public double PersentForeign { get => _persentForeign; set { SetProperty(ref _persentForeign, value); } }
         public double Money { get => _money; set { SetProperty(ref _money, value); } }

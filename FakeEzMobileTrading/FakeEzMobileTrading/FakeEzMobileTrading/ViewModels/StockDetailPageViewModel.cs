@@ -13,14 +13,14 @@ using Xamarin.Forms;
 
 namespace FakeEzMobileTrading.ViewModels
 {
-    public class ItemDetailPageViewModel  : BaseViewModel
+    public class StockDetailPageViewModel  : BaseViewModel
     {
         public StockItem StockItem { get; set; }
         private ObservableCollection<PriceStatistic> _priceStatistics;
         public ObservableCollection<PriceStatistic> PriceStatistics { get => _priceStatistics; set { SetProperty(ref _priceStatistics, value); } }
         public ObservableCollection<CompanyNew> CompanyNews { get; set; }
         public int _nextOrPrev = 0;
-        public ItemDetailPageViewModel(Page page,StockItem sI)
+        public StockDetailPageViewModel(Page page,StockItem sI)
         {
             Preferences.Set("TypeTable", 0);
             IsBusy = true;

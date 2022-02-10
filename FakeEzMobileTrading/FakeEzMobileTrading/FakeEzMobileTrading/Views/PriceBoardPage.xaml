@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FakeEzMobileTrading.Views.PriceBoard"
+             x:Class="FakeEzMobileTrading.Views.PriceBoardPage"
              NavigationPage.HasNavigationBar="True"
              NavigationPage.HasBackButton="True"
              
@@ -10,7 +10,6 @@
              xmlns:custom="clr-namespace:FakeEzMobileTrading.Views.CustomViews"
              xmlns:dve="http://schemas.devexpress.com/xamarin/2014/forms/popup"
              xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
-             xmlns:vm="clr-namespace:FakeEzMobileTrading.ViewModels"
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
              >
     <NavigationPage.TitleView>
@@ -70,7 +69,6 @@
     </ContentPage.Resources>
     <ContentPage.Content>
        <Grid BackgroundColor="#222222"
-            x:DataType="vm:PriceBoardPageViewModel"
              >
             <ActivityIndicator IsRunning="{Binding IsVisible, Converter={xct:InvertedBoolConverter}}"
                                WidthRequest="30"
@@ -83,49 +81,47 @@
             <StackLayout IsVisible="{Binding IsVisible}" >
                 <ScrollView Orientation="Horizontal" VerticalScrollBarVisibility="Never">
                     <StackLayout Orientation="Horizontal" Padding="0,0,10,0">
-                        <repeater:RepeaterView x:Name="StockExchanges"
+                        <StackLayout x:Name="StockExchanges"
                                                Orientation="Horizontal"
-                                               ItemsSource="{Binding StockExchanges}"
+                                               BindableLayout.ItemsSource="{Binding StockExchanges}"
                                                 >
-                            <repeater:RepeaterView.ItemTemplate>
+                            <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout x:Name="ExchangeItem"
+                                    <StackLayout x:Name="ExchangeItem"
                                                      WidthRequest="200"
                                                      Margin="5,0,5,0"
                                                      Padding="5">
-                                            <StackLayout Orientation="Horizontal"
+                                        <StackLayout Orientation="Horizontal"
                                                      Spacing="10">
-                                                <Label Text="{Binding ExchangeId, StringFormat='{0}:'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" FontAttributes="Bold"/>
-                                                <Label TextColor="{Binding UpDownColor}" BackgroundColor="{Binding BgColor}" Padding="3,0,3,0">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <Span Text="{Binding ExchangePrice, StringFormat='{0:n}  ',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" TextColor="{Binding UpDownColor}" 
-                                                                 FontSize="13"
-                                                                 FontAttributes="Bold"/>
-                                                            <Span Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" TextColor="{Binding UpDownColor}" FontSize="13"/>
-                                                            <Span Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='  {0:F2}%'}" TextColor="{Binding UpDownColor}" FontSize="13"/>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </StackLayout>
-                                            <Label HorizontalTextAlignment="Start">
+                                            <Label Text="{Binding ExchangeId, StringFormat='{0}:'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                                            <Label TextColor="{Binding UpDownColor}" BackgroundColor="{Binding BgColor}" Padding="3,0,3,0">
                                                 <Label.FormattedText>
                                                     <FormattedString>
-                                                        <Span Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='GT: {0:n} tỷ   '}" TextColor="White" FontSize="13"/>
-                                                        <Span Text="{Binding ExchangeMass,  StringFormat='KL: {0:###,###}'}" TextColor="White" FontSize="13"/>
+                                                        <Span Text="{Binding ExchangePrice, StringFormat='{0:n}  ',  Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" TextColor="{Binding UpDownColor}" 
+                                                                 FontSize="13"
+                                                                 FontAttributes="Bold"/>
+                                                        <Span Text="{Binding ExchangeUpDown, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100'}" TextColor="{Binding UpDownColor}" FontSize="13"/>
+                                                        <Span Text="{Binding ExchangePersent, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100', StringFormat='  {0:F2}%'}" TextColor="{Binding UpDownColor}" FontSize="13"/>
                                                     </FormattedString>
                                                 </Label.FormattedText>
-                                                <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectExchangeStock, Source={x:Reference StockExchanges}}" CommandParameter="{Binding Source={x:Reference ExchangeItem}, Path=BindingContext}" />
-                                                </Label.GestureRecognizers>
                                             </Label>
                                         </StackLayout>
-                                    </ViewCell>
+                                        <Label HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding ExchangeValue, Converter={xct:MathExpressionConverter}, ConverterParameter='x/100',  StringFormat='GT: {0:n} tỷ   '}" TextColor="White" FontSize="13"/>
+                                                    <Span Text="{Binding ExchangeMass,  StringFormat='KL: {0:###,###}'}" TextColor="White" FontSize="13"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.SelectExchangeStock, Source={x:Reference StockExchanges}}" CommandParameter="{Binding Source={x:Reference ExchangeItem}, Path=BindingContext}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
                                 </DataTemplate>
-                            </repeater:RepeaterView.ItemTemplate>
+                            </BindableLayout.ItemTemplate>
 
-                        </repeater:RepeaterView>
+                        </StackLayout>
                         <Image Source="ic_arr_right2.png" WidthRequest="25" HeightRequest="55" Aspect="AspectFit" HorizontalOptions="End">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowExchangeList}"/>
@@ -1234,7 +1230,6 @@
                     </dxg:DataGridView.Columns>
                 </dxg:DataGridView>
                 <dve:DXPopup x:Name="popup"
-                         AllowScrim="True"
                          ScrimColor="#33000000"
                          >
                     <Grid BackgroundColor="#EBEEF2"
@@ -1327,7 +1322,6 @@
                     </dve:DXPopup.Behaviors>
                 </dve:DXPopup>
                 <dve:DXPopup x:Name="popup2"
-                         AllowScrim="True"
                          ScrimColor="#33000000"
                          >
                     <Grid BackgroundColor="#EBEEF2"

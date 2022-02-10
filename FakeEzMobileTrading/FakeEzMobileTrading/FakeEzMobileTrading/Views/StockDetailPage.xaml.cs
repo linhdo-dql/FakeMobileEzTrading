@@ -13,12 +13,12 @@ using Xamarin.Forms.Xaml;
 namespace FakeEzMobileTrading.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ItemDetailPage : ContentPage
+    public partial class StockDetailPage : ContentPage
     {
-        public ItemDetailPage(StockItem s)
+        public StockDetailPage(StockItem s)
         {
             InitializeComponent();
-            BindingContext = new ItemDetailPageViewModel(this,s);
+            BindingContext = new StockDetailPageViewModel(this,s);
         }
 
         private async void btnSell_Clicked(object sender, EventArgs e)

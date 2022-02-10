@@ -14,12 +14,12 @@ using Xamarin.Forms.Xaml;
 namespace FakeEzMobileTrading.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PriceBoard : ContentPage
+    public partial class PriceBoardPage : ContentPage
     {
         private int time;
         StockItem dragItem;
         StockItem dropItem;
-        public PriceBoard(int t)
+        public PriceBoardPage(int t)
         {
             InitializeComponent();
             time = t;

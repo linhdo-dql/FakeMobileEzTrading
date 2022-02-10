@@ -10,12 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace FakeEzMobileTrading.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ActionEventPage : ContentPage
+    public partial class EventCalendarPage : ContentPage
     {
-        public ActionEventPage()
+        public EventCalendarPage()
         {
             InitializeComponent();
-            BindingContext = new ActionEventPageViewModel();
+            BindingContext = new EventCalendarPageViewModel();
         }
     }
 }

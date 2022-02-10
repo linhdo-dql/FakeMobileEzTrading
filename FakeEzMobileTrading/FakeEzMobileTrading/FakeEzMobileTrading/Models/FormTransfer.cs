@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FakeEzMobileTrading.Models
 {
-    public class FormSend
+    public class FormTransfer
     {
         public int ID { get; set; }
         public string Title { get; set; }

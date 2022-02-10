@@ -790,7 +790,6 @@
                          </Grid>
 
                               <dve:DXPopup x:Name="popup3"
-                                 AllowScrim="True"
                                  ScrimColor="#33000000">
                                     <Grid BackgroundColor="#EBEEF2"
                                        WidthRequest="300"
@@ -1325,9 +1324,7 @@
                                     <toolkit:EventToCommandBehavior EventName="Closed" Command="{Binding UpdateUI}"/>
                                 </dve:DXPopup.Behaviors>
                             </dve:DXPopup>
-                            <dve:DXPopup x:Name="popupCalendar" IsOpen="True" 
-                         
-                         AllowScrim="True">
+                            <dve:DXPopup x:Name="popupCalendar" IsOpen="True">
                                 <Grid WidthRequest="300" HeightRequest="350"
                                           RowSpacing="0"
                                           RowDefinitions="40,0.25,25,*,45">
@@ -1389,7 +1386,6 @@
                                 </dve:DXPopup.Behaviors>
                             </dve:DXPopup>
                             <dve:DXPopup x:Name="popup2"
-                                 AllowScrim="True"
                                  ScrimColor="#33000000">
                                 <Grid BackgroundColor="#EBEEF2"
                                        WidthRequest="300"
